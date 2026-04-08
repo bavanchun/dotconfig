@@ -1,0 +1,374 @@
+/* =============================================================
+   Control Center - Liquid Glass (dark mode)
+   ============================================================= */
+
+* { font-family: "SF Pro Display", "Inter", "Segoe UI", sans-serif; }
+
+window { background: transparent; }
+
+/* Main container */
+.control-center {
+    background: rgba(20, 20, 26, 0.26);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-top-color: rgba(255, 255, 255, 0.32);
+    border-radius: 20px;
+    padding: 18px;
+    min-width: 320px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+label.cc-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgba(238, 238, 245, 0.95);
+}
+
+box.cc-header {
+    margin-bottom: -2px;
+}
+
+label.cc-chip {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+    padding: 4px 10px;
+    color: rgba(232, 236, 244, 0.88);
+    font-size: 10px;
+    font-weight: 600;
+}
+
+box.connectivity-section {
+    margin-bottom: 2px;
+}
+
+box.details-open > box.toggle-card {
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Toggle cards */
+box.toggle-card {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 12px 14px;
+}
+
+button.toggle-main {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    color: inherit;
+}
+
+button.toggle-main:hover {
+    background: transparent;
+    color: inherit;
+}
+
+label.toggle-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(238, 238, 245, 0.90);
+}
+
+label.toggle-subtitle {
+    font-size: 11px;
+    color: rgba(190, 190, 208, 0.60);
+    margin-top: 2px;
+}
+
+box.details-panel {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+label.details-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(240, 241, 247, 0.94);
+}
+
+label.details-hint {
+    font-size: 11px;
+    color: rgba(196, 198, 210, 0.68);
+}
+
+button.details-action {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: rgba(232, 236, 244, 0.86);
+}
+
+button.details-action:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+button.details-close {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: rgba(224, 228, 238, 0.82);
+}
+
+button.details-close:hover {
+    background: rgba(255, 255, 255, 0.10);
+}
+
+button.details-row {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 9px 10px;
+    color: rgba(236, 238, 244, 0.90);
+}
+
+button.details-row:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+button.details-row.current {
+    background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+label.details-row-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(241, 243, 247, 0.94);
+}
+
+label.details-row-subtitle {
+    font-size: 10px;
+    color: rgba(196, 198, 210, 0.70);
+    margin-top: 2px;
+}
+
+label.details-row-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(130, 232, 160, 0.94);
+}
+
+/* Switches */
+switch {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 100px;
+    min-width: 44px;
+    min-height: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    transition: background 200ms ease;
+}
+
+switch:checked {
+    background: rgba(50, 210, 120, 0.75);
+    border-color: rgba(50, 210, 120, 0.40);
+}
+
+switch slider {
+    background: white;
+    border-radius: 100px;
+    min-width: 20px;
+    min-height: 20px;
+    margin: 2px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.30);
+}
+
+/* Sliders */
+box.slider-row { padding: 2px 0; }
+
+label.slider-icon {
+    font-size: 16px;
+    color: rgba(190, 190, 208, 0.80);
+    min-width: 22px;
+}
+
+label.slider-value {
+    font-size: 12px;
+    color: rgba(190, 190, 208, 0.65);
+    min-width: 36px;
+    font-weight: 600;
+}
+
+scale { color: transparent; }
+
+scale trough {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 100px;
+    min-height: 6px;
+}
+
+scale trough highlight {
+    background: rgba(255, 255, 255, 0.70);
+    border-radius: 100px;
+}
+
+scale slider {
+    background: white;
+    border-radius: 100px;
+    min-width: 18px;
+    min-height: 18px;
+    margin: -6px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    transition: min-width 100ms, min-height 100ms;
+}
+
+scale slider:hover {
+    min-width: 20px;
+    min-height: 20px;
+}
+
+/* Media */
+box.media-card,
+box.output-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+label.media-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: rgba(196, 198, 210, 0.74);
+}
+
+label.media-track {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(241, 243, 247, 0.94);
+}
+
+label.media-subtitle,
+label.output-current {
+    font-size: 11px;
+    color: rgba(220, 223, 232, 0.82);
+    margin-top: 1px;
+}
+
+label.media-meta,
+label.media-time {
+    font-size: 10px;
+    color: rgba(196, 198, 210, 0.66);
+}
+
+box.media-controls {
+    margin-left: 8px;
+}
+
+button.media-control {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+    min-width: 28px;
+    min-height: 28px;
+    padding: 0;
+    color: rgba(238, 238, 245, 0.86);
+}
+
+button.media-control:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+button.media-control.primary {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+progressbar.media-progress trough {
+    background: rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+    min-height: 5px;
+}
+
+progressbar.media-progress progress {
+    background: rgba(255, 255, 255, 0.72);
+    border-radius: 999px;
+    min-height: 5px;
+}
+
+button.output-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 10px;
+    padding: 8px 10px;
+    color: rgba(214, 217, 226, 0.82);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+button.output-btn:hover {
+    background: rgba(255, 255, 255, 0.10);
+    color: rgba(238, 238, 245, 0.92);
+}
+
+button.output-btn.active {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: rgba(241, 243, 247, 0.96);
+}
+
+/* Divider */
+box.divider {
+    background: rgba(255, 255, 255, 0.08);
+    min-height: 1px;
+    margin: 0 4px;
+}
+
+/* Battery */
+box.info-row { padding: 2px 0; }
+
+label.info-icon {
+    font-size: 16px;
+    color: rgba(190, 190, 208, 0.80);
+    min-width: 22px;
+}
+
+label.info-label {
+    font-size: 13px;
+    color: rgba(238, 238, 245, 0.85);
+}
+
+label.info-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(80, 210, 120, 0.90);
+}
+
+/* Power profile buttons */
+box.profile-row { margin-top: 2px; }
+
+button.profile-btn {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 10px;
+    padding: 8px 0;
+    color: rgba(190, 190, 208, 0.70);
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 150ms ease;
+}
+
+button.profile-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(238, 238, 245, 0.90);
+}
+
+button.profile-btn.active {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(238, 238, 245, 0.95);
+}

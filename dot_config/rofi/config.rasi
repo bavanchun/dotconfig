@@ -1,0 +1,11 @@
+configuration {
+    modi:           "drun,run,window";
+    show-icons:     true;
+    icon-theme:     "Papirus-Dark";
+    drun-display-format: "{name}";
+    display-drun:   " ";
+    display-run:    " ";
+    display-window: " ";
+}
+
+@theme "catppuccin"

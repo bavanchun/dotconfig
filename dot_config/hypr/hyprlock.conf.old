@@ -1,0 +1,75 @@
+general {
+    disable_loading_bar = false
+    hide_cursor         = true
+    grace               = 0
+    no_fade_in          = false
+}
+
+# ── Nền với blur ─────────────────────────────────────────────
+background {
+    monitor =
+    path    = screenshot   # chụp màn hình hiện tại làm nền
+    blur_passes = 3
+    blur_size   = 7
+    noise       = 0.0117
+    contrast    = 0.8916
+    brightness  = 0.8172
+    vibrancy    = 0.1696
+    vibrancy_darkness = 0.0
+}
+
+# ── Đồng hồ ──────────────────────────────────────────────────
+label {
+    monitor =
+    text    = cmd[update:1000] echo "<span>$(date +"%H:%M")</span>"
+    color   = rgba(205, 214, 244, 1.0)
+    font_size = 90
+    font_family = JetBrainsMono Nerd Font
+    font_weight = bold
+
+    position = 0, 80
+    halign   = center
+    valign   = center
+}
+
+label {
+    monitor =
+    text    = cmd[update:60000] echo "<span>$(date +"%A, %d %B %Y")</span>"
+    color   = rgba(166, 173, 200, 1.0)
+    font_size = 20
+    font_family = JetBrainsMono Nerd Font
+
+    position = 0, -20
+    halign   = center
+    valign   = center
+}
+
+# ── Ô nhập mật khẩu ──────────────────────────────────────────
+input-field {
+    monitor =
+    size     = 300, 55
+    outline_thickness = 2
+    dots_size         = 0.3
+    dots_spacing      = 0.15
+    dots_center       = true
+    dots_rounding     = -1
+
+    outer_color  = rgba(137, 180, 250, 0.8)
+    inner_color  = rgba(30, 30, 46, 0.85)
+    font_color   = rgba(205, 214, 244, 1.0)
+    fade_on_empty = true
+    fade_timeout  = 1000
+
+    placeholder_text = <i>Nhập mật khẩu...</i>
+    hide_input        = false
+    rounding          = 12
+
+    check_color  = rgba(166, 227, 161, 1.0)
+    fail_color   = rgba(243, 139, 168, 1.0)
+    fail_text    = <i>Sai mật khẩu ($ATTEMPTS)</i>
+    fail_transition = 300
+
+    position = 0, -200
+    halign   = center
+    valign   = center
+}

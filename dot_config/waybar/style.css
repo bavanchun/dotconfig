@@ -1,0 +1,309 @@
+/* ════════════════════════════════════════════════════════════
+   Liquid Glass — Waybar (macOS 26 inspired, dark mode)
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Glass tokens ─────────────────────────────────────────── */
+@define-color g-fill        rgba( 20,  20,  26, 0.26);
+@define-color g-border      rgba(255, 255, 255, 0.18);
+@define-color g-shine       rgba(255, 255, 255, 0.14);
+@define-color g-hover       rgba(255, 255, 255, 0.09);
+@define-color g-active      rgba(255, 255, 255, 0.16);
+@define-color g-shadow      rgba(  0,   0,   0, 0.50);
+@define-color g-separator   rgba(255, 255, 255, 0.09);
+
+/* ── Text tokens ──────────────────────────────────────────── */
+@define-color text          rgba(238, 238, 245, 0.95);
+@define-color subtext       rgba(190, 190, 208, 0.72);
+@define-color overlay       rgba(140, 140, 160, 0.48);
+
+/* ── State colors ─────────────────────────────────────────── */
+@define-color red           rgba(255,  80,  80, 0.90);
+@define-color yellow        rgba(220, 185,  85, 0.90);
+@define-color green         rgba( 80, 210, 120, 0.90);
+
+/* ── Reset ────────────────────────────────────────────────── */
+* {
+    font-family: "SF Pro Display", "Inter", "JetBrainsMono Nerd Font", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+}
+
+/* ── Root bar ─────────────────────────────────────────────── */
+window#waybar {
+    background: transparent;
+    color: @text;
+}
+
+/* ── Tooltip ──────────────────────────────────────────────── */
+tooltip {
+    background: rgba(18, 18, 24, 0.82);
+    border: 1px solid @g-border;
+    border-radius: 16px;
+    color: @text;
+    padding: 10px 14px;
+    box-shadow:
+        inset 0 1px 0 @g-shine,
+        0 20px 48px @g-shadow;
+}
+
+tooltip label {
+    color: @text;
+    padding: 2px 4px;
+}
+
+/* ── Pill modules ─────────────────────────────────────────── */
+#launcher,
+#title,
+#time,
+#resources,
+#connectivity,
+#indicators,
+#media {
+    background: @g-fill;
+    border: 1px solid @g-border;
+    border-top-color: rgba(255, 255, 255, 0.32);  /* specular top edge */
+    border-radius: 999px;
+    padding: 3px 12px;
+    margin: 7px 4px 5px;
+    box-shadow:
+        inset 0 1px 0 @g-shine,
+        0 2px 1px rgba(255,255,255,0.04),
+        0 6px 24px @g-shadow;
+    transition: background 0.2s ease;
+}
+
+#indicators {
+    padding: 3px 10px;
+}
+
+#time {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.22);
+    padding: 3px 14px;
+}
+
+#media {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* ── Workspaces ───────────────────────────────────────────── */
+#workspaces {
+    padding: 0 2px;
+}
+
+#workspaces button {
+    min-width: 22px;
+    padding: 4px 8px;
+    margin: 2px;
+    border-radius: 999px;
+    color: @overlay;
+    background: transparent;
+    transition: all 0.18s ease;
+}
+
+#workspaces button:hover {
+    background: @g-hover;
+    color: @subtext;
+}
+
+#workspaces button.active {
+    background: @g-active;
+    border: 1px solid @g-border;
+    border-top-color: rgba(255, 255, 255, 0.20);
+    color: @text;
+    font-weight: 700;
+    padding: 4px 12px;
+    box-shadow: inset 0 1px 0 @g-shine;
+}
+
+#workspaces button.urgent {
+    background: rgba(255, 80, 80, 0.30);
+    color: @red;
+}
+
+/* ── Window title ─────────────────────────────────────────── */
+#window {
+    color: @subtext;
+    padding: 0 8px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+}
+
+#window.empty {
+    color: @overlay;
+}
+
+/* ── Clock ────────────────────────────────────────────────── */
+#clock {
+    color: @text;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    padding: 0 10px;
+}
+
+/* ── All indicator items ──────────────────────────────────── */
+#idle_inhibitor,
+#wireplumber,
+#network,
+#bluetooth,
+#cpu,
+#memory,
+#backlight,
+#battery,
+#tray,
+#custom-tray-toggle,
+#custom-control-center,
+#custom-conn-toggle,
+#custom-res-toggle,
+#custom-swaync,
+#custom-fcitx,
+#custom-power-profile,
+#temperature,
+#custom-net-speed {
+    background: transparent;
+    padding: 0 8px;
+    color: @text;
+    border-radius: 999px;
+    transition: background 0.16s ease, color 0.16s ease;
+}
+
+#idle_inhibitor:hover,
+#wireplumber:hover,
+#network:hover,
+#bluetooth:hover,
+#cpu:hover,
+#memory:hover,
+#backlight:hover,
+#battery:hover,
+#tray:hover,
+#custom-tray-toggle:hover,
+#custom-control-center:hover,
+#custom-conn-toggle:hover,
+#custom-res-toggle:hover,
+#custom-swaync:hover,
+#custom-fcitx:hover,
+#custom-power-profile:hover,
+#temperature:hover {
+    background: @g-hover;
+}
+
+/* ── Power button ─────────────────────────────────────────── */
+#custom-power {
+    padding: 0 11px;
+    color: rgba(255, 80, 80, 0.55);
+    border-radius: 999px;
+    transition: background 0.16s ease, color 0.16s ease;
+}
+
+#custom-power:hover {
+    background: rgba(255, 80, 80, 0.14);
+    color: @red;
+}
+
+/* ── Separator between connectivity items ─────────────────── */
+#connectivity > widget:not(:first-child) > * {
+    border-left: 1px solid @g-separator;
+    margin-left: 2px;
+    padding-left: 10px;
+}
+
+#indicators > widget:not(:first-child) > * {
+    border-left: 1px solid rgba(255, 255, 255, 0.07);
+    margin-left: 2px;
+    padding-left: 10px;
+}
+
+/* ── Individual states ────────────────────────────────────── */
+#idle_inhibitor         { color: @overlay; }
+#idle_inhibitor.activated { color: @text; }
+
+#wireplumber            { color: @subtext; }
+#wireplumber.muted      { color: @overlay; }
+
+#network                { color: @subtext; }
+#network.disconnected   { color: @red; }
+
+#bluetooth              { color: @subtext; }
+#bluetooth.disabled     { color: @overlay; }
+
+#cpu                    { color: @subtext; font-weight: 600; min-width: 54px; }
+#memory                 { color: @subtext; font-weight: 600; }
+#backlight              { color: @subtext; }
+
+#battery                { color: @subtext; font-weight: 600; }
+#battery.warning        { color: @yellow; }
+#battery.critical       { color: @red; }
+#battery.charging       { color: @green; }
+#battery.plugged        { color: @subtext; }
+#battery.critical:not(.charging) {
+    animation: blink 0.6s steps(12) infinite alternate;
+}
+
+#cpu.warning, #memory.warning   { color: @yellow; }
+#cpu.critical, #memory.critical { color: @red; }
+
+#custom-fcitx           { color: @subtext; font-weight: 700; }
+#custom-swaync          { color: @subtext; }
+#custom-conn-toggle,
+#custom-res-toggle      { color: @overlay; font-weight: 700; }
+#custom-control-center  {
+    color: rgba(232, 236, 244, 0.86);
+    font-weight: 700;
+    background: transparent;
+}
+
+#custom-control-center:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: @text;
+}
+
+#temperature            { color: @subtext; }
+#temperature.critical   { color: @red; animation: blink 1s steps(8) infinite alternate; }
+
+/* ── Tray ─────────────────────────────────────────────────── */
+#tray                   { padding-right: 2px; }
+#custom-tray-toggle     { color: @subtext; font-weight: 700; padding-right: 4px; }
+
+#tray > .passive        { -gtk-icon-effect: dim; }
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background: rgba(255, 80, 80, 0.25);
+    border-radius: 8px;
+}
+
+/* ── MPRIS ────────────────────────────────────────────────── */
+#mpris {
+    color: rgba(228, 231, 240, 0.84);
+    font-style: normal;
+    font-weight: 600;
+    padding: 0 6px;
+}
+
+#group-tray-menu,
+#custom-power-profile,
+#custom-fcitx,
+#custom-swaync {
+    color: @subtext;
+}
+
+/* ── Net speed ────────────────────────────────────────────── */
+#custom-net-speed {
+    color: @overlay;
+    font-size: 11px;
+    min-width: 108px;
+}
+
+/* ── Blink ────────────────────────────────────────────────── */
+@keyframes blink {
+    to {
+        color: rgba(18, 18, 24, 0.95);
+        background: @red;
+    }
+}

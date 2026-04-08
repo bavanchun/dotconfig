@@ -1,0 +1,875 @@
+import app from "ags/gtk4/app"
+import { Astal, Gtk, Gdk } from "ags/gtk4"
+import { exec, execAsync } from "ags/process"
+import { createPoll } from "ags/time"
+import { createBinding, createEffect } from "gnim"
+import GLib from "gi://GLib"
+import Network from "gi://AstalNetwork"
+import Bluetooth from "gi://AstalBluetooth"
+import Mpris from "gi://AstalMpris"
+import Wp from "gi://AstalWp"
+import Battery from "gi://AstalBattery"
+import PowerProfiles from "gi://AstalPowerProfiles"
+
+// ── helpers ──────────────────────────────────────────────────────
+function makeScale(min: number, max: number, step: number): Gtk.Scale {
+    const scale = new Gtk.Scale({
+        orientation: Gtk.Orientation.HORIZONTAL,
+        drawValue: false,
+        hexpand: true,
+    })
+    scale.set_range(min, max)
+    scale.set_increments(step, step * 2)
+    return scale
+}
+
+function clearBox(box: Gtk.Box) {
+    let child = box.get_first_child()
+    while (child) {
+        const next = child.get_next_sibling()
+        box.remove(child)
+        child = next
+    }
+}
+
+function wifiStrengthLabel(strength = 0) {
+    if (strength >= 80) return "Excellent"
+    if (strength >= 60) return "Good"
+    if (strength >= 40) return "Fair"
+    return "Weak"
+}
+
+function formatDuration(seconds = 0) {
+    if (seconds < 0 || !Number.isFinite(seconds)) return "--:--"
+    const total = Math.max(0, Math.floor(seconds))
+    const mins = Math.floor(total / 60)
+    const secs = total % 60
+    return `${mins}:${String(secs).padStart(2, "0")}`
+}
+
+function playbackStatusLabel(status: unknown) {
+    const normalized = String(status ?? "").toLowerCase()
+    if (normalized.includes("play")) return "Playing"
+    if (normalized.includes("pause")) return "Paused"
+    if (normalized.includes("stop")) return "Stopped"
+    return "Idle"
+}
+
+function currentPlayer() {
+    const manager = Mpris.get_default()
+    const players = [...manager.players]
+    return players.find((player) => String(player.playbackStatus ?? "").toLowerCase().includes("play"))
+        ?? players[0]
+        ?? null
+}
+
+function mediaSnapshot() {
+    const player = currentPlayer()
+    if (!player) {
+        return {
+            available: false,
+            title: "No media playing",
+            artist: "Open Spotify, YouTube, VLC, or another player",
+            album: "",
+            status: "",
+            position: "--:--",
+            length: "--:--",
+            fraction: 0,
+            canGoPrevious: false,
+            canGoNext: false,
+            canToggle: false,
+        }
+    }
+
+    const length = Math.max(0, Number(player.length ?? 0))
+    const position = Math.max(0, Math.min(Number(player.position ?? 0), length || Number.MAX_SAFE_INTEGER))
+    const fraction = length > 0 ? Math.min(1, position / length) : 0
+    const status = playbackStatusLabel(player.playbackStatus)
+    const title = player.title?.trim() || ""
+    const artist = player.artist?.trim() || player.album?.trim() || ""
+    const hasRealTrack = title.length > 0 || artist.length > 0
+
+    if (!hasRealTrack && status !== "Playing") {
+        return {
+            available: false,
+            title: "No media playing",
+            artist: "Open Spotify, YouTube, VLC, or another player",
+            album: "",
+            status: "",
+            position: "--:--",
+            length: "--:--",
+            fraction: 0,
+            canGoPrevious: false,
+            canGoNext: false,
+            canToggle: false,
+        }
+    }
+
+    return {
+        available: hasRealTrack,
+        title: title || "Unknown track",
+        artist: artist || "Unknown artist",
+        album: player.album?.trim() || "",
+        status,
+        position: formatDuration(position),
+        length: formatDuration(length),
+        fraction,
+        canGoPrevious: Boolean(player.canGoPrevious),
+        canGoNext: Boolean(player.canGoNext),
+        canToggle: Boolean(player.canControl && (player.canPlay || player.canPause)),
+    }
+}
+
+function speakerSnapshot() {
+    const audio = Wp.get_default()?.audio
+    const defaultSpeaker = audio?.defaultSpeaker
+    const speakers = [...(audio?.speakers ?? [])]
+        .filter((speaker) => Boolean(speaker.description || speaker.name))
+        .slice(0, 4)
+        .map((speaker) => ({
+            id: speaker.id,
+            label: speaker.description || speaker.name || "Unknown output",
+            active: Boolean(speaker.is_default),
+            volume: Math.round((speaker.volume ?? 0) * 100),
+        }))
+
+    return {
+        current: defaultSpeaker?.description || defaultSpeaker?.name || "No output detected",
+        speakers,
+    }
+}
+
+function buildDetailsHeader(title: string, subtitle: string, onClose: () => void) {
+    const row = new Gtk.Box({
+        orientation: Gtk.Orientation.HORIZONTAL,
+        spacing: 8,
+    })
+
+    const text = new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 0,
+        hexpand: true,
+    })
+
+    const titleLabel = new Gtk.Label({ label: title, halign: Gtk.Align.START })
+    titleLabel.add_css_class("details-title")
+
+    const subtitleLabel = new Gtk.Label({ label: subtitle, halign: Gtk.Align.START })
+    subtitleLabel.add_css_class("details-hint")
+
+    const close = new Gtk.Button({ label: "Close" })
+    close.add_css_class("details-close")
+    close.connect("clicked", onClose)
+
+    text.append(titleLabel)
+    text.append(subtitleLabel)
+    row.append(text)
+    row.append(close)
+
+    return row
+}
+
+function makeDetailsPanel() {
+    const panel = new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 8,
+    })
+    panel.add_css_class("details-panel")
+    return panel
+}
+
+function makeHintLabel(text: string) {
+    const hint = new Gtk.Label({ label: text, halign: Gtk.Align.START })
+    hint.add_css_class("details-hint")
+    return hint
+}
+
+function relayoutWindow(win: Astal.Window, content: Gtk.Widget) {
+    GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+        content.queue_resize()
+        win.queue_resize()
+        win.set_default_size(-1, -1)
+        return GLib.SOURCE_REMOVE
+    })
+}
+
+function relayoutTree(widget: Gtk.Widget) {
+    const requestResize = () => {
+        let current: Gtk.Widget | null = widget
+        while (current) {
+            current.queue_resize()
+            current = current.get_parent()
+        }
+
+        const root = widget.get_root()
+        if (root && "queue_resize" in root) {
+            ;(root as Gtk.Widget).queue_resize()
+        }
+
+        if (root && "set_default_size" in root) {
+            ;(root as Gtk.Window).set_default_size(-1, -1)
+        }
+    }
+
+    GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+        requestResize()
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT, 120, () => {
+            requestResize()
+            return GLib.SOURCE_REMOVE
+        })
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT, 240, () => {
+            requestResize()
+            return GLib.SOURCE_REMOVE
+        })
+        return GLib.SOURCE_REMOVE
+    })
+}
+
+function makeDetailsRow(
+    title: string,
+    subtitle: string,
+    badge: string,
+    current: boolean,
+    sensitive: boolean,
+    onClick: () => void,
+) {
+    const button = new Gtk.Button({ sensitive })
+    button.add_css_class("details-row")
+    if (current) button.add_css_class("current")
+    button.connect("clicked", onClick)
+
+    const row = new Gtk.Box({
+        orientation: Gtk.Orientation.HORIZONTAL,
+        spacing: 10,
+    })
+
+    const text = new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 0,
+        hexpand: true,
+    })
+
+    const titleLabel = new Gtk.Label({ label: title, halign: Gtk.Align.START })
+    titleLabel.add_css_class("details-row-title")
+
+    const subtitleLabel = new Gtk.Label({ label: subtitle, halign: Gtk.Align.START })
+    subtitleLabel.add_css_class("details-row-subtitle")
+
+    const badgeLabel = new Gtk.Label({ label: badge, valign: Gtk.Align.CENTER })
+    badgeLabel.add_css_class("details-row-badge")
+
+    text.append(titleLabel)
+    text.append(subtitleLabel)
+    row.append(text)
+    row.append(badgeLabel)
+    button.set_child(row)
+
+    return button
+}
+
+function NowPlayingCard() {
+    const snapshot = createPoll(mediaSnapshot(), 2000, mediaSnapshot)
+
+    const title = new Gtk.Label({ halign: Gtk.Align.START, xalign: 0, hexpand: true })
+    title.add_css_class("media-track")
+    title.set_max_width_chars(28)
+    title.set_ellipsize(3)
+
+    const artist = new Gtk.Label({ halign: Gtk.Align.START, xalign: 0, hexpand: true })
+    artist.add_css_class("media-subtitle")
+    artist.set_max_width_chars(28)
+    artist.set_ellipsize(3)
+
+    const meta = new Gtk.Label({ halign: Gtk.Align.START, xalign: 0, hexpand: true })
+    meta.add_css_class("media-meta")
+    meta.set_max_width_chars(28)
+    meta.set_ellipsize(3)
+
+    const progress = new Gtk.ProgressBar({ hexpand: true, valign: Gtk.Align.CENTER })
+    progress.add_css_class("media-progress")
+
+    const start = new Gtk.Label({ label: "--:--", halign: Gtk.Align.START, xalign: 0 })
+    start.add_css_class("media-time")
+
+    const end = new Gtk.Label({ label: "--:--", halign: Gtk.Align.END, xalign: 1 })
+    end.add_css_class("media-time")
+
+    const previous = new Gtk.Button({ label: "󰒮" })
+    previous.add_css_class("media-control")
+    previous.connect("clicked", () => currentPlayer()?.previous())
+
+    const playPause = new Gtk.Button({ label: "󰐊" })
+    playPause.add_css_class("media-control")
+    playPause.add_css_class("primary")
+    playPause.connect("clicked", () => currentPlayer()?.play_pause())
+
+    const next = new Gtk.Button({ label: "󰒭" })
+    next.add_css_class("media-control")
+    next.connect("clicked", () => currentPlayer()?.next())
+
+    createEffect(() => {
+        const data = snapshot()
+        title.set_label(data.title)
+        artist.set_label(data.artist)
+        meta.set_label(data.available ? `${data.status}${data.album ? ` • ${data.album}` : ""}` : "Waiting for playback")
+        progress.set_fraction(data.fraction)
+        start.set_label(data.position)
+        end.set_label(data.length)
+        previous.set_sensitive(data.canGoPrevious)
+        next.set_sensitive(data.canGoNext)
+        playPause.set_sensitive(data.canToggle)
+        playPause.set_label(data.status === "Playing" ? "󰏤" : "󰐊")
+    })
+
+    return (
+        <box class="media-card compact" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+            <box orientation={Gtk.Orientation.HORIZONTAL} spacing={8}>
+                <box orientation={Gtk.Orientation.VERTICAL} spacing={1} hexpand>
+                    <Gtk.Label class="media-title" label="Now Playing" halign={Gtk.Align.START} />
+                    {title}
+                    {artist}
+                    {meta}
+                </box>
+                <box class="media-controls compact" spacing={4} valign={Gtk.Align.CENTER}>
+                    {previous}
+                    {playPause}
+                    {next}
+                </box>
+            </box>
+            {progress}
+            <box orientation={Gtk.Orientation.HORIZONTAL}>
+                {start}
+                <box hexpand />
+                {end}
+            </box>
+        </box>
+    )
+}
+
+function AudioOutputCard() {
+    const snapshot = createPoll(speakerSnapshot(), 2000, speakerSnapshot)
+    const outputs = new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 6,
+    })
+    const card = new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 6,
+    })
+    const summaryButton = new Gtk.Button({ hexpand: true })
+    const revealer = new Gtk.Revealer({
+        transitionType: Gtk.RevealerTransitionType.SLIDE_DOWN,
+        transitionDuration: 180,
+        revealChild: false,
+        child: outputs,
+    })
+    revealer.connect("notify::child-revealed", () => relayoutTree(card))
+    revealer.connect("notify::reveal-child", () => relayoutTree(card))
+    let expanded = false
+
+    const current = new Gtk.Label({ halign: Gtk.Align.START, xalign: 0, hexpand: true })
+    current.add_css_class("output-current")
+    current.set_max_width_chars(28)
+    current.set_ellipsize(3)
+
+    const subtitle = new Gtk.Label({ halign: Gtk.Align.START, xalign: 0 })
+    subtitle.add_css_class("details-hint")
+    subtitle.set_max_width_chars(28)
+    subtitle.set_ellipsize(3)
+
+    const chevron = new Gtk.Label({ label: "▾", halign: Gtk.Align.END, xalign: 1 })
+    chevron.add_css_class("output-chevron")
+
+    const summaryTitle = new Gtk.Label({ label: "Sound Output", halign: Gtk.Align.START, xalign: 0 })
+    summaryTitle.add_css_class("media-title")
+
+    const summaryText = new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 1,
+        hexpand: true,
+    })
+    summaryText.append(summaryTitle)
+    summaryText.append(current)
+    summaryText.append(subtitle)
+
+    const summaryRow = new Gtk.Box({
+        orientation: Gtk.Orientation.HORIZONTAL,
+        spacing: 8,
+    })
+    summaryRow.append(summaryText)
+    summaryRow.append(chevron)
+    summaryButton.set_child(summaryRow)
+    summaryButton.add_css_class("output-summary")
+    summaryButton.connect("clicked", () => {
+        expanded = !expanded
+        revealer.set_reveal_child(expanded)
+        chevron.set_label(expanded ? "▴" : "▾")
+        expanded ? card.add_css_class("expanded") : card.remove_css_class("expanded")
+        relayoutTree(card)
+    })
+
+    const renderOutputs = () => {
+        clearBox(outputs)
+        const audio = Wp.get_default()?.audio
+        const data = snapshot()
+
+        if (data.speakers.length === 0) {
+            const empty = new Gtk.Label({ label: "No outputs available", halign: Gtk.Align.START, xalign: 0 })
+            empty.add_css_class("details-hint")
+            outputs.append(empty)
+            return
+        }
+
+        data.speakers.slice(0, 3).forEach((speakerData) => {
+            const speaker = [...(audio?.speakers ?? [])].find((item) => item.id === speakerData.id)
+            outputs.append(makeDetailsRow(
+                speakerData.label,
+                `${speakerData.volume}% volume`,
+                speakerData.active ? "Current" : "",
+                speakerData.active,
+                true,
+                () => speaker?.set_is_default(true),
+            ))
+        })
+    }
+
+    createEffect(() => {
+        const data = snapshot()
+        current.set_label(data.current)
+        subtitle.set_label(data.speakers.length > 1 ? "Click to show available outputs" : "Single active output")
+        renderOutputs()
+    })
+
+    card.add_css_class("output-card")
+    card.add_css_class("compact")
+    card.append(summaryButton)
+    card.append(revealer)
+
+    return card
+}
+
+// ── WiFi Toggle ──────────────────────────────────────────────────
+function WifiToggle({ onDetails }: { onDetails: () => void }) {
+    const network = Network.get_default()
+    const wifi = network?.wifi
+
+    return (
+        <box class="toggle-card" orientation={Gtk.Orientation.HORIZONTAL} spacing={10}>
+            <Gtk.Button class="toggle-main" hexpand onClicked={onDetails}>
+                <box orientation={Gtk.Orientation.VERTICAL} hexpand>
+                    <Gtk.Label class="toggle-title" label="Wi-Fi" halign={Gtk.Align.START} />
+                    <Gtk.Label
+                        class="toggle-subtitle"
+                        label={wifi ? createBinding(wifi, "ssid")((s) => s ?? "Disconnected") : "No adapter"}
+                        halign={Gtk.Align.START}
+                        maxWidthChars={14}
+                        ellipsize={3}
+                    />
+                </box>
+            </Gtk.Button>
+            {wifi && (
+                <Gtk.Switch
+                    active={createBinding(wifi, "enabled")}
+                    valign={Gtk.Align.CENTER}
+                    onStateSet={(_, state) => { wifi.enabled = state; return false }}
+                />
+            )}
+        </box>
+    )
+}
+
+// ── Bluetooth Toggle ─────────────────────────────────────────────
+function BluetoothToggle({ onDetails }: { onDetails: () => void }) {
+    const bt = Bluetooth.get_default()
+
+    return (
+        <box class="toggle-card" orientation={Gtk.Orientation.HORIZONTAL} spacing={10}>
+            <Gtk.Button class="toggle-main" hexpand onClicked={onDetails}>
+                <box orientation={Gtk.Orientation.VERTICAL} hexpand>
+                    <Gtk.Label class="toggle-title" label="Bluetooth" halign={Gtk.Align.START} />
+                    <Gtk.Label
+                        class="toggle-subtitle"
+                        label={bt ? createBinding(bt, "isPowered")((on) => on ? "On" : "Off") : "Unavailable"}
+                        halign={Gtk.Align.START}
+                    />
+                </box>
+            </Gtk.Button>
+            {bt && (
+                <Gtk.Switch
+                    active={createBinding(bt, "isPowered")}
+                    valign={Gtk.Align.CENTER}
+                    onStateSet={(_, state) => { bt.isPowered = state; return false }}
+                />
+            )}
+        </box>
+    )
+}
+
+// ── Volume Slider ────────────────────────────────────────────────
+function VolumeSlider() {
+    const speaker = Wp.get_default()?.audio?.defaultSpeaker
+    if (!speaker) return <box />
+
+    const volume = createBinding(speaker, "volume")
+    const muted  = createBinding(speaker, "mute")
+
+    const scale = makeScale(0, 1.5, 0.05)
+    let fromEffect = false
+    createEffect(() => {
+        fromEffect = true
+        scale.set_value(volume())
+        fromEffect = false
+    })
+    scale.connect("value-changed", () => {
+        if (!fromEffect) speaker.volume = scale.get_value()
+    })
+
+    return (
+        <box class="slider-row" orientation={Gtk.Orientation.HORIZONTAL} spacing={10}>
+            <Gtk.Label class="slider-icon" label={muted((m) => m ? "󰝟" : "󰕾")} />
+            {scale}
+            <Gtk.Label class="slider-value" label={volume((v) => `${Math.round((v ?? 0) * 100)}%`)} widthChars={4} xalign={1} />
+        </box>
+    )
+}
+
+// ── Brightness Slider ────────────────────────────────────────────
+function BrightnessSlider() {
+    const get = () => {
+        try {
+            const cur = Number(exec("brightnessctl g"))
+            const max = Number(exec("brightnessctl m"))
+            return max > 0 ? Math.round((cur / max) * 100) : 50
+        } catch { return 50 }
+    }
+
+    const brightness = createPoll(get(), 2000, get)
+
+    const scale = makeScale(0, 100, 5)
+    let fromEffect = false
+    createEffect(() => {
+        fromEffect = true
+        scale.set_value(brightness())
+        fromEffect = false
+    })
+    scale.connect("value-changed", () => {
+        if (!fromEffect) execAsync(`brightnessctl set ${Math.round(scale.get_value())}%`).catch(() => {})
+    })
+
+    return (
+        <box class="slider-row" orientation={Gtk.Orientation.HORIZONTAL} spacing={10}>
+            <Gtk.Label class="slider-icon" label="󰃠" />
+            {scale}
+            <Gtk.Label class="slider-value" label={brightness((v) => `${v}%`)} widthChars={4} xalign={1} />
+        </box>
+    )
+}
+
+// ── Battery ──────────────────────────────────────────────────────
+function BatteryInfo() {
+    const battery = Battery.get_default()
+    if (!battery) return <box />
+
+    const icons = ["󰁺","󰁻","󰁼","󰁽","󰁾","󰁿","󰂀","󰂁","󰂂","󰁹"]
+    const pct      = createBinding(battery, "percentage")  // 0–1
+    const charging = createBinding(battery, "charging")
+
+    return (
+        <box class="info-row" orientation={Gtk.Orientation.HORIZONTAL} spacing={10}>
+            <Gtk.Label class="info-icon" label={pct((p) => icons[Math.min(9, Math.floor((p ?? 0) * 9))])} />
+            <Gtk.Label class="info-label" label={pct((p) => `Battery  —  ${Math.round((p ?? 0) * 100)}%`)} hexpand halign={Gtk.Align.START} />
+            <Gtk.Label class="info-badge" label={charging((c) => c ? "Charging" : "")} />
+        </box>
+    )
+}
+
+// ── Power Profile ────────────────────────────────────────────────
+function PowerProfileSelector() {
+    const pp = PowerProfiles.get_default()
+    if (!pp) return <box />
+
+    const active = createBinding(pp, "activeProfile")
+    const profiles = [
+        { id: "power-saver", label: "󰌪  Save" },
+        { id: "balanced",    label: "󰾅  Bal"  },
+        { id: "performance", label: "󰓅  Perf" },
+    ]
+
+    const buttons = profiles.map(({ id, label }) => {
+        const btn = new Gtk.Button({ label })
+        btn.add_css_class("profile-btn")
+        createEffect(() => {
+            active() === id
+                ? btn.add_css_class("active")
+                : btn.remove_css_class("active")
+        })
+        btn.connect("clicked", () => { pp.activeProfile = id })
+        return btn
+    })
+
+    return (
+        <box class="profile-row" spacing={6} homogeneous>
+            {buttons}
+        </box>
+    )
+}
+
+function HeaderStatus() {
+    const battery = Battery.get_default()
+    const network = Network.get_default()
+    const wifi = network?.wifi
+
+    const chip = new Gtk.Label({
+        label: "System",
+        valign: Gtk.Align.CENTER,
+    })
+    chip.add_css_class("cc-chip")
+
+    const charging = battery ? createBinding(battery, "charging") : null
+    const pct = battery ? createBinding(battery, "percentage") : null
+    const ssid = wifi ? createBinding(wifi, "ssid") : null
+    const enabled = wifi ? createBinding(wifi, "enabled") : null
+
+    createEffect(() => {
+        const label = charging?.()
+            ? `Charging ${Math.round((pct?.() ?? 0) * 100)}%`
+            : enabled?.() && ssid?.()
+                ? ssid?.() ?? "Connected"
+                : battery
+                    ? `Battery ${Math.round((pct?.() ?? 0) * 100)}%`
+                    : "System"
+
+        chip.set_label(label)
+    })
+
+    return (
+        <box class="cc-header" orientation={Gtk.Orientation.HORIZONTAL} spacing={12}>
+            <Gtk.Label class="cc-title" label="Control Center" halign={Gtk.Align.START} hexpand />
+            {chip}
+        </box>
+    )
+}
+
+function buildWifiDetails(onClose: () => void) {
+    const network = Network.get_default()
+    const wifi = network?.wifi
+    const panel = makeDetailsPanel()
+
+    if (!wifi) {
+        panel.append(buildDetailsHeader("Wi-Fi", "No Wi-Fi adapter available.", onClose))
+        return panel
+    }
+
+    const accessPoints = [...wifi.accessPoints]
+        .sort((a, b) => b.strength - a.strength)
+        .slice(0, 6)
+
+    panel.append(buildDetailsHeader(
+        "Wi-Fi Networks",
+        wifi.enabled ? `Connected to ${wifi.ssid || "a network"}` : "Wi-Fi is turned off.",
+        onClose,
+    ))
+
+    const rescan = new Gtk.Button({
+        label: wifi.scanning ? "Scanning..." : "Rescan",
+        sensitive: !wifi.scanning && wifi.enabled,
+        halign: Gtk.Align.END,
+    })
+    rescan.add_css_class("details-action")
+    rescan.connect("clicked", () => wifi.scan())
+    panel.append(rescan)
+
+    if (accessPoints.length > 0) {
+        accessPoints.forEach((ap) => {
+            const isActive = wifi.activeAccessPoint?.bssid === ap.bssid
+            const isJoinable = wifi.enabled && (!ap.requiresPassword || isActive)
+            const subtitle = isActive
+                ? `${wifiStrengthLabel(ap.strength)} • ${ap.strength}% • Connected`
+                : `${wifiStrengthLabel(ap.strength)} • ${ap.strength}%${ap.requiresPassword ? " • Password required" : ""}`
+
+            panel.append(makeDetailsRow(
+                ap.ssid || "Hidden network",
+                subtitle,
+                isActive ? "Current" : ap.requiresPassword ? "Locked" : "",
+                isActive,
+                isJoinable,
+                () => { ap.activate(null).catch(() => {}) },
+            ))
+        })
+    } else {
+        panel.append(makeHintLabel("No networks found."))
+    }
+
+    return panel
+}
+
+function buildBluetoothDetails(onClose: () => void) {
+    const bt = Bluetooth.get_default()
+    const panel = makeDetailsPanel()
+
+    if (!bt) {
+        panel.append(buildDetailsHeader("Bluetooth", "Bluetooth is unavailable.", onClose))
+        return panel
+    }
+
+    const devices = [...bt.devices]
+        .sort((a, b) => Number(b.connected) - Number(a.connected) || Number(b.paired) - Number(a.paired))
+        .slice(0, 6)
+
+    panel.append(buildDetailsHeader(
+        "Bluetooth Devices",
+        bt.isPowered ? "Tap a paired device to connect or disconnect." : "Bluetooth is turned off.",
+        onClose,
+    ))
+
+    if (devices.length > 0) {
+        devices.forEach((device) => {
+            const status = device.connected
+                ? "Connected"
+                : device.connecting
+                    ? "Connecting..."
+                    : device.paired
+                        ? "Paired"
+                        : "Available"
+
+            const battery = device.batteryPercentage >= 0 ? ` • ${device.batteryPercentage}%` : ""
+            const canToggle = bt.isPowered && !device.connecting && (device.paired || device.connected)
+
+            panel.append(makeDetailsRow(
+                device.alias || device.name || "Unknown device",
+                `${status}${battery}${!device.paired && !device.connected ? " • Pair first" : ""}`,
+                device.connected ? "On" : !device.paired ? "Pair" : "",
+                device.connected,
+                canToggle,
+                () => {
+                    const action = device.connected ? device.disconnect_device() : device.connect_device()
+                    action.catch(() => {})
+                },
+            ))
+        })
+    } else {
+        panel.append(makeHintLabel("No devices available."))
+    }
+
+    return panel
+}
+
+// ── Main Window ──────────────────────────────────────────────────
+export default function ControlCenter() {
+    const { TOP, RIGHT } = Astal.WindowAnchor
+
+    const win = new Astal.Window({
+        name: "control-center",
+        namespace: "control-center",
+        layer: Astal.Layer.OVERLAY,
+        anchor: TOP | RIGHT,
+        marginTop: 12,
+        marginRight: 12,
+        visible: false,
+        keymode: Astal.Keymode.ON_DEMAND,
+        application: app,
+    })
+
+    const ctrl = new Gtk.EventControllerKey()
+    ctrl.connect("key-pressed", (_: unknown, keyval: number) => {
+        if (keyval === Gdk.KEY_Escape) win.visible = false
+    })
+    win.add_controller(ctrl)
+
+    const connectivityDetails = new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 0,
+    })
+    const wifiTile = new Gtk.Box({
+        orientation: Gtk.Orientation.HORIZONTAL,
+        spacing: 10,
+        homogeneous: true,
+    })
+    const connectivityRevealer = new Gtk.Revealer({
+        transitionType: Gtk.RevealerTransitionType.SLIDE_DOWN,
+        transitionDuration: 180,
+        revealChild: false,
+        child: connectivityDetails,
+    })
+
+    let activeConnectivityPanel: "wifi" | "bluetooth" | null = null
+
+    const refreshConnectivityDetails = () => {
+        clearBox(connectivityDetails)
+
+        if (activeConnectivityPanel === "wifi") {
+            connectivityDetails.append(buildWifiDetails(() => toggleConnectivityPanel("wifi")))
+        } else if (activeConnectivityPanel === "bluetooth") {
+            connectivityDetails.append(buildBluetoothDetails(() => toggleConnectivityPanel("bluetooth")))
+        }
+
+        connectivityRevealer.set_reveal_child(activeConnectivityPanel !== null)
+        relayoutWindow(win, content)
+    }
+
+    const toggleConnectivityPanel = (panel: "wifi" | "bluetooth") => {
+        activeConnectivityPanel = activeConnectivityPanel === panel ? null : panel
+        if (activeConnectivityPanel === "wifi") {
+            wifiTile.add_css_class("details-open")
+            btTile.remove_css_class("details-open")
+        } else if (activeConnectivityPanel === "bluetooth") {
+            btTile.add_css_class("details-open")
+            wifiTile.remove_css_class("details-open")
+        } else {
+            wifiTile.remove_css_class("details-open")
+            btTile.remove_css_class("details-open")
+        }
+        refreshConnectivityDetails()
+    }
+
+    const network = Network.get_default()
+    const wifi = network?.wifi
+    wifi?.connect("notify::access-points", refreshConnectivityDetails)
+    wifi?.connect("notify::active-access-point", refreshConnectivityDetails)
+    wifi?.connect("notify::enabled", refreshConnectivityDetails)
+    wifi?.connect("notify::scanning", refreshConnectivityDetails)
+
+    const bt = Bluetooth.get_default()
+    bt?.connect("notify::devices", refreshConnectivityDetails)
+    bt?.connect("notify::is-powered", refreshConnectivityDetails)
+    bt?.connect("notify::is-connected", refreshConnectivityDetails)
+
+    const btTile = new Gtk.Box({
+        orientation: Gtk.Orientation.HORIZONTAL,
+        spacing: 10,
+        homogeneous: true,
+    })
+    wifiTile.append(<WifiToggle onDetails={() => toggleConnectivityPanel("wifi")} /> as Gtk.Widget)
+    btTile.append(<BluetoothToggle onDetails={() => toggleConnectivityPanel("bluetooth")} /> as Gtk.Widget)
+
+    const content = (
+        <box class="control-center" orientation={Gtk.Orientation.VERTICAL} spacing={14}>
+            <HeaderStatus />
+            <box class="connectivity-section" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+                <box spacing={8} homogeneous>
+                    {wifiTile}
+                    {btTile}
+                </box>
+                {connectivityRevealer}
+            </box>
+            <box class="divider" />
+            <VolumeSlider />
+            <BrightnessSlider />
+            <box class="divider" />
+            <NowPlayingCard />
+            <AudioOutputCard />
+            <box class="divider" />
+            <BatteryInfo />
+            <PowerProfileSelector />
+        </box>
+    ) as Gtk.Widget
+
+    const shell = (
+        <box class="control-center-shell" orientation={Gtk.Orientation.VERTICAL}>
+            {content}
+        </box>
+    ) as Gtk.Widget
+
+    win.set_child(shell)
+    return win
+}
