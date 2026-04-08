@@ -1,0 +1,21 @@
+# Backup files (manual backups - replaced by git)
+**/*.bak
+**/*.bak2
+**/*.bak3
+**/*.bak_*
+**/*.bak-*
+**/*.old
+**/*.pre
+**/*.disabled
+**/*.rejected-*
+
+# AGS generated/dependencies
+dot_config/ags/@girs/**
+dot_config/ags/node_modules/**
+dot_config/ags/tsconfig.json
+
+# Waybar backups (keep only active configs)
+dot_config/waybar/*.bak
+dot_config/waybar/*.bak2
+dot_config/waybar/*.media-left-pre
+dot_config/waybar/*.phase4-pre
