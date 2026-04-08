@@ -1,0 +1,18 @@
+# AGS generated/dependencies
+dot_config/ags/@girs/
+dot_config/ags/node_modules/
+dot_config/ags/tsconfig.json
+
+# Backup files
+**/*.bak
+**/*.bak2
+**/*.bak3
+**/*.bak_*
+**/*.bak-*
+**/*.old
+**/*.pre
+**/*.disabled
+**/*.rejected-*
+
+# Hyprland auto-generated
+dot_config/hypr/monitors.conf

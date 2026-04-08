@@ -22,14 +22,8 @@
 ################
 
 # See https://wiki.hypr.land/Configuring/Monitors/
-# Laptop (trái)
-monitor=eDP-1,1920x1200@60,0x0,1.0
-
-# LG ULTRAFINE 4K — match theo description, không phụ thuộc port
-monitor=desc:LG Electronics LG ULTRAFINE 311NTGY17871,3840x2160@60,1920x0,1.25
-
-# ARZOPA — match theo description, không phụ thuộc port
-monitor=desc:GWD ARZOPA 000000000000,1920x1080@60,auto,1,transform,1
+# Monitor config được tách ra theo từng máy, chezmoi template sẽ source đúng file
+source = ~/.config/hypr/monitors-{{ .machine }}.conf
 
 
 ###################

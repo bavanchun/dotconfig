@@ -19,3 +19,7 @@ dot_config/waybar/*.bak
 dot_config/waybar/*.bak2
 dot_config/waybar/*.media-left-pre
 dot_config/waybar/*.phase4-pre
+
+# Hyprland - monitors.conf là auto-generated bởi nwg-displays
+dot_config/hypr/monitors.conf
+dot_config/hypr/monitors.conf.old
