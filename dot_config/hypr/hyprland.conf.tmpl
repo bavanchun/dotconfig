@@ -53,7 +53,6 @@ exec-once = fcitx5 -d
 exec-once = swaync
 exec-once = hypridle
 exec-once = hyprpolkitagent
-exec-once = hyprsunset -t 4500
 exec-once = nm-applet
 exec-once = bash ~/.config/hypr/scripts/bluetooth-audio.sh
 exec-once = wl-paste --type text --watch cliphist store
@@ -340,12 +339,14 @@ bind = SUPER, C, exec, ags toggle -i control-center control-center
 bind = SUPER SHIFT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
 
 # Screenshot
-bind = CTRL SHIFT, 4, exec, hyprshot -m region --clipboard-only                          # chụp vùng → clipboard
-bind = CTRL SHIFT, 3, exec, hyprshot -m region -o ~/Pictures/Screenshots                 # chụp vùng → lưu file
-bind = CTRL SHIFT, 2, exec, hyprshot -m window --clipboard-only                          # chụp window → clipboard
-bind = SUPER, PRINT, exec, hyprshot -m output -o ~/Pictures/Screenshots                  # chụp toàn màn hình
-bind = CTRL SHIFT, S, exec, hyprshot -m region -o - | swappy -f -                        # chụp vùng → annotate
+bind = CTRL SHIFT, 4, exec, hyprshot -m region --clipboard-only                                                    # chụp vùng → clipboard (paste vào app)
+bind = CTRL SHIFT, 3, exec, hyprshot -m region -o ~/Pictures/Screenshots                                           # chụp vùng → lưu file
+bind = CTRL SHIFT, 2, exec, hyprshot -m window --clipboard-only                                                    # chụp window → clipboard
+bind = SUPER, PRINT, exec, hyprshot -m output -o ~/Pictures/Screenshots                                            # chụp toàn màn hình
+bind = CTRL SHIFT, S, exec, hyprshot -m region -o - | swappy -f -                                                  # chụp vùng → annotate
+bind = CTRL SHIFT, X, exec, bash -c 'f=$(hyprshot -m region -o ~/Pictures/Screenshots --raw 2>/dev/null) && echo -n "$f" | wl-copy && notify-send "Screenshot" "Path copied:\n$f"' # chụp vùng → lưu + copy path → paste vào terminal
 bind = SUPER, L, exec, systemctl restart fprintd && hyprlock
+bind = SUPER, F9, exec, bash ~/.config/hypr/scripts/toggle-hyprsunset.sh
 
 # Resize tiled windows with SUPER + SHIFT + arrows
 binde = $mainMod SHIFT, right, resizeactive, 30 0
