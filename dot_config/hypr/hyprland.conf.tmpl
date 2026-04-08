@@ -347,6 +347,7 @@ bind = CTRL SHIFT, S, exec, hyprshot -m region -o - | swappy -f -               
 bind = CTRL SHIFT, X, exec, bash -c 'f=$(hyprshot -m region -o ~/Pictures/Screenshots --raw 2>/dev/null) && echo -n "$f" | wl-copy && notify-send "Screenshot" "Path copied:\n$f"' # chụp vùng → lưu + copy path → paste vào terminal
 bind = SUPER, L, exec, systemctl restart fprintd && hyprlock
 bind = SUPER, F9, exec, bash ~/.config/hypr/scripts/toggle-hyprsunset.sh
+bind = SUPER, grave, hyprexpo:expo, toggle         # SUPER + ` để xem tất cả workspace
 
 # Resize tiled windows with SUPER + SHIFT + arrows
 binde = $mainMod SHIFT, right, resizeactive, 30 0
@@ -405,4 +406,23 @@ layerrule {
     name = blur-cc
     match:namespace = ^control-center$
     blur = true
+}
+
+
+##############
+### PLUGINS ###
+##############
+
+plugin {
+    hyprexpo {
+        columns = 3
+        gap_size = 5
+        bg_col = rgba(111111dd)
+        workspace_method = center current
+
+        enable_gesture = true
+        gesture_fingers = 3
+        gesture_distance = 300
+        gesture_positive = true
+    }
 }
