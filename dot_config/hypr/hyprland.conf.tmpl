@@ -52,7 +52,8 @@ exec-once = bash ~/.config/hypr/scripts/random-wallpaper.sh
 exec-once = fcitx5 -d
 exec-once = swaync
 exec-once = hypridle
-exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec-once = hyprpolkitagent
+exec-once = hyprsunset -t 4500
 exec-once = nm-applet
 exec-once = bash ~/.config/hypr/scripts/bluetooth-audio.sh
 exec-once = wl-paste --type text --watch cliphist store
@@ -338,9 +339,12 @@ bind = SUPER, N, exec, swaync-client -t
 bind = SUPER, C, exec, ags toggle -i control-center control-center
 bind = SUPER SHIFT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
 
-# Screenshot: chọn vùng → tự copy vào clipboard
-bind = CTRL SHIFT, 4, exec, bash -c 'FILE=~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png; grim -g "$(slurp)" "$FILE" && wl-copy -t image/png < "$FILE"'
-bind = CTRL SHIFT, 3, exec, bash -c 'FILE=~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png; grim -g "$(slurp)" "$FILE" && echo -n "$FILE" | wl-copy'
+# Screenshot
+bind = CTRL SHIFT, 4, exec, hyprshot -m region --clipboard-only                          # chụp vùng → clipboard
+bind = CTRL SHIFT, 3, exec, hyprshot -m region -o ~/Pictures/Screenshots                 # chụp vùng → lưu file
+bind = CTRL SHIFT, 2, exec, hyprshot -m window --clipboard-only                          # chụp window → clipboard
+bind = SUPER, PRINT, exec, hyprshot -m output -o ~/Pictures/Screenshots                  # chụp toàn màn hình
+bind = CTRL SHIFT, S, exec, hyprshot -m region -o - | swappy -f -                        # chụp vùng → annotate
 bind = SUPER, L, exec, systemctl restart fprintd && hyprlock
 
 # Resize tiled windows with SUPER + SHIFT + arrows
