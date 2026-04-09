@@ -3,13 +3,13 @@
    ════════════════════════════════════════════════════════════ */
 
 /* ── Glass tokens ─────────────────────────────────────────── */
-@define-color g-fill        rgba(255, 255, 255, 0.42);
-@define-color g-border      rgba(  0,   0,   0, 0.12);
-@define-color g-shine       rgba(255, 255, 255, 0.60);
-@define-color g-hover       rgba(  0,   0,   0, 0.06);
-@define-color g-active      rgba(  0,   0,   0, 0.10);
-@define-color g-shadow      rgba(  0,   0,   0, 0.15);
-@define-color g-separator   rgba(  0,   0,   0, 0.08);
+@define-color g-fill        rgba(245, 245, 250, 0.88);
+@define-color g-border      rgba(  0,   0,   0, 0.10);
+@define-color g-shine       rgba(255, 255, 255, 0.80);
+@define-color g-hover       rgba(  0,   0,   0, 0.07);
+@define-color g-active      rgba(  0,   0,   0, 0.12);
+@define-color g-shadow      rgba(  0,   0,   0, 0.22);
+@define-color g-separator   rgba(  0,   0,   0, 0.10);
 
 /* ── Text tokens ──────────────────────────────────────────── */
 @define-color text          rgba( 28,  28,  36, 0.95);
@@ -81,13 +81,13 @@ tooltip label {
 }
 
 #time {
-    background: rgba(0, 0, 0, 0.06);
-    border-color: rgba(0, 0, 0, 0.12);
+    background: rgba(235, 235, 245, 0.92);
+    border-color: rgba(0, 0, 0, 0.14);
     padding: 3px 14px;
 }
 
 #media {
-    background: rgba(0, 0, 0, 0.04);
+    background: rgba(240, 240, 248, 0.82);
     border-color: rgba(0, 0, 0, 0.10);
 }
 
