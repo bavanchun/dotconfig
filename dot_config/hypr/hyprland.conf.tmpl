@@ -59,7 +59,7 @@ exec-once = bash ~/.config/hypr/scripts/bluetooth-audio.sh
 exec-once = wl-paste --type text --watch cliphist store
 exec-once = wl-paste --type image --watch cliphist store
 exec-once = hyprswitch init
-exec-once = ags run ~/.config/ags
+# control-center AGS is launched on demand by toggle-control-center.sh
 
 
 #############################
@@ -334,7 +334,7 @@ bind = SUPER, SPACE, exec, rofi -show drun
 bind = ALT, SPACE, exec, fcitx5-remote -t
 bind = ALT, TAB, exec, hyprswitch gui --mod-key alt --key tab --close mod-key-release --filter-current-workspace
 bind = SUPER, N, exec, swaync-client -t
-bind = SUPER, C, exec, ags toggle -i control-center control-center
+bind = SUPER, C, exec, bash ~/.config/hypr/scripts/toggle-control-center.sh
 bind = SUPER SHIFT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
 
 # Screenshot

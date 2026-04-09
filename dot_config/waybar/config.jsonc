@@ -214,7 +214,7 @@
     "custom/control-center": {
         "format": "󰒓",
         "tooltip": false,
-        "on-click": "ags toggle -i control-center control-center"
+        "on-click": "bash ~/.config/hypr/scripts/toggle-control-center.sh"
     },
 
     "custom/power": {

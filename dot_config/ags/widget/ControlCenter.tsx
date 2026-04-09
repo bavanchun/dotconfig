@@ -770,7 +770,6 @@ function buildBluetoothDetails(onClose: () => void) {
 // ── Main Window ──────────────────────────────────────────────────
 export default function ControlCenter() {
     const { TOP, RIGHT } = Astal.WindowAnchor
-
     const win = new Astal.Window({
         name: "control-center",
         namespace: "control-center",
@@ -778,22 +777,16 @@ export default function ControlCenter() {
         anchor: TOP | RIGHT,
         marginTop: 12,
         marginRight: 12,
-        visible: false,
+        visible: true,
         keymode: Astal.Keymode.ON_DEMAND,
         application: app,
     })
 
     const ctrl = new Gtk.EventControllerKey()
     ctrl.connect("key-pressed", (_: unknown, keyval: number) => {
-        if (keyval === Gdk.KEY_Escape) win.visible = false
+        if (keyval === Gdk.KEY_Escape) app.quit()
     })
     win.add_controller(ctrl)
-
-    const focusCtrl = new Gtk.EventControllerFocus()
-    focusCtrl.connect("leave", () => {
-        if (win.visible) win.visible = false
-    })
-    win.add_controller(focusCtrl)
 
     const connectivityDetails = new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,

@@ -6,6 +6,6 @@ app.start({
     instanceName: "control-center",
     css: style,
     main() {
-        ControlCenter()
+        return ControlCenter()
     },
 })
