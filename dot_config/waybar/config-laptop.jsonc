@@ -111,7 +111,7 @@
     },
 
     "mpris": {
-        "format": "{player_icon} {title} · {artist}",
+        "format": "{player_icon} {title}",
         "format-paused": "{player_icon} {title}",
         "format-stopped": "",
         "player-icons": {
@@ -121,7 +121,7 @@
             "spotify": "󰓇",
             "mpv": ""
         },
-        "max-length": 34,
+        "max-length": 22,
         "tooltip-format": "{player}\n{title}\n{artist}\n{album}"
     },
 
