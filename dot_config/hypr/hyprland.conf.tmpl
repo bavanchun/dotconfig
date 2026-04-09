@@ -343,7 +343,7 @@ bind = CTRL SHIFT, 3, exec, hyprshot -m region -o ~/Pictures/Screenshots        
 bind = CTRL SHIFT, 2, exec, hyprshot -m window --clipboard-only                                                    # chụp window → clipboard
 bind = SUPER, PRINT, exec, hyprshot -m output -o ~/Pictures/Screenshots                                            # chụp toàn màn hình
 bind = CTRL SHIFT, S, exec, hyprshot -m region -o - | swappy -f -                                                  # chụp vùng → annotate
-bind = CTRL SHIFT, X, exec, bash -c 'f="$HOME/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"; grim -g "$(slurp)" "$f" && echo -n "$f" | wl-copy && notify-send "Screenshot" "Path copied:\n$f"' # chụp vùng → lưu + copy path → paste vào terminal
+bind = CTRL SHIFT, X, exec, bash -c 'f="$HOME/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"; if grim -g "$(slurp)" "$f"; then echo -n "$f" | wl-copy; notify-send -u normal -i camera-photo "Screenshot" "Path copied to clipboard:\n$f"; else notify-send -u critical "Screenshot" "Cancelled or failed"; fi' # chụp vùng → lưu + copy path → paste vào terminal
 bind = SUPER, L, exec, systemctl restart fprintd && hyprlock
 bind = SUPER, F9, exec, bash ~/.config/hypr/scripts/toggle-hyprsunset.sh
 bind = SUPER, F10, exec, bash ~/.config/hypr/scripts/toggle-theme.sh
