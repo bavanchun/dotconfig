@@ -89,6 +89,16 @@ tooltip label {
 #media {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.14);
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#media:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 2px 1px rgba(255,255,255,0.04),
+        0 10px 28px rgba(0, 0, 0, 0.56);
 }
 
 /* ── Workspaces ───────────────────────────────────────────── */
@@ -283,7 +293,16 @@ tooltip label {
     color: rgba(228, 231, 240, 0.84);
     font-style: normal;
     font-weight: 600;
-    padding: 0 6px;
+    padding: 0 8px;
+    letter-spacing: 0.1px;
+}
+
+#mpris.playing {
+    color: rgba(244, 247, 255, 0.96);
+}
+
+#mpris.paused {
+    color: rgba(190, 195, 210, 0.66);
 }
 
 #group-tray-menu,

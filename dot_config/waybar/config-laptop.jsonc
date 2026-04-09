@@ -111,8 +111,8 @@
     },
 
     "mpris": {
-        "format": "{player_icon} {title}",
-        "format-paused": "⏸ {title}",
+        "format": "{player_icon} {title} · {artist}",
+        "format-paused": "{player_icon} {title}",
         "format-stopped": "",
         "player-icons": {
             "default": "",
@@ -121,8 +121,8 @@
             "spotify": "󰓇",
             "mpv": ""
         },
-        "max-length": 22,
-        "tooltip-format": "{title}\n{artist}\n{album}"
+        "max-length": 34,
+        "tooltip-format": "{player}\n{title}\n{artist}\n{album}"
     },
 
     "temperature": {

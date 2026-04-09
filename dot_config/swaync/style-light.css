@@ -122,25 +122,26 @@
 .control-center {
     background: @cc-bg;
     border: 1px solid rgba(124, 127, 147, 0.25);
-    border-radius: 14px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-    padding: 8px 0;
+    border-radius: 16px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14);
+    padding: 12px 0 10px;
 }
 
 .widget-title {
     color: @text;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bold;
-    margin: 8px 14px 4px;
+    margin: 2px 16px 10px;
 }
 
 .widget-title > button {
-    background: @surface0;
-    border: 1px solid @surface1;
-    border-radius: 6px;
-    color: @subtext0;
+    background: rgba(230, 233, 239, 0.92);
+    border: 1px solid rgba(124, 127, 147, 0.2);
+    border-radius: 9px;
+    color: @subtext1;
     font-size: 11px;
-    padding: 4px 10px;
+    font-weight: 600;
+    padding: 6px 12px;
 }
 
 .widget-title > button:hover {
@@ -151,7 +152,11 @@
 
 /* ── DND toggle ─────────────────────────────────────────────── */
 .widget-dnd {
-    margin: 4px 14px;
+    margin: 0 16px 12px;
+    padding: 10px 12px;
+    background: rgba(230, 233, 239, 0.8);
+    border: 1px solid rgba(124, 127, 147, 0.14);
+    border-radius: 12px;
     font-size: 13px;
     color: @text;
 }
@@ -192,4 +197,74 @@
     0%   { border-color: @red; }
     50%  { border-color: @peach; }
     100% { border-color: @red; }
+}
+
+/* ── Window/background plumbing required when system CSS is skipped ─────── */
+notificationwindow,
+blankwindow,
+.blank-window,
+.floating-notifications {
+    background: transparent;
+}
+
+.control-center .control-center-list {
+    background: transparent;
+}
+
+.control-center .control-center-list-placeholder {
+    color: @subtext0;
+}
+
+.notification-row .notification-background {
+    padding: 6px 12px;
+    background: transparent;
+}
+
+.notification-row .notification-background .notification {
+    background: @noti-bg;
+    border: 1px solid rgba(124, 127, 147, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    padding: 0;
+}
+
+.notification-row .notification-background .notification .notification-default-action {
+    border: none;
+    border-radius: 10px;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    color: @text;
+}
+
+.notification-row .notification-background .notification .notification-default-action:hover {
+    background: @noti-bg-hover;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content {
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box label {
+    filter: none;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .summary {
+    color: @text;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .time {
+    color: @overlay0;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .body {
+    color: @subtext0;
+    margin-top: 4px;
 }
