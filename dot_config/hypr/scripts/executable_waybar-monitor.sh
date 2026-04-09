@@ -3,10 +3,50 @@
 SCRIPT_PID_FILE="/tmp/waybar-monitor-script.pid"
 WAYBAR_PID_FILE="/tmp/waybar-monitor.pid"
 LOG_FILE="/tmp/waybar-monitor.log"
+WAYBAR_CONFIG_RENDERED="/tmp/waybar-current.jsonc"
 FORCE_RESTART="${1:-}"
 
 log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$LOG_FILE"
+}
+
+get_primary_output() {
+    local monitors
+    monitors="$(hyprctl monitors 2>/dev/null)"
+
+    if [[ -z "$monitors" ]]; then
+        echo "eDP-1"
+        return
+    fi
+
+    if grep -q "^Monitor DP-2 " <<< "$monitors"; then
+        echo "DP-2"
+    elif grep -q "^Monitor DP-1 " <<< "$monitors"; then
+        echo "DP-1"
+    elif grep -q "^Monitor eDP-1 " <<< "$monitors"; then
+        echo "eDP-1"
+    else
+        awk '/^Monitor / { print $2; exit }' <<< "$monitors"
+    fi
+}
+
+get_config_for_output() {
+    case "$1" in
+        DP-1|DP-2)
+            echo "$HOME/.config/waybar/config-lg.jsonc"
+            ;;
+        *)
+            echo "$HOME/.config/waybar/config-laptop.jsonc"
+            ;;
+    esac
+}
+
+render_config() {
+    local source_config="$1"
+    local output_name="$2"
+
+    sed -E "0,/\"output\": *\"[^\"]+\"/s//\"output\": \"${output_name}\"/" \
+        "$source_config" > "$WAYBAR_CONFIG_RENDERED"
 }
 
 if [[ -f "$SCRIPT_PID_FILE" ]]; then
@@ -34,7 +74,11 @@ log "Monitor script started (PID $$)"
 
 launch_waybar() {
     local old_waybar_pid
+    local output_name
+    local config_path
     old_waybar_pid="$(cat "$WAYBAR_PID_FILE" 2>/dev/null)"
+    output_name="$(get_primary_output)"
+    config_path="$(get_config_for_output "$output_name")"
 
     if [[ -n "$old_waybar_pid" ]] && kill -0 "$old_waybar_pid" 2>/dev/null; then
         log "Killing old waybar PID $old_waybar_pid"
@@ -43,19 +87,33 @@ launch_waybar() {
     pkill -x waybar 2>/dev/null
     sleep 1
 
-    waybar --config "$HOME/.config/waybar/config-laptop.jsonc" --style "$HOME/.config/waybar/style.css" &
+    render_config "$config_path" "$output_name"
+    log "Launching waybar on output $output_name with config $config_path"
+    waybar --config "$WAYBAR_CONFIG_RENDERED" --style "$HOME/.config/waybar/style.css" &
 
     echo $! > "$WAYBAR_PID_FILE"
     log "Launched waybar (PID $!)"
 }
 
-log "Starting waybar (laptop-only mode)"
+last_output=""
+log "Starting waybar monitor"
 launch_waybar
+last_output="$(get_primary_output)"
 
 while sleep 3; do
     waybar_pid="$(cat "$WAYBAR_PID_FILE" 2>/dev/null)"
+    current_output="$(get_primary_output)"
+
+    if [[ "$current_output" != "$last_output" ]]; then
+        log "Monitor changed: $last_output -> $current_output"
+        launch_waybar
+        last_output="$current_output"
+        continue
+    fi
+
     if [[ -z "$waybar_pid" ]] || ! kill -0 "$waybar_pid" 2>/dev/null; then
         log "Waybar (PID ${waybar_pid:-unknown}) died, restarting"
         launch_waybar
+        last_output="$current_output"
     fi
 done
