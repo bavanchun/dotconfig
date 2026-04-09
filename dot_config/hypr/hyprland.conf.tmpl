@@ -24,6 +24,7 @@
 # See https://wiki.hypr.land/Configuring/Monitors/
 # Monitor config được tách ra theo từng máy, chezmoi template sẽ source đúng file
 source = ~/.config/hypr/monitors-{{ .machine }}.conf
+source = ~/.config/hypr/hyprland/colors.conf
 
 
 ###################
@@ -91,7 +92,7 @@ env = GLFW_IM_MODULE,ibus
 
 # permission = /usr/(bin|local/bin)/grim, screencopy, allow
 # permission = /usr/(lib|libexec|lib64)/xdg-desktop-portal-hyprland, screencopy, allow
-# permission = /usr/(bin|local/bin)/hyprpm, plugin, allow
+permission = /usr/(bin|local/bin)/hyprpm, plugin, allow
 
 
 #####################
@@ -107,9 +108,7 @@ general {
 
     border_size = 2
 
-    # https://wiki.hypr.land/Configuring/Variables/#variable-types for info about colors
-    col.active_border = rgba(7f849cee)
-    col.inactive_border = rgba(45475aaa)
+    # Border colors are set by matugen via source = ~/.config/hypr/hyprland/colors.conf
 
     # Set to true enable resizing windows by clicking and dragging on borders and gaps
     resize_on_border = true
@@ -347,6 +346,7 @@ bind = CTRL SHIFT, S, exec, hyprshot -m region -o - | swappy -f -               
 bind = CTRL SHIFT, X, exec, bash -c 'f="$HOME/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"; grim -g "$(slurp)" "$f" && echo -n "$f" | wl-copy && notify-send "Screenshot" "Path copied:\n$f"' # chụp vùng → lưu + copy path → paste vào terminal
 bind = SUPER, L, exec, systemctl restart fprintd && hyprlock
 bind = SUPER, F9, exec, bash ~/.config/hypr/scripts/toggle-hyprsunset.sh
+bind = SUPER, F10, exec, bash ~/.config/hypr/scripts/toggle-theme.sh
 bind = SUPER, grave, hyprexpo:expo, toggle         # SUPER + ` để xem tất cả workspace
 
 # Resize tiled windows with SUPER + SHIFT + arrows
@@ -419,6 +419,6 @@ plugin {
         gap_size = 5
         bg_col = rgba(111111dd)
         workspace_method = center current
-        gesture_distance = 150
+        fingers = 3
     }
 }
