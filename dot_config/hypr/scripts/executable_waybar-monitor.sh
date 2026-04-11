@@ -30,17 +30,6 @@ get_primary_output() {
     fi
 }
 
-get_config_for_output() {
-    case "$1" in
-        DP-1|DP-2)
-            echo "$HOME/.config/waybar/config-lg.jsonc"
-            ;;
-        *)
-            echo "$HOME/.config/waybar/config-laptop.jsonc"
-            ;;
-    esac
-}
-
 render_config() {
     local source_config="$1"
     local output_name="$2"
@@ -78,7 +67,7 @@ launch_waybar() {
     local config_path
     old_waybar_pid="$(cat "$WAYBAR_PID_FILE" 2>/dev/null)"
     output_name="$(get_primary_output)"
-    config_path="$(get_config_for_output "$output_name")"
+    config_path="$HOME/.config/waybar/config-laptop.jsonc"
 
     if [[ -n "$old_waybar_pid" ]] && kill -0 "$old_waybar_pid" 2>/dev/null; then
         log "Killing old waybar PID $old_waybar_pid"
