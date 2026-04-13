@@ -105,5 +105,7 @@ for id in "${all_ids[@]}"; do
     else
         label="unknown"
     fi
-    printf '%s\t[%-20s] %s\n' "$id" "$label" "$content"
+    # Format: [timestamp] content\tID
+    # Rofi 2.x dùng tab làm separator: trước tab = hiển thị, sau tab = hidden value
+    printf '[%-20s] %s\t%s\n' "$label" "$content" "$id"
 done
