@@ -148,7 +148,7 @@ decoration {
         vibrancy = 0.35
         vibrancy_darkness = 0.4
         new_optimizations = true
-        ignore_opacity = true
+        ignore_opacity = false
     }
 }
 
@@ -274,13 +274,25 @@ bind = $mainMod, E, exec, $fileManager
 bind = $mainMod, V, togglefloating,
 bind = $mainMod, R, exec, $menu
 bind = $mainMod, P, pseudo, # dwindle
-bind = $mainMod, J, layoutmsg, togglesplit # dwindle
+bind = $mainMod, backslash, layoutmsg, togglesplit # dwindle
 
-# Move focus with mainMod + arrow keys
+# Move focus with mainMod + Vim keys
+bind = $mainMod, h, movefocus, l
+bind = $mainMod, l, movefocus, r
+bind = $mainMod, k, movefocus, u
+bind = $mainMod, j, movefocus, d
+
+# Keep arrow keys as fallback focus movement
 bind = $mainMod, left, movefocus, l
 bind = $mainMod, right, movefocus, r
 bind = $mainMod, up, movefocus, u
 bind = $mainMod, down, movefocus, d
+
+# Swap tiled windows inside the current workspace with mainMod + SHIFT + Vim keys
+bind = $mainMod SHIFT, h, swapwindow, l
+bind = $mainMod SHIFT, l, swapwindow, r
+bind = $mainMod SHIFT, k, swapwindow, u
+bind = $mainMod SHIFT, j, swapwindow, d
 
 # Switch workspaces with mainMod + [0-9]
 bind = $mainMod, 1, workspace, 1
@@ -340,7 +352,8 @@ bind = SUPER, C, exec, bash ~/.config/hypr/scripts/toggle-control-center.sh
 bind = SUPER SHIFT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
 
 # Screenshot
-bind = CTRL SHIFT, 4, exec, hyprshot -m region --clipboard-only                                                    # chụp vùng → clipboard (paste vào app)
+bind = , Print, exec, flameshot gui                                                                               # chụp vùng với Flameshot
+bind = CTRL SHIFT, 4, exec, flameshot gui                                                                         # chụp vùng với Flameshot
 bind = CTRL SHIFT, 3, exec, hyprshot -m region -o ~/Pictures/Screenshots                                           # chụp vùng → lưu file
 bind = CTRL SHIFT, 2, exec, hyprshot -m window --clipboard-only                                                    # chụp window → clipboard
 bind = SUPER, PRINT, exec, hyprshot -m output -o ~/Pictures/Screenshots                                            # chụp toàn màn hình
@@ -352,7 +365,13 @@ bind = SUPER, F10, exec, bash ~/.config/hypr/scripts/toggle-theme.sh
 bind = SUPER, W, exec, bash ~/.config/hypr/scripts/wallpaper-picker.sh
 bind = SUPER, grave, hyprexpo:expo, toggle         # SUPER + ` để xem tất cả workspace
 
-# Resize tiled windows with SUPER + SHIFT + arrows
+# Resize tiled windows with SUPER + CTRL + Vim keys
+binde = $mainMod CTRL, l, resizeactive, 30 0
+binde = $mainMod CTRL, h, resizeactive, -30 0
+binde = $mainMod CTRL, k, resizeactive, 0 -30
+binde = $mainMod CTRL, j, resizeactive, 0 30
+
+# Keep arrow keys as fallback resize movement
 binde = $mainMod SHIFT, right, resizeactive, 30 0
 binde = $mainMod SHIFT, left, resizeactive, -30 0
 binde = $mainMod SHIFT, up, resizeactive, 0 -30
@@ -402,6 +421,7 @@ layerrule {
     name = blur-waybar
     match:namespace = ^waybar$
     blur = true
+    ignore_alpha = 0.24
 }
 
 # Blur for Control Center
