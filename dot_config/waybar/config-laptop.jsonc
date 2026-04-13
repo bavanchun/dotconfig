@@ -2,7 +2,7 @@
     "output": "eDP-1",
     "layer": "top",
     "position": "top",
-    "height": 50,
+    "height": 54,
     "spacing": 0,
     "margin-top": 6,
     "margin-left": 10,
@@ -10,7 +10,7 @@
 
     "modules-left": ["group/launcher", "group/media"],
     "modules-center": ["group/time"],
-    "modules-right": ["group/resources", "group/connectivity", "group/indicators"],
+    "modules-right": ["group/resources", "group/connectivity", "group/indicators", "custom/power"],
 
     "group/launcher": {
         "orientation": "horizontal",
@@ -26,7 +26,7 @@
     },
     "group/media": {
         "orientation": "horizontal",
-        "modules": ["mpris"]
+        "modules": ["custom/media"]
     },
     "group/resources": {
         "orientation": "horizontal",
@@ -49,7 +49,7 @@
 
     "group/indicators": {
         "orientation": "horizontal",
-        "modules": ["battery", "custom/power-profile", "group/tray-menu", "custom/fcitx", "custom/swaync", "custom/control-center", "custom/power"]
+        "modules": ["group/tray-menu", "custom/power-profile", "custom/fcitx", "custom/swaync", "battery", "custom/control-center"]
     },
     "group/tray-menu": {
         "orientation": "horizontal",
@@ -110,19 +110,15 @@
         "interval": 1
     },
 
-    "mpris": {
-        "format": "{player_icon} {title}",
-        "format-paused": "{player_icon} {title}",
-        "format-stopped": "",
-        "player-icons": {
-            "default": "",
-            "google-chrome": "󰊭",
-            "chromium": "󰊭",
-            "spotify": "󰓇",
-            "mpv": ""
-        },
-        "max-length": 22,
-        "tooltip-format": "{player}\n{title}\n{artist}\n{album}"
+    "custom/media": {
+        "exec": "~/.config/waybar/scripts/media-scroll.sh",
+        "return-type": "json",
+        "interval": 1,
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "on-click-middle": "playerctl previous",
+        "on-scroll-up": "playerctl volume 0.05+",
+        "on-scroll-down": "playerctl volume 0.05-"
     },
 
     "temperature": {
@@ -197,15 +193,14 @@
         "on-click": "blueman-manager"
     },
 
-    // Battery: icon-only bình thường, % chỉ khi đang sạc
     "battery": {
         "states": {
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon}",
+        "format": "{icon} {capacity}%",
         "format-charging": "󰂄 {capacity}%",
-        "format-plugged": "󰚥",
+        "format-plugged": "󰚥 {capacity}%",
         "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
         "tooltip-format": "{timeTo}\n{power:.1f}W\n{capacity}% charged"
     },
@@ -229,9 +224,8 @@
         "tooltip": false
     },
 
-    // Power profile: icon thay đổi theo mode, không có text
     "custom/power-profile": {
-        "exec": "powerprofilesctl get | awk '{if ($0 == \"performance\") print \"󰓅\"; else if ($0 == \"balanced\") print \"󰾅\"; else print \"󰌪\"}'",
+        "exec": "powerprofilesctl get | awk '{if ($0 == \"performance\") print \"Perf\"; else if ($0 == \"balanced\") print \"Bal\"; else print \"Eco\"}'",
         "interval": 2,
         "format": "{}",
         "on-click": "bash ~/.config/waybar/scripts/power-profile-menu.sh",
@@ -240,7 +234,7 @@
     },
 
     "custom/fcitx": {
-        "exec": "fcitx5-remote -n | awk '{if ($0 == \"keyboard-us\") print \"En\"; else print \"Vi\"}'",
+        "exec": "fcitx5-remote -n | awk '{if ($0 == \"keyboard-us\") print \"EN\"; else print \"VI\"}'",
         "interval": 1,
         "format": "{}",
         "on-click": "fcitx5-remote -t",
@@ -269,7 +263,7 @@
     },
 
     "custom/control-center": {
-        "format": "󰒓",
+        "format": "󰕮",
         "tooltip": false,
         "on-click": "bash ~/.config/hypr/scripts/toggle-control-center.sh"
     },
