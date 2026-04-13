@@ -1,111 +1,107 @@
 #!/bin/bash
-# List clipboard history with timestamps:
-#   1. Exact  — from timestamps.log (entries copied after wrapper was deployed)
-#   2. Exact  — parsed from screenshot filename (YYYYMMDD_HHMMSS pattern)
-#   3. ~approx — linear interpolation between known anchors
-#   4. unknown — no data available at all
+exec python3 - "$@" <<'EOF'
+import sys, re, subprocess, time
+from pathlib import Path
+from datetime import datetime
 
-ts_log="$HOME/.cache/cliphist/timestamps.log"
-now=$(date +%s)
-
-declare -A ts          # id → unix timestamp
-declare -A is_approx   # id → 1 if interpolated
-declare -a all_ids=()
-declare -A content_map
+TS_LOG = Path.home() / ".cache/cliphist/timestamps.log"
+now    = int(time.time())
 
 # ── 1. Load cliphist entries ─────────────────────────────────────
-while IFS=$'\t' read -r id content; do
-    all_ids+=("$id")
-    content_map[$id]="$content"
-done < <(cliphist list)
+raw = subprocess.run(["cliphist", "list"], capture_output=True, text=True).stdout
+entries = []       # [(id_int, id_str, content)]
+content_map = {}   # id_int → content
+for line in raw.splitlines():
+    if "\t" not in line:
+        continue
+    id_str, content = line.split("\t", 1)
+    try:
+        id_int = int(id_str)
+    except ValueError:
+        continue
+    entries.append((id_int, id_str, content))
+    content_map[id_int] = content
 
-# ── 2. Load timestamps.log (exact) ──────────────────────────────
-if [[ -f "$ts_log" ]]; then
-    while IFS='|' read -r id t; do
-        [[ -n "${content_map[$id]:-}" ]] && ts[$id]=$t
-    done < "$ts_log"
-fi
+# ── 2. Load timestamps.log ───────────────────────────────────────
+ts = {}   # id_int → unix timestamp (int)
+if TS_LOG.exists():
+    for line in TS_LOG.read_text().splitlines():
+        parts = line.split("|")
+        if len(parts) == 2:
+            try:
+                ts[int(parts[0])] = int(parts[1])
+            except ValueError:
+                pass
 
-# ── 3. Extract timestamp from screenshot filenames (exact) ───────
-for id in "${all_ids[@]}"; do
-    [[ -n "${ts[$id]:-}" ]] && continue
-    content="${content_map[$id]}"
-    match=$(grep -oP '\d{8}_\d{6}' <<< "$content" | head -1)
-    if [[ -n "$match" ]]; then
-        t=$(date -d "${match:0:4}-${match:4:2}-${match:6:2} ${match:9:2}:${match:11:2}:${match:13:2}" +%s 2>/dev/null)
-        [[ -n "$t" ]] && ts[$id]="$t"
-    fi
-done
+# ── 3. Extract timestamp from screenshot filenames ───────────────
+SS_RE = re.compile(r"(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})")
+for id_int, _, content in entries:
+    if id_int in ts:
+        continue
+    m = SS_RE.search(content)
+    if m:
+        try:
+            dt = datetime(*(int(x) for x in m.groups()))
+            ts[id_int] = int(dt.timestamp())
+        except ValueError:
+            pass
 
-# ── 4. Interpolate for remaining entries (O(n)) ──────────────────
-mapfile -t sorted_ids < <(printf '%s\n' "${all_ids[@]}" | sort -n)
-n=${#sorted_ids[@]}
+# ── 4. Linear interpolation (O(n)) ──────────────────────────────
+sorted_ids = sorted(id_int for id_int, *_ in entries)
+n = len(sorted_ids)
 
-# Forward pass: nearest known ts at or before each position
-declare -a fwd_ts=() fwd_id=()
-last_t="" last_id=""
-for (( i=0; i<n; i++ )); do
-    id="${sorted_ids[$i]}"
-    if [[ -n "${ts[$id]:-}" ]]; then last_t="${ts[$id]}"; last_id="$id"; fi
-    fwd_ts[$i]="$last_t"
-    fwd_id[$i]="$last_id"
-done
+approx = set()  # IDs whose timestamp is interpolated
 
-# Backward pass: nearest known ts at or after each position
-declare -a bwd_ts=() bwd_id=()
-last_t="" last_id=""
-for (( i=n-1; i>=0; i-- )); do
-    id="${sorted_ids[$i]}"
-    if [[ -n "${ts[$id]:-}" ]]; then last_t="${ts[$id]}"; last_id="$id"; fi
-    bwd_ts[$i]="$last_t"
-    bwd_id[$i]="$last_id"
-done
+# Forward pass
+fwd = {}  # i → (id, ts) of nearest known at or before
+last = None
+for i, sid in enumerate(sorted_ids):
+    if sid in ts:
+        last = (sid, ts[sid])
+    fwd[i] = last
+
+# Backward pass
+bwd = {}
+last = None
+for i in range(n - 1, -1, -1):
+    sid = sorted_ids[i]
+    if sid in ts:
+        last = (sid, ts[sid])
+    bwd[i] = last
 
 # Interpolate
-for (( i=0; i<n; i++ )); do
-    id="${sorted_ids[$i]}"
-    [[ -n "${ts[$id]:-}" ]] && continue
-
-    pt="${fwd_ts[$i]}" pid="${fwd_id[$i]}"
-    nt="${bwd_ts[$i]}" nid="${bwd_id[$i]}"
-
-    if [[ -n "$pid" && -n "$nid" && "$pid" != "$nid" ]]; then
-        id_range=$(( nid - pid ))
-        ts_range=$(( nt   - pt  ))
-        id_offset=$(( id  - pid ))
-        ts[$id]=$(( pt + ts_range * id_offset / id_range ))
-    elif [[ -n "$pt" ]]; then
-        ts[$id]="$pt"
-    elif [[ -n "$nt" ]]; then
-        ts[$id]="$nt"
-    else
+id_to_idx = {sid: i for i, sid in enumerate(sorted_ids)}
+for i, sid in enumerate(sorted_ids):
+    if sid in ts:
         continue
-    fi
-    is_approx[$id]=1
-done
+    p = fwd.get(i)
+    nx = bwd.get(i)
+    if p and nx and p[0] != nx[0]:
+        id_range = nx[0] - p[0]
+        ts_range = nx[1] - p[1]
+        offset   = sid - p[0]
+        ts[sid]  = p[1] + ts_range * offset // id_range
+        approx.add(sid)
+    elif p:
+        ts[sid] = p[1]; approx.add(sid)
+    elif nx:
+        ts[sid] = nx[1]; approx.add(sid)
 
 # ── 5. Format & output ───────────────────────────────────────────
-format_time() {
-    local t=$1 approx=${2:-}
-    local diff=$(( now - t ))
-    local label
-    if   (( diff < 60 ));    then label="just now"
-    elif (( diff < 3600 ));  then label="$((diff/60))m ago"
-    elif (( diff < 86400 )); then label="$((diff/3600))h ago"
-    else label=$(date -d "@$t" "+%Y-%m-%d %H:%M")
-    fi
-    [[ -n "$approx" ]] && echo "~${label}" || echo "$label"
-}
+def fmt_time(t, is_approx):
+    diff = now - t
+    if   diff < 60:     label = "just now"
+    elif diff < 3600:   label = f"{diff//60}m ago"
+    elif diff < 86400:  label = f"{diff//3600}h ago"
+    else:               label = datetime.fromtimestamp(t).strftime("%Y-%m-%d %H:%M")
+    return ("~" if is_approx else "") + label
 
-for id in "${all_ids[@]}"; do
-    t="${ts[$id]:-}"
-    content="${content_map[$id]}"
-    if [[ -n "$t" ]]; then
-        label=$(format_time "$t" "${is_approx[$id]:-}")
-    else
-        label="unknown"
-    fi
-    # Format: [timestamp] content\tID
-    # Rofi 2.x dùng tab làm separator: trước tab = hiển thị, sau tab = hidden value
-    printf '[%-20s] %s\t%s\n' "$label" "$content" "$id"
-done
+for id_int, id_str, content in entries:
+    t = ts.get(id_int)
+    if t is not None:
+        label = fmt_time(t, id_int in approx)
+    else:
+        label = "unknown"
+    print(f"[{label:<20}] {content}\t{id_str}")
+
+EOF
