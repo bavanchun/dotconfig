@@ -58,8 +58,8 @@ exec-once = hypridle
 exec-once = hyprpolkitagent
 exec-once = nm-applet
 exec-once = bash ~/.config/hypr/scripts/bluetooth-audio.sh
-exec-once = wl-paste --type text --watch cliphist store
-exec-once = wl-paste --type image --watch cliphist store
+exec-once = wl-paste --type text --watch bash ~/.config/hypr/scripts/cliphist-store.sh
+exec-once = wl-paste --type image --watch bash ~/.config/hypr/scripts/cliphist-store.sh
 exec-once = hyprswitch init
 
 #############################
@@ -342,7 +342,7 @@ bind = SUPER, SPACE, exec, rofi -show drun
 bind = ALT, SPACE, exec, fcitx5-remote -t
 bind = ALT, TAB, exec, hyprswitch gui --mod-key alt --key tab --close mod-key-release --filter-current-workspace
 bind = SUPER, N, exec, swaync-client -t
-bind = SUPER SHIFT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
+bind = SUPER SHIFT, V, exec, bash ~/.config/hypr/scripts/cliphist-pick.sh
 
 # Screenshot
 bind = , Print, exec, flameshot gui                                                                               # chụp vùng với Flameshot
