@@ -20,7 +20,7 @@
 @define-color noti-bg         rgba(20, 20, 20, 0.96);
 @define-color noti-bg-hover   rgba(35, 35, 35, 0.98);
 @define-color noti-border     rgba(127, 132, 156, 0.25);
-@define-color cc-bg           rgba(13, 13, 13, 0.97);
+@define-color cc-bg           rgba(23, 29, 37, 0.92);
 
 * {
     font-family: "JetBrainsMono Nerd Font", sans-serif;
