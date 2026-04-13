@@ -1,5 +1,5 @@
 /* =============================================================
-   Control Center - Liquid Glass (dark mode)
+   Control Center - Waybar-Aligned Surface (dark mode)
    ============================================================= */
 
 $cc-surface-lowest: #020c0a;
@@ -31,17 +31,16 @@ window#control-center > * {
 
 /* Main container */
 .control-center {
-    background: rgba($cc-surface-low, 0.82);
-    border: 1px solid rgba($cc-outline-variant, 0.22);
-    border-top-color: rgba($cc-surface-bright, 0.10);
+    background: rgba($cc-surface-low, 0.94);
+    border: 1px solid rgba($cc-outline-variant, 0.24);
+    border-top-color: rgba($cc-surface-bright, 0.06);
     border-radius: 28px;
     background-clip: padding-box;
     padding: 17px;
-    margin: 12px;
     min-width: 320px;
     box-shadow:
-        inset 0 1px 0 rgba($cc-surface-bright, 0.05),
-        0 8px 24px rgba($cc-shadow, 0.18);
+        inset 0 1px 0 rgba($cc-surface-bright, 0.03),
+        0 6px 16px rgba($cc-shadow, 0.12);
 }
 
 label.cc-title {
@@ -55,7 +54,7 @@ box.cc-header {
 }
 
 label.cc-chip {
-    background: rgba($cc-surface-container, 0.88);
+    background: rgba($cc-surface-container, 0.96);
     border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 999px;
     padding: 4px 10px;
@@ -77,7 +76,7 @@ box.details-open > box.toggle-card {
 
 /* Toggle cards */
 box.toggle-card {
-    background: rgba($cc-surface-low, 0.76);
+    background: rgba($cc-surface-container, 0.90);
     border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 14px;
     padding: 12px 14px;
@@ -85,7 +84,7 @@ box.toggle-card {
 }
 
 box.toggle-card:hover {
-    background: rgba($cc-surface-high, 0.40);
+    background: rgba($cc-surface-high, 0.82);
     border-color: rgba($cc-outline, 0.28);
 }
 
@@ -115,7 +114,7 @@ label.toggle-subtitle {
 }
 
 box.details-panel {
-    background: rgba($cc-surface-lowest, 0.68);
+    background: rgba($cc-surface-lowest, 0.90);
     border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 14px;
     padding: 12px;
@@ -134,7 +133,7 @@ label.details-hint {
 }
 
 button.details-action {
-    background: rgba($cc-surface-container, 0.88);
+    background: rgba($cc-surface-container, 0.96);
     border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 999px;
     padding: 4px 10px;
@@ -143,11 +142,11 @@ button.details-action {
 }
 
 button.details-action:hover {
-    background: rgba($cc-surface-high, 0.40);
+    background: rgba($cc-surface-high, 0.82);
 }
 
 button.details-close {
-    background: rgba($cc-surface-low, 0.62);
+    background: rgba($cc-surface-low, 0.94);
     border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 999px;
     padding: 4px 10px;
@@ -156,11 +155,11 @@ button.details-close {
 }
 
 button.details-close:hover {
-    background: rgba($cc-surface-high, 0.40);
+    background: rgba($cc-surface-high, 0.82);
 }
 
 button.details-row {
-    background: rgba($cc-surface-lowest, 0.56);
+    background: rgba($cc-surface-lowest, 0.88);
     border: 1px solid rgba($cc-outline-variant, 0.18);
     border-radius: 12px;
     padding: 9px 10px;
@@ -169,7 +168,7 @@ button.details-row {
 }
 
 button.details-row:hover {
-    background: rgba($cc-surface-high, 0.34);
+    background: rgba($cc-surface-high, 0.72);
 }
 
 button.details-row.current {
@@ -197,7 +196,7 @@ label.details-row-badge {
 
 /* Switches */
 switch {
-    background: rgba($cc-outline-variant, 0.36);
+    background: rgba($cc-outline-variant, 0.42);
     border-radius: 100px;
     min-width: 44px;
     min-height: 24px;
@@ -266,7 +265,7 @@ scale slider:hover {
 /* Media */
 box.media-card,
 box.output-card {
-    background: rgba($cc-surface-lowest, 0.64);
+    background: rgba($cc-surface-lowest, 0.92);
     border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 14px;
     padding: 12px;
@@ -281,7 +280,7 @@ box.output-card.compact {
 
 box.media-card:hover,
 box.output-card:hover {
-    background: rgba($cc-surface-low, 0.72);
+    background: rgba($cc-surface-low, 0.96);
     border-color: rgba($cc-outline, 0.28);
 }
 
@@ -290,7 +289,7 @@ box.output-card.expanded {
 }
 
 box.media-card.empty {
-    background: rgba($cc-surface-lowest, 0.42);
+    background: rgba($cc-surface-lowest, 0.82);
 }
 
 label.media-title {
@@ -328,7 +327,7 @@ box.media-controls.compact {
 }
 
 button.media-control {
-    background: rgba($cc-surface-container, 0.78);
+    background: rgba($cc-surface-container, 0.94);
     border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 999px;
     min-width: 26px;
@@ -343,7 +342,7 @@ box.media-controls.compact > button.media-control {
 }
 
 button.media-control:hover {
-    background: rgba($cc-surface-high, 0.84);
+    background: rgba($cc-surface-high, 0.94);
 }
 
 button.media-control.primary {
@@ -381,11 +380,11 @@ box.media-card.empty progressbar.media-progress progress {
 
 box.output-card.compact button.details-row {
     padding: 5px 8px;
-    background: rgba($cc-surface-container, 0.42);
+    background: rgba($cc-surface-container, 0.84);
 }
 
 box.output-card.compact button.details-row:hover {
-    background: rgba($cc-surface-high, 0.58);
+    background: rgba($cc-surface-high, 0.90);
 }
 
 box.output-card.compact label.details-row-title {
@@ -452,7 +451,7 @@ label.info-badge {
 box.profile-row { margin-top: 2px; }
 
 button.profile-btn {
-    background: rgba($cc-surface-container, 0.70);
+    background: rgba($cc-surface-container, 0.90);
     border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 10px;
     padding: 7px 0;
@@ -463,7 +462,7 @@ button.profile-btn {
 }
 
 button.profile-btn:hover {
-    background: rgba($cc-surface-high, 0.82);
+    background: rgba($cc-surface-high, 0.90);
     border-color: rgba($cc-outline, 0.28);
     color: rgba($cc-text, 0.90);
 }
