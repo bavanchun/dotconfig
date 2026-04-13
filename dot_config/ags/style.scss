@@ -215,7 +215,7 @@ switch slider {
     min-width: 20px;
     min-height: 20px;
     margin: 2px;
-    box-shadow: 0 2px 6px rgba($shadow, 0.30);
+    box-shadow: 0 2px 6px rgba($cc-shadow, 0.30);
 }
 
 /* Sliders */
@@ -223,13 +223,13 @@ box.slider-row { padding: 2px 0; }
 
 label.slider-icon {
     font-size: 16px;
-    color: rgba($onSurfaceVariant, 0.80);
+    color: rgba($cc-text-muted, 0.80);
     min-width: 22px;
 }
 
 label.slider-value {
     font-size: 12px;
-    color: rgba($onSurfaceVariant, 0.65);
+    color: rgba($cc-text-muted, 0.65);
     min-width: 36px;
     font-weight: 600;
 }
@@ -237,23 +237,23 @@ label.slider-value {
 scale { color: transparent; }
 
 scale trough {
-    background: rgba($outlineVariant, 0.28);
+    background: rgba($cc-outline-variant, 0.28);
     border-radius: 100px;
     min-height: 6px;
 }
 
 scale trough highlight {
-    background: rgba($primaryContainer, 0.90);
+    background: rgba($cc-accent-container, 0.90);
     border-radius: 100px;
 }
 
 scale slider {
-    background: rgba($surfaceBright, 1.0);
+    background: rgba($cc-surface-bright, 1.0);
     border-radius: 100px;
     min-width: 18px;
     min-height: 18px;
     margin: -6px 0;
-    box-shadow: 0 2px 8px rgba($shadow, 0.35);
+    box-shadow: 0 2px 8px rgba($cc-shadow, 0.35);
     transition: min-width 100ms, min-height 100ms;
 }
 
@@ -265,11 +265,11 @@ scale slider:hover {
 /* Media */
 box.media-card,
 box.output-card {
-    background: rgba($surfaceContainerLowest, 0.64);
-    border: 1px solid $cc-line-soft;
+    background: rgba($cc-surface-lowest, 0.64);
+    border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 14px;
     padding: 12px;
-    box-shadow: inset 0 1px 0 rgba($surfaceBright, 0.04);
+    box-shadow: inset 0 1px 0 rgba($cc-surface-bright, 0.04);
     transition: background 140ms ease, border-color 140ms ease;
 }
 
@@ -280,42 +280,42 @@ box.output-card.compact {
 
 box.media-card:hover,
 box.output-card:hover {
-    background: rgba($surfaceContainerLow, 0.72);
-    border-color: $cc-line;
+    background: rgba($cc-surface-low, 0.72);
+    border-color: rgba($cc-outline, 0.28);
 }
 
 box.output-card.expanded {
-    border-color: rgba(255, 255, 255, 0.16);
+    border-color: rgba($cc-outline, 0.30);
 }
 
 box.media-card.empty {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba($cc-surface-lowest, 0.42);
 }
 
 label.media-title {
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: rgba(196, 198, 210, 0.68);
+    color: rgba($cc-text-muted, 0.68);
 }
 
 label.media-track {
     font-size: 12px;
     font-weight: 700;
-    color: rgba(241, 243, 247, 0.94);
+    color: rgba($cc-text, 0.94);
 }
 
 label.media-subtitle,
 label.output-current {
     font-size: 10px;
-    color: rgba(220, 223, 232, 0.74);
+    color: rgba($cc-text, 0.74);
     margin-top: 1px;
 }
 
 label.media-meta,
 label.media-time {
     font-size: 10px;
-    color: rgba(196, 198, 210, 0.58);
+    color: rgba($cc-text-muted, 0.58);
 }
 
 box.media-controls {
@@ -327,13 +327,13 @@ box.media-controls.compact {
 }
 
 button.media-control {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba($cc-surface-container, 0.78);
+    border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 999px;
     min-width: 26px;
     min-height: 26px;
     padding: 0;
-    color: rgba(238, 238, 245, 0.86);
+    color: rgba($cc-text, 0.86);
 }
 
 box.media-controls.compact > button.media-control {
@@ -342,48 +342,49 @@ box.media-controls.compact > button.media-control {
 }
 
 button.media-control:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba($cc-surface-high, 0.84);
 }
 
 button.media-control.primary {
-    background: rgba(255, 255, 255, 0.16);
-    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba($cc-accent-container, 0.92);
+    border-color: rgba($cc-accent, 0.26);
+    color: rgba($cc-text, 0.94);
 }
 
 box.media-card.empty button.media-control,
 box.media-card.empty button.media-control.primary {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.08);
-    color: rgba(210, 213, 222, 0.50);
+    background: rgba($cc-surface-container, 0.46);
+    border-color: rgba($cc-outline-variant, 0.14);
+    color: rgba($cc-text-muted, 0.50);
 }
 
 progressbar.media-progress trough {
-    background: rgba(255, 255, 255, 0.10);
+    background: rgba($cc-outline-variant, 0.18);
     border-radius: 999px;
     min-height: 4px;
 }
 
 progressbar.media-progress progress {
-    background: rgba(255, 255, 255, 0.72);
+    background: rgba($cc-accent, 0.72);
     border-radius: 999px;
     min-height: 4px;
 }
 
 box.media-card.empty progressbar.media-progress trough {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba($cc-outline-variant, 0.10);
 }
 
 box.media-card.empty progressbar.media-progress progress {
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba($cc-accent-container, 0.38);
 }
 
 box.output-card.compact button.details-row {
     padding: 5px 8px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba($cc-surface-container, 0.42);
 }
 
 box.output-card.compact button.details-row:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba($cc-surface-high, 0.58);
 }
 
 box.output-card.compact label.details-row-title {
@@ -392,7 +393,7 @@ box.output-card.compact label.details-row-title {
 
 box.output-card.compact label.details-row-subtitle {
     font-size: 9px;
-    color: rgba(196, 198, 210, 0.60);
+    color: rgba($cc-text-muted, 0.60);
 }
 
 button.output-summary {
@@ -415,13 +416,13 @@ box.output-card.expanded button.output-summary {
 label.output-chevron {
     font-size: 13px;
     font-weight: 700;
-    color: rgba(196, 198, 210, 0.70);
+    color: rgba($cc-text-muted, 0.70);
     min-width: 16px;
 }
 
 /* Divider */
 box.divider {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba($cc-outline-variant, 0.18);
     min-height: 1px;
     margin: 0 4px;
 }
@@ -431,42 +432,43 @@ box.info-row { padding: 2px 0; }
 
 label.info-icon {
     font-size: 16px;
-    color: rgba(190, 190, 208, 0.80);
+    color: rgba($cc-text-muted, 0.80);
     min-width: 22px;
 }
 
 label.info-label {
     font-size: 13px;
-    color: rgba(238, 238, 245, 0.85);
+    color: rgba($cc-text, 0.85);
 }
 
 label.info-badge {
     font-size: 11px;
     font-weight: 600;
-    color: rgba(80, 210, 120, 0.90);
+    color: rgba($cc-success, 0.90);
 }
 
 /* Power profile buttons */
 box.profile-row { margin-top: 2px; }
 
 button.profile-btn {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba($cc-surface-container, 0.70);
+    border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 10px;
     padding: 7px 0;
-    color: rgba(190, 190, 208, 0.70);
+    color: rgba($cc-text-muted, 0.70);
     font-size: 11px;
     font-weight: 600;
     transition: all 150ms ease;
 }
 
 button.profile-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: rgba(238, 238, 245, 0.90);
+    background: rgba($cc-surface-high, 0.82);
+    border-color: rgba($cc-outline, 0.28);
+    color: rgba($cc-text, 0.90);
 }
 
 button.profile-btn.active {
-    background: rgba(255, 255, 255, 0.20);
-    border-color: rgba(255, 255, 255, 0.28);
-    color: rgba(238, 238, 245, 0.95);
+    background: rgba($cc-accent-container, 0.92);
+    border-color: rgba($cc-accent, 0.30);
+    color: rgba($cc-text, 0.95);
 }
