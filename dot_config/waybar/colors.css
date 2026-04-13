@@ -1,0 +1,4 @@
+/* Bootstrap fallback — overwritten by matugen on first wallpaper change */
+@define-color accent      #c73e64;
+@define-color on-accent   #ffffff;
+@define-color accent-soft rgba(199, 62, 100, 0.30);

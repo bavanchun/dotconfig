@@ -32,3 +32,7 @@ output_path = '~/.local/state/quickshell/user/generated/color.txt'
 [templates.wallpaper]
 input_path = '~/.config/matugen/templates/wallpaper.txt'
 output_path = '~/.local/state/quickshell/user/generated/wallpaper/path.txt'
+
+[templates.waybar]
+input_path = '~/.config/matugen/templates/waybar/colors.css'
+output_path = '~/.config/waybar/colors.css'
