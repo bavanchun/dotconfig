@@ -48,8 +48,10 @@ $menu = rofi -show drun
 
 #exec-once = quickshell -p ~/.config/quickshell/ii
 #exec-once = hyprpanel
+exec-once = hyprpm reload -n                                                                                          # load plugins (hyprexpo, ...)
 exec-once = bash ~/.config/hypr/scripts/waybar-monitor.sh  # waybar (tự detect monitor: config-lg / config-laptop)
-exec-once = bash ~/.config/hypr/scripts/random-wallpaper.sh
+exec-once = hyprpaper
+exec-once = bash ~/.config/hypr/scripts/restore-wallpaper.sh
 exec-once = fcitx5 -d
 exec-once = swaync --skip-system-css
 exec-once = hypridle
@@ -347,6 +349,7 @@ bind = CTRL SHIFT, X, exec, bash -c 'f="$HOME/Pictures/Screenshots/$(date +%Y%m%
 bind = SUPER, Delete, exec, systemctl restart fprintd; hyprlock
 bind = SUPER, F9, exec, bash ~/.config/hypr/scripts/toggle-hyprsunset.sh
 bind = SUPER, F10, exec, bash ~/.config/hypr/scripts/toggle-theme.sh
+bind = SUPER, W, exec, bash ~/.config/hypr/scripts/wallpaper-picker.sh
 bind = SUPER, grave, hyprexpo:expo, toggle         # SUPER + ` để xem tất cả workspace
 
 # Resize tiled windows with SUPER + SHIFT + arrows

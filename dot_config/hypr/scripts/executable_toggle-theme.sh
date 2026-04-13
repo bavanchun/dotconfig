@@ -12,7 +12,12 @@ CURRENT=$(cat "$STATE_FILE" 2>/dev/null || echo "dark")
 echo "$NEW" > "$STATE_FILE"
 
 # 1. Matugen → regenerate all color templates (hyprland, hyprlock, fuzzel, gtk3, gtk4)
-matugen color hex "$SEED_COLOR" -m "$NEW"
+WALLPAPER=$(cat "$HOME/.config/wallpaper-current" 2>/dev/null)
+if [[ -f "$WALLPAPER" ]]; then
+    matugen image "$WALLPAPER" -m "$NEW"
+else
+    matugen color hex "$SEED_COLOR" -m "$NEW"
+fi
 
 # 2. GTK theme + color-scheme
 if [[ "$NEW" == "light" ]]; then
