@@ -13,7 +13,7 @@ if [[ -z "$WALLPAPER" || ! -f "$WALLPAPER" ]]; then
 fi
 
 # Cycle through transitions in order
-TRANSITIONS=(grow fade outer center)
+TRANSITIONS=(fade grow outer center wipe wave left right top bottom)
 INDEX_FILE="$HOME/.config/wallpaper-transition-index"
 INDEX=$(cat "$INDEX_FILE" 2>/dev/null || echo "0")
 INDEX=$(( INDEX % ${#TRANSITIONS[@]} ))
@@ -24,7 +24,7 @@ echo $(( (INDEX + 1) % ${#TRANSITIONS[@]} )) > "$INDEX_FILE"
 awww img "$WALLPAPER" \
     --transition-type "$TRANSITION" \
     --transition-pos center \
-    --transition-duration 1.2 \
+    --transition-duration 1.5 \
     --transition-fps 60 \
     --transition-bezier 0.25,0.1,0.25,1
 
