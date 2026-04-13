@@ -1,13 +1,13 @@
 #!/bin/bash
-# wallpaper-picker.sh — pick a wallpaper via fuzzel dmenu, then apply it
+# wallpaper-picker.sh — pick wallpaper via fuzzel dmenu, apply with awww transition
 # Bound to SUPER + W
 
 WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+TRANSITION="grow"  # default: grow from center. Options: grow, outer, wave, wipe, fade, random
 
-# Build list: "basename\x00path" so we display name but pass full path
 SELECTION=$(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) | sort | while read -r f; do
     echo "$(basename "$f")"
-done | fuzzel --dmenu --prompt "Wallpaper: ")
+done | fuzzel --dmenu --prompt " Wallpaper: ")
 
 [[ -z "$SELECTION" ]] && exit 0
 
@@ -18,4 +18,4 @@ if [[ ! -f "$WALLPAPER" ]]; then
     exit 1
 fi
 
-bash "$HOME/.config/hypr/scripts/set-wallpaper.sh" "$WALLPAPER"
+bash "$HOME/.config/hypr/scripts/set-wallpaper.sh" "$WALLPAPER" "$TRANSITION"
