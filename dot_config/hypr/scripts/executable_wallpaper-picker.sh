@@ -3,7 +3,6 @@
 # Bound to SUPER + W
 
 WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
-TRANSITION="grow"  # default: grow from center. Options: grow, outer, wave, wipe, fade, random
 
 SELECTION=$(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) | sort | while read -r f; do
     echo "$(basename "$f")"
@@ -18,4 +17,4 @@ if [[ ! -f "$WALLPAPER" ]]; then
     exit 1
 fi
 
-bash "$HOME/.config/hypr/scripts/set-wallpaper.sh" "$WALLPAPER" "$TRANSITION"
+bash "$HOME/.config/hypr/scripts/set-wallpaper.sh" "$WALLPAPER"

@@ -6,12 +6,19 @@
 # Default: grow (from center) — most visually satisfying
 
 WALLPAPER="$1"
-TRANSITION="${2:-grow}"
 
 if [[ -z "$WALLPAPER" || ! -f "$WALLPAPER" ]]; then
     notify-send -u critical "Wallpaper" "File not found: $WALLPAPER"
     exit 1
 fi
+
+# Cycle through transitions in order
+TRANSITIONS=(grow outer wave wipe fade random)
+INDEX_FILE="$HOME/.config/wallpaper-transition-index"
+INDEX=$(cat "$INDEX_FILE" 2>/dev/null || echo "0")
+INDEX=$(( INDEX % ${#TRANSITIONS[@]} ))
+TRANSITION="${TRANSITIONS[$INDEX]}"
+echo $(( (INDEX + 1) % ${#TRANSITIONS[@]} )) > "$INDEX_FILE"
 
 # 1. Set wallpaper with transition
 awww img "$WALLPAPER" \
@@ -34,4 +41,4 @@ bash "$HOME/.config/hypr/scripts/waybar-monitor.sh" restart
 swaync-client --reload-css
 
 # 5. Notify
-notify-send "Wallpaper" "$(basename "$WALLPAPER")" --icon="preferences-desktop-wallpaper"
+notify-send "Wallpaper" "$(basename "$WALLPAPER")  [${TRANSITION}]" --icon="preferences-desktop-wallpaper"
