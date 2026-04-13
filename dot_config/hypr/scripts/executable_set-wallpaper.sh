@@ -33,7 +33,10 @@ echo "$WALLPAPER" > "$HOME/.config/wallpaper-current"
 
 # 3. Regenerate màu từ wallpaper (matugen image mode)
 MODE=$(cat "$HOME/.config/theme-mode" 2>/dev/null || echo "dark")
-matugen image "$WALLPAPER" -m "$MODE" --source-color-index 0
+matugen image "$WALLPAPER" -m "$MODE" \
+    --prefer saturation \
+    --type scheme-vibrant \
+    --contrast 0.3
 
 # 4. Reload UI
 hyprctl reload

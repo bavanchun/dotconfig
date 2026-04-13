@@ -14,7 +14,10 @@ echo "$NEW" > "$STATE_FILE"
 # 1. Matugen → regenerate all color templates (hyprland, hyprlock, fuzzel, gtk3, gtk4)
 WALLPAPER=$(cat "$HOME/.config/wallpaper-current" 2>/dev/null)
 if [[ -f "$WALLPAPER" ]]; then
-    matugen image "$WALLPAPER" -m "$NEW" --source-color-index 0
+    matugen image "$WALLPAPER" -m "$NEW" \
+        --prefer saturation \
+        --type scheme-vibrant \
+        --contrast 0.3
 else
     matugen color hex "$SEED_COLOR" -m "$NEW"
 fi
