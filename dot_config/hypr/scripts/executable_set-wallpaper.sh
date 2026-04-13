@@ -13,7 +13,7 @@ if [[ -z "$WALLPAPER" || ! -f "$WALLPAPER" ]]; then
 fi
 
 # Cycle through transitions in order
-TRANSITIONS=(grow outer wave wipe fade random)
+TRANSITIONS=(grow fade outer center)
 INDEX_FILE="$HOME/.config/wallpaper-transition-index"
 INDEX=$(cat "$INDEX_FILE" 2>/dev/null || echo "0")
 INDEX=$(( INDEX % ${#TRANSITIONS[@]} ))
