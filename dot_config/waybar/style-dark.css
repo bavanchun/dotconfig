@@ -1,30 +1,17 @@
-/* ════════════════════════════════════════════════════════════
-   Liquid Glass — Waybar (macOS 26 inspired, dark mode)
-   ════════════════════════════════════════════════════════════ */
+/* Adaptive Ink — Waybar (dark mode, calm variant) */
 
 @import url("colors.css");
 
-/* ── Glass tokens ─────────────────────────────────────────── */
-@define-color g-bar  rgba(15, 15, 22, 0.55);
-@define-color g-fill        rgba( 20,  20,  26, 0.26);
-@define-color g-border      rgba(255, 255, 255, 0.18);
-@define-color g-shine       rgba(255, 255, 255, 0.14);
-@define-color g-hover       rgba(255, 255, 255, 0.09);
-@define-color g-active      rgba(255, 255, 255, 0.16);
-@define-color g-shadow      rgba(  0,   0,   0, 0.50);
-@define-color g-separator   rgba(255, 255, 255, 0.09);
+@define-color bar-shadow        rgba(0, 0, 0, 0.12);
+@define-color bar-shadow-soft   rgba(0, 0, 0, 0.03);
+@define-color capsule-bg        alpha(@surface-low, 0.82);
+@define-color capsule-bg-strong alpha(@surface-container, 0.88);
+@define-color capsule-line      alpha(@outline, 0.34);
+@define-color capsule-line-soft alpha(@outline-variant, 0.22);
+@define-color segment-hover     alpha(@surface-high, 0.40);
+@define-color state-muted       alpha(@text-muted, 0.82);
+@define-color state-faint       alpha(@text-muted, 0.60);
 
-/* ── Text tokens ──────────────────────────────────────────── */
-@define-color text          rgba(238, 238, 245, 0.95);
-@define-color subtext       rgba(190, 190, 208, 0.72);
-@define-color overlay       rgba(140, 140, 160, 0.48);
-
-/* ── State colors ─────────────────────────────────────────── */
-@define-color red           rgba(255,  80,  80, 0.90);
-@define-color yellow        rgba(220, 185,  85, 0.90);
-@define-color green         rgba( 80, 210, 120, 0.90);
-
-/* ── Reset ────────────────────────────────────────────────── */
 * {
     font-family: "SF Pro Display", "Inter", "JetBrainsMono Nerd Font", sans-serif;
     font-size: 13px;
@@ -35,119 +22,123 @@
     margin: 0;
 }
 
-/* ── Root bar ─────────────────────────────────────────────── */
 window#waybar {
-    background: @g-bar;
-    color: @text;
+    background: transparent;
+    color: alpha(@text, 0.92);
 }
 
-/* ── Tooltip ──────────────────────────────────────────────── */
 tooltip {
-    background: rgba(18, 18, 24, 0.82);
-    border: 1px solid @g-border;
+    background: alpha(@surface-high, 0.96);
+    border: 1px solid @capsule-line;
     border-radius: 16px;
-    color: @text;
+    color: alpha(@text, 0.94);
     padding: 10px 14px;
-    box-shadow:
-        inset 0 1px 0 @g-shine,
-        0 20px 48px @g-shadow;
+    box-shadow: 0 6px 14px @bar-shadow;
 }
 
 tooltip label {
-    color: @text;
+    color: alpha(@text, 0.94);
     padding: 2px 4px;
 }
 
-/* ── Pill modules ─────────────────────────────────────────── */
 #launcher,
 #title,
 #time,
 #resources,
 #connectivity,
-#indicators {
-    background: @g-fill;
-    border: 1px solid @g-border;
-    border-top-color: rgba(255, 255, 255, 0.32);  /* specular top edge */
+#indicators,
+#custom-power {
+    background: @capsule-bg;
+    color: alpha(@text, 0.90);
+    border: 1px solid @capsule-line-soft;
     border-radius: 999px;
-    padding: 3px 12px;
+    padding: 4px 12px;
     margin: 7px 4px 5px;
     box-shadow:
-        inset 0 1px 0 @g-shine,
-        0 2px 1px rgba(255,255,255,0.04),
-        0 6px 24px @g-shadow;
-    transition: background 0.2s ease;
+        inset 0 1px 0 alpha(@surface-bright, 0.03),
+        0 1px 3px @bar-shadow-soft;
+    transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
 }
 
-#indicators {
-    padding: 3px 10px;
+#launcher {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #time {
-    background: rgba(255, 255, 255, 0.09);
-    border-color: rgba(255, 255, 255, 0.22);
-    padding: 3px 14px;
+    background: @capsule-bg-strong;
+    border-color: alpha(@outline, 0.28);
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-/* #media group has no styling — pill is on #custom-media itself so it vanishes when empty */
+#resources,
+#connectivity,
+#indicators {
+    padding-left: 10px;
+    padding-right: 10px;
+}
 
-/* ── Workspaces ───────────────────────────────────────────── */
+#custom-power {
+    padding-left: 11px;
+    padding-right: 11px;
+}
+
 #workspaces {
-    padding: 0 2px;
+    padding: 0 1px;
 }
 
 #workspaces button {
-    min-width: 22px;
-    padding: 4px 8px;
-    margin: 2px;
+    min-width: 24px;
+    padding: 5px 9px;
+    margin: 1px 2px;
     border-radius: 999px;
-    color: @overlay;
     background: transparent;
-    transition: all 0.18s ease;
+    color: @state-faint;
+    font-weight: 700;
+    transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
 }
 
 #workspaces button:hover {
-    background: @g-hover;
-    color: @subtext;
+    background: @segment-hover;
+    color: alpha(@text, 0.80);
 }
 
 #workspaces button.active {
-    background: @accent-soft;
-    border: 1px solid @accent;
-    border-top-color: @accent;
-    color: @text;
-    font-weight: 700;
-    padding: 4px 12px;
-    box-shadow: inset 0 1px 0 @g-shine;
+    background: alpha(@accent-container, 0.44);
+    color: @on-accent-container;
+    border: 1px solid alpha(@accent, 0.46);
+    font-weight: 800;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-shadow: 0 0 0 1px alpha(@accent, 0.06);
 }
 
 #workspaces button.urgent {
-    background: rgba(255, 80, 80, 0.30);
-    color: @red;
+    background: alpha(@danger, 0.18);
+    color: @danger;
+    border: 1px solid alpha(@danger, 0.28);
 }
 
-/* ── Window title ─────────────────────────────────────────── */
 #window {
-    color: @subtext;
+    color: alpha(@text-muted, 0.82);
     padding: 0 8px;
-    font-style: normal;
     font-weight: 600;
     letter-spacing: 0.1px;
 }
 
 #window.empty {
-    color: @overlay;
+    color: @state-faint;
 }
 
-/* ── Clock ────────────────────────────────────────────────── */
 #clock {
-    color: @text;
+    color: alpha(@text, 0.92);
     font-family: "JetBrainsMono Nerd Font", monospace;
-    font-weight: 700;
-    letter-spacing: 0.3px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
     padding: 0 10px;
 }
 
-/* ── All indicator items ──────────────────────────────────── */
 #idle_inhibitor,
 #wireplumber,
 #network,
@@ -158,18 +149,19 @@ tooltip label {
 #battery,
 #tray,
 #custom-tray-toggle,
-#custom-control-center,
 #custom-conn-toggle,
 #custom-res-toggle,
 #custom-swaync,
 #custom-fcitx,
 #custom-power-profile,
 #temperature,
-#custom-net-speed {
+#custom-net-speed,
+#custom-power {
     background: transparent;
+    color: alpha(@text-muted, 0.84);
     padding: 0 8px;
-    color: @text;
     border-radius: 999px;
+    font-weight: 700;
     transition: background 0.16s ease, color 0.16s ease;
 }
 
@@ -183,145 +175,173 @@ tooltip label {
 #battery:hover,
 #tray:hover,
 #custom-tray-toggle:hover,
-#custom-control-center:hover,
 #custom-conn-toggle:hover,
 #custom-res-toggle:hover,
 #custom-swaync:hover,
 #custom-fcitx:hover,
 #custom-power-profile:hover,
-#temperature:hover {
-    background: @g-hover;
+#temperature:hover,
+#custom-net-speed:hover,
+#custom-power:hover {
+    background: @segment-hover;
+    color: alpha(@text, 0.92);
 }
 
-/* ── Power button ─────────────────────────────────────────── */
+#resources > widget:not(:first-child) > *,
+#connectivity > widget:not(:first-child) > *,
+#indicators > widget:not(:first-child) > * {
+    border-left: 1px solid alpha(@outline-variant, 0.16);
+    margin-left: 2px;
+    padding-left: 10px;
+}
+
+#custom-res-toggle,
+#custom-conn-toggle,
+#custom-tray-toggle,
+#idle_inhibitor {
+    color: alpha(@text-muted, 0.54);
+    font-weight: 700;
+}
+
+#idle_inhibitor.activated {
+    color: @accent;
+}
+
+#wireplumber,
+#network,
+#bluetooth,
+#backlight,
+#temperature,
+#custom-swaync,
+#custom-power-profile,
+#custom-fcitx {
+    color: alpha(@text-muted, 0.82);
+}
+
+#wireplumber.muted,
+#bluetooth.disabled {
+    color: alpha(@text-muted, 0.56);
+}
+
+#network.disconnected {
+    color: @danger;
+}
+
+#cpu,
+#memory,
+#battery {
+    min-width: 52px;
+}
+
+#cpu.warning,
+#memory.warning,
+#battery.warning {
+    color: @warning;
+}
+
+#cpu.critical,
+#memory.critical,
+#battery.critical,
+#temperature.critical {
+    color: @danger;
+}
+
+#battery.charging {
+    color: @success;
+}
+
+#battery.plugged {
+    color: alpha(@text-muted, 0.82);
+}
+
+#battery.critical:not(.charging),
+#temperature.critical {
+    animation: blink-dark 0.9s steps(8) infinite alternate;
+}
+
+#custom-fcitx {
+    color: alpha(@text, 0.90);
+    font-weight: 800;
+}
+
+#custom-power-profile {
+    min-width: 34px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: alpha(@text, 0.88);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+#custom-fcitx {
+    min-width: 24px;
+}
+
+#battery {
+    min-width: 64px;
+    color: alpha(@text, 0.90);
+    font-feature-settings: "tnum";
+}
+
+#custom-swaync {
+    min-width: 38px;
+}
+
 #custom-power {
-    padding: 0 11px;
-    color: rgba(255, 80, 80, 0.55);
-    border-radius: 999px;
-    transition: background 0.16s ease, color 0.16s ease;
+    color: alpha(@danger, 0.72);
+    font-weight: 800;
 }
 
 #custom-power:hover {
-    background: rgba(255, 80, 80, 0.14);
-    color: @red;
+    background: alpha(@danger, 0.12);
+    color: @danger;
 }
 
-/* ── Separator between connectivity items ─────────────────── */
-#connectivity > widget:not(:first-child) > * {
-    border-left: 1px solid @g-separator;
-    margin-left: 2px;
-    padding-left: 10px;
+#tray {
+    padding-right: 2px;
 }
 
-#indicators > widget:not(:first-child) > * {
-    border-left: 1px solid rgba(255, 255, 255, 0.07);
-    margin-left: 2px;
-    padding-left: 10px;
+#tray > .passive {
+    -gtk-icon-effect: dim;
 }
 
-/* ── Individual states ────────────────────────────────────── */
-#idle_inhibitor         { color: @overlay; }
-#idle_inhibitor.activated { color: @accent; }
-
-#wireplumber            { color: @subtext; }
-#wireplumber.muted      { color: @overlay; }
-
-#network                { color: @subtext; }
-#network.disconnected   { color: @red; }
-
-#bluetooth              { color: @subtext; }
-#bluetooth.disabled     { color: @overlay; }
-
-#cpu                    { color: @subtext; font-weight: 600; min-width: 54px; }
-#memory                 { color: @subtext; font-weight: 600; }
-#backlight              { color: @subtext; }
-
-#battery                { color: @subtext; font-weight: 600; }
-#battery.warning        { color: @yellow; }
-#battery.critical       { color: @red; }
-#battery.charging       { color: @green; }
-#battery.plugged        { color: @subtext; }
-#battery.critical:not(.charging) {
-    animation: blink 0.6s steps(12) infinite alternate;
-}
-
-#cpu.warning, #memory.warning   { color: @yellow; }
-#cpu.critical, #memory.critical { color: @red; }
-
-#custom-fcitx           { color: @subtext; font-weight: 700; }
-#custom-swaync          { color: @subtext; }
-#custom-conn-toggle,
-#custom-res-toggle      { color: @overlay; font-weight: 700; }
-#custom-control-center  {
-    color: rgba(232, 236, 244, 0.86);
-    font-weight: 700;
-    background: transparent;
-}
-
-#custom-control-center:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: @text;
-}
-
-#temperature            { color: @subtext; }
-#temperature.critical   { color: @red; animation: blink 1s steps(8) infinite alternate; }
-
-/* ── Tray ─────────────────────────────────────────────────── */
-#tray                   { padding-right: 2px; }
-#custom-tray-toggle     { color: @subtext; font-weight: 700; padding-right: 4px; }
-
-#tray > .passive        { -gtk-icon-effect: dim; }
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
-    background: rgba(255, 80, 80, 0.25);
+    background: alpha(@danger, 0.18);
     border-radius: 8px;
 }
 
-/* ── Media ────────────────────────────────────────────────── */
 #custom-media {
-    color: rgba(228, 231, 240, 0.84);
-    font-style: normal;
-    font-weight: 600;
-    font-family: monospace;
-    /* pill styling moved here so it disappears completely when module is empty */
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-top-color: rgba(255, 255, 255, 0.32);
+    background: alpha(@surface-container, 0.84);
+    color: alpha(@text, 0.86);
+    border: 1px solid alpha(@outline-variant, 0.20);
     border-radius: 999px;
-    padding: 3px 14px;
+    padding: 4px 14px;
     margin: 7px 4px 5px;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.14),
-        0 2px 1px rgba(255,255,255,0.04),
-        0 6px 24px rgba(0,0,0,0.50);
+        inset 0 1px 0 alpha(@surface-bright, 0.03),
+        0 1px 3px @bar-shadow-soft;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-weight: 600;
 }
 
 #custom-media.playing {
-    color: #39d353;
+    color: @success;
 }
 
 #custom-media.paused {
-    color: rgba(190, 195, 210, 0.55);
+    color: alpha(@text-muted, 0.68);
 }
 
-#group-tray-menu,
-#custom-power-profile,
-#custom-fcitx,
-#custom-swaync {
-    color: @subtext;
-}
-
-/* ── Net speed ────────────────────────────────────────────── */
 #custom-net-speed {
-    color: @overlay;
+    color: alpha(@text-muted, 0.60);
     font-size: 11px;
     min-width: 108px;
 }
 
-/* ── Blink ────────────────────────────────────────────────── */
-@keyframes blink {
+@keyframes blink-dark {
     to {
-        color: rgba(18, 18, 24, 0.95);
-        background: @red;
+        color: @on-danger;
+        background: @danger;
     }
 }
