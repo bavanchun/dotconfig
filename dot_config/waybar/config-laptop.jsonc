@@ -49,7 +49,7 @@
 
     "group/indicators": {
         "orientation": "horizontal",
-        "modules": ["group/tray-menu", "custom/power-profile", "custom/fcitx", "custom/swaync", "battery", "custom/control-center"]
+        "modules": ["group/tray-menu", "custom/power-profile", "custom/fcitx", "custom/swaync", "battery"]
     },
     "group/tray-menu": {
         "orientation": "horizontal",
@@ -260,12 +260,6 @@
         "on-click": "swaync-client -t -sw",
         "on-click-right": "swaync-client -d -sw",
         "escape": true
-    },
-
-    "custom/control-center": {
-        "format": "󰕮",
-        "tooltip": false,
-        "on-click": "bash ~/.config/hypr/scripts/toggle-control-center.sh"
     },
 
     "custom/power": {
