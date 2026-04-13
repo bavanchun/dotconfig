@@ -2,7 +2,19 @@
    Control Center - Liquid Glass (dark mode)
    ============================================================= */
 
-@import url("/home/vchun/.config/waybar/colors.css");
+$cc-surface-lowest: #020c0a;
+$cc-surface-low: #131f1c;
+$cc-surface-container: #1a2724;
+$cc-surface-high: #25322e;
+$cc-surface-bright: #36433f;
+$cc-text: #e9f8f2;
+$cc-text-muted: #bbcac4;
+$cc-outline: #95a39e;
+$cc-outline-variant: #6a7773;
+$cc-accent: #00dfc0;
+$cc-accent-container: #008370;
+$cc-success: #8dd1dd;
+$cc-shadow: #000000;
 
 * { font-family: "SF Pro Display", "Inter", "Segoe UI", sans-serif; }
 
@@ -19,22 +31,22 @@ window#control-center > * {
 
 /* Main container */
 .control-center {
-    background: @surface-glass-soft;
-    border: 1px solid alpha(@outline-variant, 0.22);
-    border-top-color: alpha(@surface-bright, 0.10);
+    background: rgba($cc-surface-low, 0.82);
+    border: 1px solid rgba($cc-outline-variant, 0.22);
+    border-top-color: rgba($cc-surface-bright, 0.10);
     border-radius: 22px;
     background-clip: padding-box;
     padding: 17px;
     min-width: 320px;
     box-shadow:
-        inset 0 1px 0 alpha(@surface-bright, 0.05),
-        0 1px 3px alpha(@shadow-soft, 0.75);
+        inset 0 1px 0 rgba($cc-surface-bright, 0.05),
+        0 1px 3px rgba($cc-shadow, 0.14);
 }
 
 label.cc-title {
     font-size: 15px;
     font-weight: 700;
-    color: @text-soft;
+    color: rgba($cc-text, 0.92);
 }
 
 box.cc-header {
@@ -42,11 +54,11 @@ box.cc-header {
 }
 
 label.cc-chip {
-    background: @surface-glass;
-    border: 1px solid alpha(@outline-variant, 0.22);
+    background: rgba($cc-surface-container, 0.88);
+    border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 999px;
     padding: 4px 10px;
-    color: alpha(@text, 0.84);
+    color: rgba($cc-text, 0.84);
     font-size: 10px;
     font-weight: 600;
 }
@@ -56,24 +68,24 @@ box.connectivity-section {
 }
 
 box.details-open > box.toggle-card {
-    border-color: alpha(@accent, 0.30);
+    border-color: rgba($cc-accent, 0.30);
     box-shadow:
-        inset 0 1px 0 alpha(@surface-bright, 0.06),
-        0 0 0 1px alpha(@accent, 0.04);
+        inset 0 1px 0 rgba($cc-surface-bright, 0.06),
+        0 0 0 1px rgba($cc-accent, 0.04);
 }
 
 /* Toggle cards */
 box.toggle-card {
-    background: alpha(@surface-low, 0.76);
-    border: 1px solid alpha(@outline-variant, 0.22);
+    background: rgba($cc-surface-low, 0.76);
+    border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 14px;
     padding: 12px 14px;
     transition: background 140ms ease, border-color 140ms ease;
 }
 
 box.toggle-card:hover {
-    background: alpha(@surface-high, 0.40);
-    border-color: alpha(@outline, 0.28);
+    background: rgba($cc-surface-high, 0.40);
+    border-color: rgba($cc-outline, 0.28);
 }
 
 button.toggle-main {
@@ -92,113 +104,113 @@ button.toggle-main:hover {
 label.toggle-title {
     font-size: 13px;
     font-weight: 600;
-    color: alpha(@text, 0.90);
+    color: rgba($cc-text, 0.90);
 }
 
 label.toggle-subtitle {
     font-size: 11px;
-    color: alpha(@text-muted, 0.60);
+    color: rgba($cc-text-muted, 0.60);
     margin-top: 2px;
 }
 
 box.details-panel {
-    background: alpha(@surface-lowest, 0.68);
-    border: 1px solid alpha(@outline-variant, 0.22);
+    background: rgba($cc-surface-lowest, 0.68);
+    border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 14px;
     padding: 12px;
-    box-shadow: inset 0 1px 0 alpha(@surface-bright, 0.04);
+    box-shadow: inset 0 1px 0 rgba($cc-surface-bright, 0.04);
 }
 
 label.details-title {
     font-size: 12px;
     font-weight: 700;
-    color: alpha(@text, 0.94);
+    color: rgba($cc-text, 0.94);
 }
 
 label.details-hint {
     font-size: 11px;
-    color: alpha(@text-muted, 0.68);
+    color: rgba($cc-text-muted, 0.68);
 }
 
 button.details-action {
-    background: @surface-glass;
-    border: 1px solid alpha(@outline-variant, 0.22);
+    background: rgba($cc-surface-container, 0.88);
+    border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 999px;
     padding: 4px 10px;
     font-size: 11px;
-    color: alpha(@text, 0.86);
+    color: rgba($cc-text, 0.86);
 }
 
 button.details-action:hover {
-    background: alpha(@surface-high, 0.40);
+    background: rgba($cc-surface-high, 0.40);
 }
 
 button.details-close {
-    background: alpha(@surface-low, 0.62);
-    border: 1px solid alpha(@outline-variant, 0.22);
+    background: rgba($cc-surface-low, 0.62);
+    border: 1px solid rgba($cc-outline-variant, 0.22);
     border-radius: 999px;
     padding: 4px 10px;
     font-size: 11px;
-    color: alpha(@text, 0.82);
+    color: rgba($cc-text, 0.82);
 }
 
 button.details-close:hover {
-    background: alpha(@surface-high, 0.40);
+    background: rgba($cc-surface-high, 0.40);
 }
 
 button.details-row {
-    background: alpha(@surface-lowest, 0.56);
-    border: 1px solid alpha(@outline-variant, 0.18);
+    background: rgba($cc-surface-lowest, 0.56);
+    border: 1px solid rgba($cc-outline-variant, 0.18);
     border-radius: 12px;
     padding: 9px 10px;
-    color: alpha(@text, 0.90);
+    color: rgba($cc-text, 0.90);
     transition: background 140ms ease, border-color 140ms ease;
 }
 
 button.details-row:hover {
-    background: alpha(@surface-high, 0.34);
+    background: rgba($cc-surface-high, 0.34);
 }
 
 button.details-row.current {
-    background: alpha(@accent-container, 0.44);
-    border-color: alpha(@accent, 0.34);
+    background: rgba($cc-accent-container, 0.44);
+    border-color: rgba($cc-accent, 0.34);
 }
 
 label.details-row-title {
     font-size: 12px;
     font-weight: 600;
-    color: alpha(@text, 0.94);
+    color: rgba($cc-text, 0.94);
 }
 
 label.details-row-subtitle {
     font-size: 10px;
-    color: alpha(@text-muted, 0.70);
+    color: rgba($cc-text-muted, 0.70);
     margin-top: 2px;
 }
 
 label.details-row-badge {
     font-size: 10px;
     font-weight: 700;
-    color: @success;
+    color: rgba($cc-success, 0.92);
 }
 
 /* Switches */
 switch {
-    background: alpha(@outline-variant, 0.36);
+    background: rgba($cc-outline-variant, 0.36);
     border-radius: 100px;
     min-width: 44px;
     min-height: 24px;
-    border: 1px solid alpha(@outline, 0.16);
+    border: 1px solid rgba($cc-outline, 0.16);
     transition: background 200ms ease;
 }
 
 switch:checked {
-    background: alpha(@accent, 0.90);
-    border-color: alpha(@accent, 0.42);
+    background: rgba($cc-accent, 0.90);
+    border-color: rgba($cc-accent, 0.42);
 }
 
 switch slider {
-    background: alpha(@surface-bright, 0.98);
+    background: rgba($cc-surface-bright, 0.98);
     border-radius: 100px;
     min-width: 20px;
     min-height: 20px;
