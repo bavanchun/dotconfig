@@ -353,7 +353,7 @@ bind = CTRL SHIFT, 2, exec, hyprshot -m window --clipboard-only                 
 bind = SUPER, PRINT, exec, hyprshot -m output -o ~/Pictures/Screenshots                                            # chụp toàn màn hình
 bind = CTRL SHIFT, S, exec, hyprshot -m region -o - | swappy -f -                                                  # chụp vùng → annotate
 bind = CTRL SHIFT, X, exec, bash -c 'f="$HOME/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"; if grim -g "$(slurp)" "$f"; then echo -n "$f" | wl-copy; notify-send -u normal -i camera-photo "Screenshot" "Path copied to clipboard:\n$f"; else notify-send -u critical "Screenshot" "Cancelled or failed"; fi' # chụp vùng → lưu + copy path → paste vào terminal
-bind = SUPER, Delete, exec, systemctl restart fprintd && qs -c noctalia-shell ipc call lockScreen lock
+bind = SUPER, Delete, exec, systemctl restart fprintd; qs -c noctalia-shell ipc call lockScreen lock
 bind = SUPER, F9, exec, qs -c noctalia-shell ipc call nightLight toggle
 bind = SUPER, F10, exec, qs -c noctalia-shell ipc call darkMode toggle
 bind = SUPER, W, exec, qs -c noctalia-shell ipc call wallpaper toggle
