@@ -8,13 +8,13 @@
 |---|---|
 | `Super + T` | Open terminal (kitty) |
 | `Super + E` | File manager |
-| `Super + Space` | App launcher (Rofi) |
-| `Super + N` | Notification center (swaync) |
-| `Super + W` | Wallpaper picker |
-| `Super + Delete` | Lock screen |
-| `Super + Shift + M` | Power menu |
-| `Super + F9` | Toggle hyprsunset |
-| `Super + F10` | Toggle dark/light theme |
+| `Super + Space` | App launcher (Noctalia) |
+| `Super + N` | Control center (Noctalia) |
+| `Super + Shift + Q` | Session menu (Noctalia) |
+| `Super + W` | Wallpaper picker (Noctalia) |
+| `Super + Delete` | Lock screen (Noctalia) |
+| `Super + F9` | Toggle night light (Noctalia) |
+| `Super + F10` | Toggle dark/light mode (Noctalia) |
 | `Super + F1` | **This cheatsheet** |
 
 ---
@@ -106,7 +106,7 @@
 | `XF86AudioPlay/Pause` | Play/Pause |
 | `Alt + Space` | Toggle input method (fcitx5) |
 | `Alt + Tab` | Window switcher (hyprswitch) |
-| `Super + Shift + V` | Clipboard history |
+| `Super + Shift + V` | Clipboard history (Noctalia launcher) |
 
 ---
 
