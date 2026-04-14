@@ -1,14 +1,15 @@
 import QtQuick
 import QtQuick.Layouts
+import "../config"
 import "../theme"
 
 Rectangle {
     property string label: ""
     property string value: ""
 
-    implicitHeight: 30
-    implicitWidth: content.implicitWidth + 20
-    radius: 8
+    implicitHeight: Config.chipHeight
+    implicitWidth: content.implicitWidth + Config.chipPaddingX
+    radius: Config.chipRadius
     color: Theme.bgAlt
 
     RowLayout {
@@ -31,7 +32,7 @@ Rectangle {
             font.family: "Inter"
             font.pixelSize: 12
             font.weight: Font.Medium
-            Layout.maximumWidth: 280
+            Layout.maximumWidth: Config.chipValueMaxWidth
         }
     }
 }

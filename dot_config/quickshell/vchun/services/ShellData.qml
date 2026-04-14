@@ -8,16 +8,17 @@ import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
 import Quickshell.Services.SystemTray
 import Quickshell.Services.UPower
+import "../config"
 
 Singleton {
-    readonly property list<int> pinnedWorkspaces: [1, 2, 3, 4, 5]
+    readonly property list<int> pinnedWorkspaces: Config.workspaces
     readonly property var clock: SystemClock {
         precision: SystemClock.Seconds
     }
     readonly property string timeText: Qt.locale().toString(clock.date, "HH:mm")
     readonly property string dateText: Qt.locale().toString(clock.date, "dd/MM")
     readonly property var player: Mpris.players.values.find(player => player.isPlaying) ?? Mpris.players.values[0]
-    readonly property string mediaText: player ? truncate((player.trackTitle || player.identity || "Media"), 32) : "No media"
+    readonly property string mediaText: player ? truncate((player.trackTitle || player.identity || "Media"), Config.mediaMaxChars) : "No media"
     readonly property var sink: Pipewire.defaultAudioSink
     readonly property int volume: Math.round(((sink?.audio?.volume) ?? 0) * 100)
     readonly property var battery: UPower.displayDevice
@@ -55,7 +56,7 @@ Singleton {
         command: ["bash", "-lc", "hyprctl activewindow -j | jq -r 'if .title then .title else \"Desktop\" end' 2>/dev/null"]
         stdout: StdioCollector {
             id: activeWindowOutput
-            onStreamFinished: ShellData.windowTitle = ShellData.truncate(activeWindowOutput.text.trim() || "Desktop", 48)
+            onStreamFinished: ShellData.windowTitle = ShellData.truncate(activeWindowOutput.text.trim() || "Desktop", Config.windowTitleMaxChars)
         }
     }
 
@@ -64,7 +65,7 @@ Singleton {
         command: ["bash", "-lc", "nmcli -t -f TYPE,STATE,CONNECTION device status | awk -F: '$2==\"connected\" && $3!=\"\" {print $3; exit}'"]
         stdout: StdioCollector {
             id: networkOutput
-            onStreamFinished: ShellData.networkName = ShellData.truncate(networkOutput.text.trim(), 22)
+            onStreamFinished: ShellData.networkName = ShellData.truncate(networkOutput.text.trim(), Config.networkNameMaxChars)
         }
     }
 }

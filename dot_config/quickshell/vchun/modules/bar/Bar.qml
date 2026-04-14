@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import "../../config"
 import "../../services"
 import "../../theme"
 import "../../widgets"
@@ -15,8 +16,8 @@ Variants {
 
         screen: modelData
         color: "transparent"
-        implicitHeight: 54
-        exclusiveZone: 60
+        implicitHeight: Config.barHeight
+        exclusiveZone: Config.barExclusiveZone
 
         anchors {
             top: true
@@ -25,9 +26,9 @@ Variants {
         }
 
         margins {
-            top: 6
-            left: 10
-            right: 10
+            top: Config.barMarginTop
+            left: Config.barMarginSide
+            right: Config.barMarginSide
         }
 
         WlrLayershell.namespace: "quickshell:vchun-bar"
@@ -43,14 +44,14 @@ Variants {
 
             RowLayout {
                 anchors.fill: parent
-                anchors.leftMargin: 12
-                anchors.rightMargin: 12
-                spacing: 10
+                anchors.leftMargin: Config.barPaddingSide
+                anchors.rightMargin: Config.barPaddingSide
+                spacing: Config.barSpacing
 
                 RowLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignVCenter
-                    spacing: 8
+                    spacing: Config.groupSpacing
 
                     Repeater {
                         model: ShellData.pinnedWorkspaces
@@ -82,7 +83,7 @@ Variants {
 
                 RowLayout {
                     Layout.alignment: Qt.AlignVCenter
-                    spacing: 8
+                    spacing: Config.groupSpacing
 
                     Chip {
                         label: "NET"
