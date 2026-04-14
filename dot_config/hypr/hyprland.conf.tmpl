@@ -337,11 +337,11 @@ bindl = , XF86AudioPlay, exec, playerctl play-pause
 bindl = , XF86AudioPrev, exec, playerctl previous
 
 bind = SUPER, F, fullscreen, 1
-bind = SUPER, SPACE, exec, quickshell ipc call -c vchun shell launcher
+bind = SUPER, SPACE, exec, quickshell -c vchun ipc call shell launcher
 bind = ALT, SPACE, exec, fcitx5-remote -t
 bind = ALT, TAB, exec, hyprswitch gui --mod-key alt --key tab --close mod-key-release --filter-current-workspace
-bind = SUPER, N, exec, quickshell ipc call -c vchun shell control
-bind = SUPER SHIFT, Q, exec, quickshell ipc call -c vchun shell session
+bind = SUPER, N, exec, quickshell -c vchun ipc call shell control
+bind = SUPER SHIFT, Q, exec, quickshell -c vchun ipc call shell session
 bind = SUPER SHIFT, V, exec, bash ~/.config/hypr/scripts/cliphist-pick.sh
 
 # Screenshot
@@ -355,7 +355,7 @@ bind = CTRL SHIFT, X, exec, bash -c 'f="$HOME/Pictures/Screenshots/$(date +%Y%m%
 bind = SUPER, Delete, exec, systemctl restart fprintd; hyprlock
 bind = SUPER, F9, exec, bash ~/.config/hypr/scripts/toggle-hyprsunset.sh
 bind = SUPER, F10, exec, bash ~/.config/hypr/scripts/toggle-theme.sh
-bind = SUPER, W, exec, quickshell ipc call -c vchun shell wallpaper
+bind = SUPER, W, exec, quickshell -c vchun ipc call shell wallpaper
 bind = SUPER, F1, exec, bash ~/.config/hypr/scripts/cheatsheet.sh
 bind = SUPER, grave, hyprexpo:expo, toggle         # SUPER + ` để xem tất cả workspace
 
