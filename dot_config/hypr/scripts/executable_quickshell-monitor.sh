@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-CONFIG_NAME="codex-safe"
+CONFIG_NAME="vchun"
 CONFIG_PATH="$HOME/.config/quickshell/$CONFIG_NAME"
 LOG_FILE="/tmp/quickshell-${CONFIG_NAME}.log"
 
@@ -10,6 +10,9 @@ usage() {
 }
 
 start_shell() {
+    pkill -f "waybar-monitor.sh" 2>/dev/null || true
+    pkill -x waybar 2>/dev/null || true
+    quickshell kill -c codex-safe 2>/dev/null || true
     quickshell -c "$CONFIG_NAME" --no-duplicate --daemonize >"$LOG_FILE" 2>&1
 }
 

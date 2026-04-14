@@ -46,10 +46,9 @@ $menu = rofi -show drun
 # Autostart necessary processes (like notifications daemons, status bars, etc.)
 # Or execute your favorite apps at launch like this:
 
-#exec-once = quickshell -p ~/.config/quickshell/ii
 #exec-once = hyprpanel
 exec-once = hyprpm reload -n                                                                                          # load plugins (hyprexpo, ...)
-exec-once = bash ~/.config/hypr/scripts/waybar-monitor.sh  # waybar (tự detect monitor: config-lg / config-laptop)
+exec-once = bash ~/.config/hypr/scripts/quickshell-monitor.sh start  # quickshell status bar
 exec-once = awww-daemon
 exec-once = bash ~/.config/hypr/scripts/restore-wallpaper.sh
 exec-once = fcitx5 -d
@@ -420,10 +419,10 @@ windowrule {
     center = true
 }
 
-# Blur for Waybar
+# Blur for Quickshell
 layerrule {
-    name = blur-waybar
-    match:namespace = ^waybar$
+    name = blur-quickshell-bar
+    match:namespace = ^quickshell:vchun-bar$
     blur = true
     ignore_alpha = 0.24
 }

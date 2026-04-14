@@ -110,7 +110,7 @@ ShellRoot {
                 right: 10
             }
 
-            WlrLayershell.namespace: "quickshell:codex-safe-bar"
+            WlrLayershell.namespace: "quickshell:vchun-bar"
             WlrLayershell.layer: WlrLayer.Top
 
             Rectangle {
