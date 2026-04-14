@@ -24,6 +24,9 @@ case "$CHOICE" in
     *"Power Saver"*) powerprofilesctl set power-saver ; NEW=power-saver ;;
 esac
 
+# Dừng nếu powerprofilesctl thất bại
+[ $? -ne 0 ] && exit 1
+
 # Xử lý brightness khi chuyển power-saver
 # Dùng state file riêng (không dùng brightnessctl -s/-r vì hypridle đã dùng slot đó)
 STATE_FILE="$HOME/.cache/power-profile-brightness"
@@ -33,13 +36,19 @@ get_brightness_pct() {
 }
 
 if [ "$CURRENT" != "power-saver" ] && [ "$NEW" = "power-saver" ]; then
-    # Vào power-saver: lưu brightness hiện tại rồi dim xuống 50%
-    get_brightness_pct > "$STATE_FILE"
-    brightnessctl set 50%
+    BRT=$(get_brightness_pct)
+    # Chỉ dim nếu đang sáng hơn 50%, tránh tăng brightness khi đang dim sẵn
+    if [ "$BRT" -gt 50 ]; then
+        echo "$BRT" > "$STATE_FILE"
+        brightnessctl set 50%
+        notify-send -i battery-low "Power Saver" "Brightness dimmed to 50%" -t 3000
+    fi
 elif [ "$CURRENT" = "power-saver" ] && [ "$NEW" != "power-saver" ]; then
     # Thoát power-saver: khôi phục brightness cũ nếu có
     if [ -s "$STATE_FILE" ]; then
-        brightnessctl set "$(cat "$STATE_FILE")%"
+        SAVED=$(cat "$STATE_FILE")
+        brightnessctl set "${SAVED}%"
         rm -f "$STATE_FILE"
+        notify-send -i battery "Power Profile" "Brightness restored to ${SAVED}%" -t 3000
     fi
 fi
