@@ -5,13 +5,16 @@
 STATE_FILE="$HOME/.config/wallpaper-current"
 WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
 
-# Wait for awww daemon to be ready
+# Wait for awww daemon to be ready (timeout after 4s)
+READY=0
 for i in {1..20}; do
     if awww query 2>/dev/null | grep -q "Name:"; then
+        READY=1
         break
     fi
     sleep 0.2
 done
+[ "$READY" -eq 0 ] && exit 0
 
 # Always use saved state so every monitor gets the same wallpaper
 WALLPAPER=$(cat "$STATE_FILE" 2>/dev/null)
