@@ -1,6 +1,5 @@
 #!/bin/bash
 CHEATSHEET="$HOME/.config/hypr/cheatsheet.md"
-SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 # If not running inside a terminal, relaunch self inside kitty
 if [ ! -t 1 ]; then
@@ -8,8 +7,7 @@ if [ ! -t 1 ]; then
     exit
 fi
 
-glow --style dark --no-pager "$CHEATSHEET" \
-    | python3 "$SCRIPT_DIR/strip_osc.py" \
+bat --style=plain --language=md --color=always --paging=never "$CHEATSHEET" \
     | fzf --ansi --no-sort --reverse \
         --prompt "  Search: " \
         --header "Press ESC or q to close" \
