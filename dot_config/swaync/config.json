@@ -25,9 +25,20 @@
   "script-fail-notify": false,
   "scripts": {
     "chrome-auto-dismiss": {
-      "app-name": "Google Chrome",
+      "app-name": "(Google Chrome|Chromium|Chrome|chrome|chromium)",
       "run-on": "receive",
-      "script": "sleep 5 && swaync-client --close-latest"
+      "exec": "sleep 3 && swaync-client --hide-latest"
+    }
+  },
+  "notification-visibility": {
+    "urgent": {
+      "state": "transient",
+      "urgency": "critical",
+      "app-name": "Urgent Notification"
+    },
+    "chrome": {
+      "state": "transient",
+      "app-name": "(Google Chrome|Chromium|Chrome|chrome|chromium)"
     }
   },
   "widgets": [
@@ -43,23 +54,6 @@
     },
     "dnd": {
       "text": "Không làm phiền"
-    },
-    "notifications": {
-      "notifications-visibility": {
-        "urgent": {
-          "state": "transient",
-          "urgency": "critical",
-          "app-name": "Urgent Notification"
-        },
-        "chrome": {
-          "state": "transient",
-          "app-name": "Google Chrome"
-        },
-        "chromium": {
-          "state": "transient",
-          "app-name": "Chromium"
-        }
-      }
     }
   }
 }
