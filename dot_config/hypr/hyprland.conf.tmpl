@@ -356,6 +356,7 @@ bind = SUPER, Delete, exec, systemctl restart fprintd; hyprlock
 bind = SUPER, F9, exec, bash ~/.config/hypr/scripts/toggle-hyprsunset.sh
 bind = SUPER, F10, exec, bash ~/.config/hypr/scripts/toggle-theme.sh
 bind = SUPER, W, exec, bash ~/.config/hypr/scripts/wallpaper-picker.sh
+bind = SUPER, F1, exec, bash ~/.config/hypr/scripts/cheatsheet.sh
 bind = SUPER, grave, hyprexpo:expo, toggle         # SUPER + ` để xem tất cả workspace
 
 # Resize tiled windows with SUPER + CTRL + Vim keys
@@ -407,6 +408,16 @@ windowrule {
     match:class = hyprland-run
 
     move = 20 monitor_h-120
+}
+
+# Cheatsheet floating window
+windowrule {
+    name = cheatsheet-float
+    match:class = ^cheatsheet$
+
+    float = true
+    size = 920 700
+    center = true
 }
 
 # Blur for Waybar
