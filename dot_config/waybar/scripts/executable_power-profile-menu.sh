@@ -17,15 +17,15 @@ CHOICE=$(echo -e "$OPTIONS" | fuzzel --dmenu --prompt "Power Profile: " --width 
 
 [ -z "$CHOICE" ] && exit 0
 
-# Set profile và xác định NEW cùng lúc
+# Set profile và xác định NEW cùng lúc, capture exit code trước khi assignment ghi đè $?
 case "$CHOICE" in
-    *"Performance"*) powerprofilesctl set performance ; NEW=performance ;;
-    *"Balanced"*)    powerprofilesctl set balanced    ; NEW=balanced ;;
-    *"Power Saver"*) powerprofilesctl set power-saver ; NEW=power-saver ;;
+    *"Performance"*) powerprofilesctl set performance; EC=$?; NEW=performance ;;
+    *"Balanced"*)    powerprofilesctl set balanced;    EC=$?; NEW=balanced ;;
+    *"Power Saver"*) powerprofilesctl set power-saver; EC=$?; NEW=power-saver ;;
 esac
 
 # Dừng nếu powerprofilesctl thất bại
-[ $? -ne 0 ] && exit 1
+[ "${EC:-1}" -ne 0 ] && exit 1
 
 # Xử lý brightness khi chuyển power-saver
 # Dùng state file riêng (không dùng brightnessctl -s/-r vì hypridle đã dùng slot đó)
