@@ -21,4 +21,6 @@ Singleton {
     readonly property int windowTitleMaxChars: 48
     readonly property int networkNameMaxChars: 22
     readonly property int mediaMaxChars: 32
+    readonly property int resourcesIntervalMs: 2500
+    readonly property int statusIntervalMs: 1000
 }
