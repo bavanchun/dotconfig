@@ -180,7 +180,7 @@ Variants {
                                 if (event.button === Qt.RightButton)
                                     Quickshell.execDetached(["swaync-client", "-d", "-sw"]);
                                 else
-                                    Quickshell.execDetached(["swaync-client", "-t", "-sw"]);
+                                    ShellState.toggleNotifications();
                             }
                         }
                     }

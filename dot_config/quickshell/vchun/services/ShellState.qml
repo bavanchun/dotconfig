@@ -8,6 +8,8 @@ Singleton {
     property bool launcherOpen: false
     property bool calendarOpen: false
     property bool sessionOpen: false
+    property bool wallpaperOpen: false
+    property bool notificationsOpen: false
     property bool osdOpen: false
     property string osdLabel: "VOL"
     property string osdValue: "0%"
@@ -17,6 +19,8 @@ Singleton {
         launcherOpen = false;
         calendarOpen = false;
         sessionOpen = false;
+        wallpaperOpen = false;
+        notificationsOpen = false;
     }
 
     function toggleControlCenter() {
@@ -41,6 +45,18 @@ Singleton {
         const next = !sessionOpen;
         closePopups();
         sessionOpen = next;
+    }
+
+    function toggleWallpaper() {
+        const next = !wallpaperOpen;
+        closePopups();
+        wallpaperOpen = next;
+    }
+
+    function toggleNotifications() {
+        const next = !notificationsOpen;
+        closePopups();
+        notificationsOpen = next;
     }
 
     function showOsd(label, value) {
