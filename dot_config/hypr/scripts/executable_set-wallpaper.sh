@@ -40,7 +40,7 @@ matugen image "$WALLPAPER" -m "$MODE" \
 
 # 4. Reload UI
 hyprctl reload
-bash "$HOME/.config/hypr/scripts/quickshell-monitor.sh" restart
+quickshell -c vchun ipc call shell reloadTheme || bash "$HOME/.config/hypr/scripts/quickshell-monitor.sh" restart
 swaync-client --reload-css
 
 # 5. Notify

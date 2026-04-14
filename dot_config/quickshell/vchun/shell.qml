@@ -27,5 +27,6 @@ ShellRoot {
         function calendar(): void { ShellState.toggleCalendar() }
         function session(): void { ShellState.toggleSession() }
         function close(): void { ShellState.closePopups() }
+        function reloadTheme(): void { Quickshell.reload(false) }
     }
 }
