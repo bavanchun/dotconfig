@@ -76,7 +76,13 @@ Variants {
                         MouseArea {
                             anchors.fill: parent
                             cursorShape: ShellData.player ? Qt.PointingHandCursor : Qt.ArrowCursor
-                            onClicked: if (ShellData.player && ShellData.player.canTogglePlaying) ShellData.player.togglePlaying()
+                            acceptedButtons: Qt.LeftButton | Qt.RightButton
+                            onClicked: event => {
+                                if (event.button === Qt.RightButton)
+                                    ShellState.toggleCalendar();
+                                else if (ShellData.player && ShellData.player.canTogglePlaying)
+                                    ShellData.player.togglePlaying();
+                            }
                         }
                     }
                 }
@@ -98,6 +104,7 @@ Variants {
                             anchors.fill: parent
                             onWheel: event => {
                                 Quickshell.execDetached(["brightnessctl", "-e4", "-n2", "set", event.angleDelta.y > 0 ? "5%+" : "5%-"]);
+                                ShellState.showOsd("BRT", ShellData.backlightText);
                             }
                         }
                     }
@@ -121,7 +128,10 @@ Variants {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                             onClicked: Quickshell.execDetached(["pavucontrol"])
-                            onWheel: event => Quickshell.execDetached(["bash", "-lc", event.angleDelta.y > 0 ? "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+" : "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"])
+                            onWheel: event => {
+                                Quickshell.execDetached(["bash", "-lc", event.angleDelta.y > 0 ? "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+" : "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"]);
+                                ShellState.showOsd("VOL", `${ShellData.volume}%`);
+                            }
                         }
                     }
 
@@ -186,6 +196,18 @@ Variants {
                     Chip {
                         label: ShellData.dateText
                         value: ShellData.timeText
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            acceptedButtons: Qt.LeftButton | Qt.RightButton
+                            onClicked: event => {
+                                if (event.button === Qt.RightButton)
+                                    ShellState.toggleSession();
+                                else
+                                    ShellState.toggleControlCenter();
+                            }
+                        }
                     }
                 }
             }
