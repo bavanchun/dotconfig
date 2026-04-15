@@ -38,7 +38,7 @@ ln -sf "$HOME/.config/alacritty/theme-${NEW}.toml" "$HOME/.config/alacritty/them
 
 # 4. Reload everything
 hyprctl reload
-quickshell -c vchun ipc call shell reloadTheme || bash ~/.config/hypr/scripts/quickshell-monitor.sh restart
+pkill -SIGUSR2 waybar
 swaync-client --reload-css
 
 # 5. Notify

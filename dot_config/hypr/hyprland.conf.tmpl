@@ -48,12 +48,10 @@ $menu = rofi -show drun
 
 #exec-once = hyprpanel
 exec-once = hyprpm reload -n                                                                                          # load plugins (hyprexpo, ...)
-exec-once = qs -c noctalia-shell --daemonize                          # noctalia shell
-#exec-once = bash ~/.config/hypr/scripts/quickshell-monitor.sh start  # disabled: replaced by noctalia
-#exec-once = awww-daemon                                               # disabled: noctalia handles wallpaper
-#exec-once = bash ~/.config/hypr/scripts/restore-wallpaper.sh         # disabled: noctalia handles wallpaper
+exec-once = bash ~/.config/hypr/scripts/waybar-monitor.sh
+exec-once = hyprpaper
 exec-once = fcitx5 -d
-#exec-once = swaync --skip-system-css                                  # disabled: noctalia handles notifications
+exec-once = swaync --skip-system-css
 exec-once = hypridle
 exec-once = hyprpolkitagent
 exec-once = nm-applet
@@ -130,16 +128,16 @@ decoration {
 
     shadow {
         enabled = true
-        range = 14
-        render_power = 4
+        range = 8
+        render_power = 3
         color = rgba(000000d6)
     }
 
     # https://wiki.hypr.land/Configuring/Variables/#blur
     blur {
         enabled = true
-        size = 10
-        passes = 3
+        size = 6
+        passes = 2
         noise = 0.015
         contrast = 0.95
         brightness = 0.85
@@ -338,12 +336,12 @@ bindl = , XF86AudioPlay, exec, playerctl play-pause
 bindl = , XF86AudioPrev, exec, playerctl previous
 
 bind = SUPER, F, fullscreen, 1
-bind = SUPER, SPACE, exec, qs -c noctalia-shell ipc call launcher toggle
+bind = SUPER, SPACE, exec, $menu
 bind = ALT, SPACE, exec, fcitx5-remote -t
 bind = ALT, TAB, exec, hyprswitch gui --mod-key alt --key tab --close mod-key-release --filter-current-workspace
-bind = SUPER, N, exec, qs -c noctalia-shell ipc call controlCenter toggle
-bind = SUPER SHIFT, Q, exec, qs -c noctalia-shell ipc call sessionMenu toggle
-bind = SUPER SHIFT, V, exec, qs -c noctalia-shell ipc call launcher clipboard
+bind = SUPER, N, exec, swaync-client -t -sw
+bind = SUPER SHIFT, Q, exec, wlogout
+bind = SUPER SHIFT, V, exec, bash ~/.config/hypr/scripts/cliphist-pick.sh
 
 # Screenshot
 bind = , Print, exec, flameshot gui                                                                               # chụp vùng với Flameshot
@@ -353,10 +351,10 @@ bind = CTRL SHIFT, 2, exec, hyprshot -m window --clipboard-only                 
 bind = SUPER, PRINT, exec, hyprshot -m output -o ~/Pictures/Screenshots                                            # chụp toàn màn hình
 bind = CTRL SHIFT, S, exec, hyprshot -m region -o - | swappy -f -                                                  # chụp vùng → annotate
 bind = CTRL SHIFT, X, exec, bash -c 'f="$HOME/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"; if grim -g "$(slurp)" "$f"; then echo -n "$f" | wl-copy; notify-send -u normal -i camera-photo "Screenshot" "Path copied to clipboard:\n$f"; else notify-send -u critical "Screenshot" "Cancelled or failed"; fi' # chụp vùng → lưu + copy path → paste vào terminal
-bind = SUPER, Delete, exec, systemctl restart fprintd; qs -c noctalia-shell ipc call lockScreen lock
-bind = SUPER, F9, exec, qs -c noctalia-shell ipc call nightLight toggle
-bind = SUPER, F10, exec, qs -c noctalia-shell ipc call darkMode toggle
-bind = SUPER, W, exec, qs -c noctalia-shell ipc call wallpaper toggle
+bind = SUPER, Delete, exec, systemctl restart fprintd; hyprlock
+bind = SUPER, F9, exec, bash ~/.config/hypr/scripts/toggle-hyprsunset.sh
+bind = SUPER, F10, exec, bash ~/.config/hypr/scripts/toggle-theme.sh
+bind = SUPER, W, exec, bash ~/.config/hypr/scripts/wallpaper-picker.sh
 bind = SUPER, F1, exec, bash ~/.config/hypr/scripts/cheatsheet.sh
 bind = SUPER, grave, hyprexpo:expo, toggle         # SUPER + ` để xem tất cả workspace
 
@@ -420,23 +418,6 @@ windowrule {
     size = 920 700
     center = true
 }
-
-# Blur for Noctalia bar
-# Disabled: noctalia-shell tự render blur bên trong QML rồi,
-# bật thêm ở đây khiến blur bị render 2 lần → lag trên 3 màn hình + 4K
-# layerrule {
-#     name = blur-noctalia-bar
-#     match:namespace = ^noctalia-bar-content-.*$
-#     blur = true
-#     ignore_alpha = 0.24
-# }
-
-# layerrule {
-#     name = blur-noctalia-panels
-#     match:namespace = ^noctalia-popupmenu-.*$
-#     blur = true
-#     ignore_alpha = 0.24
-# }
 
 
 
