@@ -2,6 +2,7 @@ import Gtk from "gi://Gtk?version=4.0"
 import Astal from "gi://Astal?version=4.0"
 import Pango from "gi://Pango?version=1.0"
 import Gdk from "gi://Gdk?version=4.0"
+import GLib from "gi://GLib?version=2.0"
 import { mediaService, formatTime } from "../services/media"
 
 function addClass<T extends Gtk.Widget>(widget: T, ...classNames: string[]) {
@@ -45,6 +46,55 @@ function iconButton(iconName: string, className = "", pixelSize = 18) {
 
 function setPictureFile(picture: Gtk.Picture, path: string) {
     picture.set_filename(path)
+}
+
+function createMarqueeLabel(className: string, xalign = 0.5, threshold = 28) {
+    const widget = label("", className, xalign)
+    let sourceId = 0
+    let activeText = ""
+    let hovered = false
+    let offset = 0
+
+    const stop = () => {
+        if (sourceId !== 0) {
+            GLib.source_remove(sourceId)
+            sourceId = 0
+        }
+        offset = 0
+        widget.label = activeText
+    }
+
+    const updateTicker = () => {
+        stop()
+        const glyphs = Array.from(activeText)
+        if (!hovered || glyphs.length <= threshold) {
+            widget.label = activeText
+            return
+        }
+
+        const scrollText = `${activeText}     ${activeText}`
+        const scrollGlyphs = Array.from(scrollText)
+        sourceId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 160, () => {
+            const start = offset % (glyphs.length + 5)
+            widget.label = scrollGlyphs.slice(start, start + threshold + 6).join("")
+            offset += 1
+            return GLib.SOURCE_CONTINUE
+        })
+    }
+
+    return {
+        widget,
+        setText(text: string) {
+            activeText = text
+            widget.tooltip_text = text
+            updateTicker()
+        },
+        setHovered(state: boolean) {
+            hovered = state
+            updateTicker()
+        },
+        stop,
+    }
 }
 
 export function createMediaPanel(app: Gtk.Application) {
@@ -193,21 +243,34 @@ export function createMediaPanel(app: Gtk.Application) {
         spacing: 6,
     }), "meta-block")
 
-    const title = label("No media", "title", 0.5)
-    title.set_wrap(false)
-    title.set_lines(1)
+    const title = createMarqueeLabel("title", 0.5, 26)
+    title.widget.set_wrap(false)
+    title.widget.set_lines(1)
 
-    const artist = label("Start playback to see controls", "subtitle", 0.5)
-    artist.set_wrap(false)
-    artist.set_lines(1)
+    const artist = createMarqueeLabel("subtitle", 0.5, 34)
+    artist.widget.set_wrap(false)
+    artist.widget.set_lines(1)
 
-    const album = label("", "album", 0.5)
-    album.set_wrap(false)
-    album.set_lines(1)
+    const album = createMarqueeLabel("album", 0.5, 34)
+    album.widget.set_wrap(false)
+    album.widget.set_lines(1)
 
-    meta.append(title)
-    meta.append(artist)
-    meta.append(album)
+    const metaMotion = new Gtk.EventControllerMotion()
+    metaMotion.connect("enter", () => {
+        title.setHovered(true)
+        artist.setHovered(true)
+        album.setHovered(true)
+    })
+    metaMotion.connect("leave", () => {
+        title.setHovered(false)
+        artist.setHovered(false)
+        album.setHovered(false)
+    })
+    meta.add_controller(metaMotion)
+
+    meta.append(title.widget)
+    meta.append(artist.widget)
+    meta.append(album.widget)
 
     const progressBlock = addClass(new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
@@ -273,13 +336,15 @@ export function createMediaPanel(app: Gtk.Application) {
         const hasPlayer = snap.current !== null
         const progressValue = snap.length > 0 ? Math.max(0, Math.min(1, snap.position / snap.length)) : 0
 
-        title.label = hasPlayer ? (snap.title || snap.identity || "Unknown media") : "No media"
-        artist.label = hasPlayer ? (snap.artist || snap.identity || "Unknown artist") : "Start playback to see controls"
-        album.label = snap.album || ""
-        album.visible = snap.album.length > 0
+        title.setText(hasPlayer ? (snap.title || snap.identity || "Unknown media") : "No media")
+        artist.setText(hasPlayer ? (snap.artist || snap.identity || "Unknown artist") : "Start playback to see controls")
+        album.setText(snap.album || "")
+        album.widget.visible = snap.album.length > 0
 
         identityPill.label = snap.identity || "No player"
         statePill.label = hasPlayer ? (snap.isPlaying ? "Playing" : "Paused") : "Idle"
+        setClass(statePill, "playing", snap.isPlaying)
+        setClass(statePill, "paused", hasPlayer && !snap.isPlaying)
 
         headingCaption.label = snap.players.length > 1
             ? `${snap.players.length} active players`
@@ -321,6 +386,7 @@ export function createMediaPanel(app: Gtk.Application) {
         backdrop.visible = hasArt
         coverFallback.visible = !hasArt
         setClass(card, "with-art", hasArt)
+        setClass(card, "is-playing", snap.isPlaying)
 
         if (hasArt) {
             try {
@@ -342,6 +408,11 @@ export function createMediaPanel(app: Gtk.Application) {
 
     win.connect("notify::visible", () => {
         mediaService.setPanelVisible(win.visible)
+        if (!win.visible) {
+            title.stop()
+            artist.stop()
+            album.stop()
+        }
     })
 
     return win

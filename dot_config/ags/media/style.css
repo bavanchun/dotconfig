@@ -104,6 +104,11 @@
 .media-card {
     background: linear-gradient(180deg, rgba(31, 27, 37, 0.97), rgba(17, 15, 23, 0.98));
     min-height: 520px;
+    transition: box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.media-card.is-playing {
+    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.58), 0 0 0 1px alpha(@accent, 0.14);
 }
 
 .media-backdrop {
@@ -126,6 +131,12 @@
     min-height: 190px;
     border-radius: 220px;
     background: radial-gradient(circle at center, alpha(@accent, 0.16), transparent 68%);
+    opacity: 0.82;
+}
+
+.media-card.is-playing .media-glow {
+    background: radial-gradient(circle at center, alpha(@accent, 0.26), transparent 72%);
+    opacity: 1;
 }
 
 .media-card-content {
@@ -156,6 +167,15 @@
     background: alpha(@accent, 0.88);
 }
 
+.state-pill.paused {
+    color: @text;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.state-pill.playing {
+    box-shadow: 0 8px 18px alpha(@accent, 0.22);
+}
+
 .art-shell {
     margin-top: 8px;
     border-radius: 28px;
@@ -179,6 +199,14 @@
 
 .meta-block {
     margin-top: 2px;
+}
+
+.meta-block label {
+    transition: opacity 160ms ease;
+}
+
+.meta-block:hover label {
+    opacity: 1;
 }
 
 .title {
