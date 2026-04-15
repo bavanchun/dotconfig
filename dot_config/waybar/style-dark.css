@@ -181,20 +181,43 @@ tooltip label {
 }
 
 #custom-media {
-    color: alpha(@text-muted, 0.72);
+    min-width: 0;
+    color: alpha(@text-muted, 0.78);
     font-family: "JetBrainsMono Nerd Font", monospace;
-    font-weight: 600;
-    padding-left: 11px;
-    padding-right: 11px;
+    font-weight: 700;
+    padding-left: 14px;
+    padding-right: 14px;
+    margin-left: 6px;
+    border-radius: 999px;
+    background: alpha(@surface-bright, 0.05);
+    border: 1px solid transparent;
+    box-shadow: inset 0 1px 0 alpha(@surface-bright, 0.06);
 }
 
 #custom-media.playing {
-    color: alpha(@text, 0.84);
-    border-color: alpha(@accent, 0.26);
+    color: alpha(@text, 0.94);
+    background: linear-gradient(180deg, alpha(@surface-bright, 0.18), alpha(@surface-bright, 0.08));
+    border-color: alpha(@accent, 0.28);
+    box-shadow:
+        inset 0 1px 0 alpha(@surface-bright, 0.10),
+        0 0 0 1px alpha(@accent, 0.08);
 }
 
 #custom-media.paused {
-    color: alpha(@text-muted, 0.56);
+    color: alpha(@text-muted, 0.66);
+    background: alpha(@surface-bright, 0.04);
+    border-color: alpha(@outline, 0.08);
+}
+
+#custom-media.multi-player {
+    padding-right: 18px;
+}
+
+#custom-media.idle {
+    color: alpha(@text-muted, 0.50);
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
 }
 
 #idle_inhibitor,

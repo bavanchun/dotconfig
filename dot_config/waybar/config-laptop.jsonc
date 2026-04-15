@@ -105,11 +105,11 @@
         "exec": "~/.config/waybar/scripts/media-scroll.sh",
         "return-type": "json",
         "interval": 1,
-        "on-click": "bash ~/.config/hypr/scripts/ags-media.sh toggle",
-        "on-click-right": "playerctl next",
-        "on-click-middle": "playerctl play-pause",
-        "on-scroll-up": "playerctl volume 0.05+",
-        "on-scroll-down": "playerctl volume 0.05-"
+        "on-click": "bash ~/.config/hypr/scripts/ags-media.sh open",
+        "on-click-right": "bash ~/.config/hypr/scripts/ags-media.sh play-pause",
+        "on-click-middle": "bash ~/.config/hypr/scripts/ags-media.sh next-player",
+        "on-scroll-up": "bash ~/.config/hypr/scripts/ags-media.sh previous",
+        "on-scroll-down": "bash ~/.config/hypr/scripts/ags-media.sh next"
     },
 
     "temperature": {
