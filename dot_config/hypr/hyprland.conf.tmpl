@@ -422,19 +422,21 @@ windowrule {
 }
 
 # Blur for Noctalia bar
-layerrule {
-    name = blur-noctalia-bar
-    match:namespace = ^noctalia-bar-content-.*$
-    blur = true
-    ignore_alpha = 0.24
-}
+# Disabled: noctalia-shell tự render blur bên trong QML rồi,
+# bật thêm ở đây khiến blur bị render 2 lần → lag trên 3 màn hình + 4K
+# layerrule {
+#     name = blur-noctalia-bar
+#     match:namespace = ^noctalia-bar-content-.*$
+#     blur = true
+#     ignore_alpha = 0.24
+# }
 
-layerrule {
-    name = blur-noctalia-panels
-    match:namespace = ^noctalia-popupmenu-.*$
-    blur = true
-    ignore_alpha = 0.24
-}
+# layerrule {
+#     name = blur-noctalia-panels
+#     match:namespace = ^noctalia-popupmenu-.*$
+#     blur = true
+#     ignore_alpha = 0.24
+# }
 
 
 
