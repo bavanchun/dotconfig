@@ -1,0 +1,108 @@
+@define-color panel_bg rgba(25, 24, 27, 0.94);
+@define-color panel_border rgba(255, 255, 255, 0.12);
+@define-color panel_shadow rgba(0, 0, 0, 0.45);
+@define-color text #f4eef1;
+@define-color muted rgba(244, 238, 241, 0.66);
+@define-color faint rgba(244, 238, 241, 0.46);
+@define-color accent #c73e64;
+@define-color on_accent #ffffff;
+@define-color surface rgba(255, 255, 255, 0.07);
+@define-color surface_hover rgba(255, 255, 255, 0.12);
+
+.media-panel {
+    padding: 16px;
+    color: @text;
+    background: @panel_bg;
+    border: 1px solid @panel_border;
+    border-radius: 8px;
+    box-shadow: 0 16px 36px @panel_shadow;
+}
+
+.media-header {
+    padding-bottom: 2px;
+}
+
+.heading {
+    color: @text;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.player-button,
+.icon-button {
+    min-width: 34px;
+    min-height: 34px;
+    padding: 6px 10px;
+    color: @text;
+    background: @surface;
+    border: 1px solid @panel_border;
+    border-radius: 8px;
+}
+
+.player-button:hover,
+.icon-button:hover {
+    background: @surface_hover;
+}
+
+.player-button {
+    color: @muted;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.media-content {
+    padding-top: 2px;
+}
+
+.cover-frame {
+    padding: 0;
+    background: @surface;
+    border: 1px solid @panel_border;
+    border-radius: 8px;
+}
+
+.title {
+    color: @text;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.subtitle {
+    color: @muted;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.album,
+.time {
+    color: @faint;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+scale trough {
+    min-height: 6px;
+    border-radius: 8px;
+    background: @surface;
+}
+
+scale highlight {
+    min-height: 6px;
+    border-radius: 8px;
+    background: @accent;
+}
+
+.controls {
+    padding-top: 2px;
+}
+
+.play-button {
+    min-width: 42px;
+    min-height: 42px;
+    color: @on_accent;
+    background: @accent;
+}
+
+.play-button:hover {
+    background: alpha(@accent, 0.86);
+}
