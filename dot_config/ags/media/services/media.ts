@@ -10,6 +10,7 @@ export type MediaSnapshot = {
     artist: string
     album: string
     identity: string
+    sourceApp: string
     coverArt: string
     position: number
     length: number
@@ -92,6 +93,7 @@ export class MediaService {
             artist: this.clean(current?.artist || ""),
             album: this.clean(current?.album || ""),
             identity: this.clean(current?.identity || current?.entry || ""),
+            sourceApp: this.clean(current?.entry || current?.identity || ""),
             coverArt: current?.coverArt || "",
             position: this.validNumber(current?.position),
             length: this.validNumber(current?.length),

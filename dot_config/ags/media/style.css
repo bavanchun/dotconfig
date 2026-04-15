@@ -20,74 +20,6 @@
     border-radius: 28px;
 }
 
-.media-mini-shell {
-    padding: 0;
-}
-
-.media-mini {
-    min-height: 40px;
-    color: @text;
-    background: linear-gradient(180deg, rgba(29, 25, 35, 0.94), rgba(18, 16, 24, 0.92));
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 999px;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
-    transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-}
-
-.media-mini.hover,
-.media-mini:hover {
-    border-color: alpha(@accent, 0.22);
-    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.30);
-}
-
-.media-mini.playing {
-    border-color: alpha(@accent, 0.26);
-    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34), 0 0 0 1px alpha(@accent, 0.08);
-}
-
-.media-mini.paused {
-    background: linear-gradient(180deg, rgba(25, 22, 31, 0.92), rgba(17, 15, 22, 0.90));
-}
-
-.media-mini-art-frame {
-    min-width: 30px;
-    min-height: 30px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.media-mini-art,
-.media-mini-fallback {
-    border-radius: 999px;
-}
-
-.media-mini-fallback {
-    color: rgba(247, 241, 244, 0.60);
-}
-
-.media-mini-text label {
-    max-width: 212px;
-}
-
-.media-mini-title {
-    color: @text;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.media-mini-subtitle {
-    color: @faint;
-    font-size: 10px;
-    font-weight: 700;
-}
-
-.media-mini-state {
-    min-width: 18px;
-    color: alpha(@accent, 0.96);
-    font-size: 15px;
-    font-weight: 800;
-}
-
 .surface-card {
     border: 1px solid @panel_border;
     border-radius: 24px;
@@ -293,6 +225,60 @@
     color: @faint;
     font-size: 12px;
     font-weight: 700;
+}
+
+.info-row {
+    margin-top: 2px;
+}
+
+.info-card {
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+}
+
+.info-card-value {
+    color: @text;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.info-card-caption {
+    color: @faint;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.players-section {
+    margin-top: 2px;
+}
+
+.players-heading {
+    color: @muted;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.players-flow {
+    min-height: 34px;
+}
+
+.player-chip {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+}
+
+.player-chip.active {
+    background: alpha(@accent, 0.18);
+    border-color: alpha(@accent, 0.32);
+}
+
+.player-chip-label {
+    color: @text;
+    font-size: 11px;
+    font-weight: 800;
 }
 
 .progress-block {

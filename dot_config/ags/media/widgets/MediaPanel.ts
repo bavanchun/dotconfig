@@ -36,6 +36,22 @@ function label(text = "", className = "", xalign = 0) {
     return widget
 }
 
+function infoCard(captionText: string) {
+    const box = addClass(new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 3,
+    }), "info-card")
+    box.hexpand = true
+
+    const value = label("—", "info-card-value")
+    const caption = label(captionText, "info-card-caption")
+
+    box.append(value)
+    box.append(caption)
+
+    return { box, value, caption }
+}
+
 function iconButton(iconName: string, className = "", pixelSize = 18) {
     const image = new Gtk.Image({ icon_name: iconName, pixel_size: pixelSize })
     const button = new Gtk.Button({ child: image })
@@ -272,6 +288,30 @@ export function createMediaPanel(app: Gtk.Application) {
     meta.append(artist.widget)
     meta.append(album.widget)
 
+    const infoRow = addClass(new Gtk.Box({
+        orientation: Gtk.Orientation.HORIZONTAL,
+        spacing: 10,
+    }), "info-row")
+    const sourceCard = infoCard("Source app")
+    const contextCard = infoCard("Context")
+    infoRow.append(sourceCard.box)
+    infoRow.append(contextCard.box)
+
+    const playersSection = addClass(new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 8,
+    }), "players-section")
+    const playersHeading = label("Active players", "players-heading")
+    const playersFlow = addClass(new Gtk.FlowBox({
+        selection_mode: Gtk.SelectionMode.NONE,
+        row_spacing: 8,
+        column_spacing: 8,
+        max_children_per_line: 4,
+        min_children_per_line: 1,
+    }), "players-flow")
+    playersSection.append(playersHeading)
+    playersSection.append(playersFlow)
+
     const progressBlock = addClass(new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
         spacing: 8,
@@ -319,6 +359,8 @@ export function createMediaPanel(app: Gtk.Application) {
     content.append(statusRow)
     content.append(artShell)
     content.append(meta)
+    content.append(infoRow)
+    content.append(playersSection)
     content.append(progressBlock)
     content.append(controls)
 
@@ -337,9 +379,14 @@ export function createMediaPanel(app: Gtk.Application) {
         const progressValue = snap.length > 0 ? Math.max(0, Math.min(1, snap.position / snap.length)) : 0
 
         title.setText(hasPlayer ? (snap.title || snap.identity || "Unknown media") : "No media")
-        artist.setText(hasPlayer ? (snap.artist || snap.identity || "Unknown artist") : "Start playback to see controls")
+        artist.setText(hasPlayer ? (snap.artist || snap.sourceApp || snap.identity || "Unknown artist") : "Start playback to see controls")
         album.setText(snap.album || "")
         album.widget.visible = snap.album.length > 0
+
+        sourceCard.value.label = hasPlayer ? (snap.sourceApp || snap.identity || "Unknown") : "Waiting"
+        contextCard.value.label = hasPlayer
+            ? (snap.album || snap.artist || "No album / extra context")
+            : "No active session"
 
         identityPill.label = snap.identity || "No player"
         statePill.label = hasPlayer ? (snap.isPlaying ? "Playing" : "Paused") : "Idle"
@@ -365,10 +412,13 @@ export function createMediaPanel(app: Gtk.Application) {
         playerLabel.label = canChoosePlayer ? (snap.identity || `Players ${snap.players.length}`) : "Player"
 
         clearBox(playerList)
+        let activePlayersText = ""
         for (const player of snap.players) {
             const isActive = player === snap.current
+            const playerName = player.identity || player.entry || "Player"
+            activePlayersText = activePlayersText ? `${activePlayersText}, ${playerName}` : playerName
             const itemLabel = addClass(new Gtk.Label({
-                label: player.identity || player.entry || "Player",
+                label: playerName,
                 xalign: 0,
                 ellipsize: Pango.EllipsizeMode.END,
             }), "player-list-label")
@@ -380,6 +430,41 @@ export function createMediaPanel(app: Gtk.Application) {
             })
             playerList.append(item)
         }
+        playersHeading.label = snap.players.length > 0
+            ? `Active players (${snap.players.length})`
+            : "Active players"
+        playersHeading.tooltip_text = activePlayersText
+
+        let playerChip = playersFlow.get_first_child()
+        while (playerChip) {
+            const next = playerChip.get_next_sibling()
+            playersFlow.remove(playerChip)
+            playerChip = next
+        }
+
+        for (const player of snap.players) {
+            const playerName = player.identity || player.entry || "Player"
+            const isActive = player === snap.current
+            const chipLabel = addClass(new Gtk.Label({
+                label: playerName,
+                xalign: 0.5,
+                ellipsize: Pango.EllipsizeMode.END,
+            }), "player-chip-label")
+            const chipBox = addClass(new Gtk.Box({
+                orientation: Gtk.Orientation.HORIZONTAL,
+                spacing: 0,
+                margin_top: 6,
+                margin_bottom: 6,
+                margin_start: 10,
+                margin_end: 10,
+            }), "player-chip")
+            if (isActive) chipBox.add_css_class("active")
+            chipBox.append(chipLabel)
+            const chipChild = new Gtk.FlowBoxChild()
+            chipChild.set_child(chipBox)
+            playersFlow.insert(chipChild, -1)
+        }
+        playersSection.visible = snap.players.length > 0
 
         const hasArt = snap.coverArt.length > 0
         coverPicture.visible = hasArt

@@ -201,7 +201,7 @@
     },
 
     "custom/launcher": {
-        "format": "󰣇",
+        "format": "",
         "tooltip": false,
         "on-click": "rofi -show drun"
     },
