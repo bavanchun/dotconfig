@@ -5,7 +5,7 @@
 # - Position / length display in the tooltip
 
 SCROLL_FILE="/tmp/waybar-media-scroll-pos"
-MAX_DISPLAY=18
+MAX_DISPLAY=14
 SCROLL_SPEED=1
 
 FRAMES=("▁▃▅▇" "▃▅▇▅" "▅▇▅▃" "▇▅▃▁" "▅▃▁▃")

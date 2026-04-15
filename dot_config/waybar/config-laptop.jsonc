@@ -10,7 +10,7 @@
 
     "modules-left": ["custom/launcher", "clock", "group/resources", "hyprland/window", "group/media"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["group/tray-menu", "custom/swaync", "battery", "wireplumber", "backlight", "group/connectivity", "custom/power-profile", "custom/fcitx", "custom/power"],
+    "modules-right": ["group/tray-menu", "custom/swaync", "battery", "wireplumber", "backlight", "custom/control", "custom/power"],
 
     "group/media": {
         "orientation": "horizontal",
@@ -46,7 +46,7 @@
 
     "hyprland/workspaces": {
         "format": "{id}",
-        "format-empty": "{id}",
+        "format-empty": "•",
         "format-window-separator": " ",
         "window-rewrite-default-icon": "󰣆",
         "window-rewrite": {
@@ -81,9 +81,9 @@
     },
 
     "hyprland/window": {
-        "format": "{}",
+        "format": "󰣆 {}",
         "format-empty": "Desktop",
-        "max-length": 28,
+        "max-length": 18,
         "separate-outputs": true
     },
 
@@ -211,7 +211,14 @@
 
     "custom/res-toggle": {
         "format": "󰻠",
-        "tooltip": false
+        "tooltip": false,
+        "on-click": "sh -c 'resources || missioncenter || gnome-system-monitor || plasma-systemmonitor || true'"
+    },
+
+    "custom/control": {
+        "format": "󰒓",
+        "tooltip": false,
+        "on-click": "bash ~/.config/waybar/scripts/control-menu.sh"
     },
 
     "custom/power-profile": {
