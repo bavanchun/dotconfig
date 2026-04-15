@@ -2,10 +2,10 @@
 # Media player widget for Waybar
 # - Animated equalizer bars when playing
 # - Scrolling title · artist
-# - Position / length display
+# - Position / length display in the tooltip
 
 SCROLL_FILE="/tmp/waybar-media-scroll-pos"
-MAX_DISPLAY=22
+MAX_DISPLAY=18
 SCROLL_SPEED=1
 
 FRAMES=("▁▃▅▇" "▃▅▇▅" "▅▇▅▃" "▇▅▃▁" "▅▃▁▃")
@@ -50,9 +50,6 @@ else
     echo "$NEXT_POS" > "$SCROLL_FILE"
 fi
 
-TIME_STR=""
-[[ -n "$POSITION" && -n "$LENGTH" ]] && TIME_STR=" $POSITION/$LENGTH"
-
 if [[ "$STATUS" == "Playing" ]]; then
     FRAME_IDX=$(( $(date +%s) % ${#FRAMES[@]} ))
     ICON="${FRAMES[$FRAME_IDX]}"
@@ -64,6 +61,7 @@ fi
 
 TOOLTIP="$TITLE"
 [[ -n "$ARTIST" ]] && TOOLTIP="$TITLE\n$ARTIST"
+[[ -n "$POSITION" && -n "$LENGTH" ]] && TOOLTIP="$TOOLTIP\n$POSITION / $LENGTH"
 
-printf '{"text": "%s %s%s", "class": "%s", "tooltip": "%s"}\n' \
-    "$ICON" "$DISPLAY_TEXT" "$TIME_STR" "$CSS_CLASS" "$TOOLTIP"
+printf '{"text": "%s %s", "class": "%s", "tooltip": "%s"}\n' \
+    "$ICON" "$DISPLAY_TEXT" "$CSS_CLASS" "$TOOLTIP"

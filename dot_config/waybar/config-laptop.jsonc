@@ -2,28 +2,16 @@
     "output": "eDP-1",
     "layer": "top",
     "position": "top",
-    "height": 54,
+    "height": 48,
     "spacing": 0,
     "margin-top": 6,
     "margin-left": 10,
     "margin-right": 10,
 
-    "modules-left": ["group/launcher", "group/media"],
-    "modules-center": ["group/time"],
-    "modules-right": ["group/resources", "group/connectivity", "group/indicators", "custom/power"],
+    "modules-left": ["custom/launcher", "clock", "group/resources", "hyprland/window", "group/media"],
+    "modules-center": ["hyprland/workspaces"],
+    "modules-right": ["group/tray-menu", "custom/swaync", "battery", "wireplumber", "backlight", "group/connectivity", "custom/power-profile", "custom/fcitx", "custom/power"],
 
-    "group/launcher": {
-        "orientation": "horizontal",
-        "modules": ["hyprland/workspaces"]
-    },
-    "group/title": {
-        "orientation": "horizontal",
-        "modules": ["hyprland/window"]
-    },
-    "group/time": {
-        "orientation": "horizontal",
-        "modules": ["clock"]
-    },
     "group/media": {
         "orientation": "horizontal",
         "modules": ["custom/media"]
@@ -40,17 +28,13 @@
     // Connectivity: drawer — chỉ hiện icon toggle, hover mới mở
     "group/connectivity": {
         "orientation": "horizontal",
-        "modules": ["custom/conn-toggle", "idle_inhibitor", "backlight", "wireplumber", "network", "bluetooth"],
+        "modules": ["custom/conn-toggle", "idle_inhibitor", "network", "bluetooth"],
         "drawer": {
             "transition-duration": 220,
             "children-class": "conn-items"
         }
     },
 
-    "group/indicators": {
-        "orientation": "horizontal",
-        "modules": ["group/tray-menu", "custom/power-profile", "custom/fcitx", "custom/swaync", "battery"]
-    },
     "group/tray-menu": {
         "orientation": "horizontal",
         "modules": ["custom/tray-toggle", "tray"],
@@ -97,15 +81,15 @@
     },
 
     "hyprland/window": {
-        "format": "  {}",
-        "format-empty": "  Desktop",
-        "max-length": 25,
+        "format": "{}",
+        "format-empty": "Desktop",
+        "max-length": 28,
         "separate-outputs": true
     },
 
     "clock": {
-        "format": "󰥔 {:%H:%M  󰃭 %d/%m}",
-        "format-alt": "󰃭 {:%A, %d %B %Y  󰥔 %H:%M:%S}",
+        "format": "󰥔 {:%H:%M}",
+        "format-alt": "󰃭 {:%d/%m/%Y  󰥔 %H:%M:%S}",
         "tooltip-format": "<big>{:%A, %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>",
         "interval": 1
     },
@@ -209,6 +193,12 @@
         "spacing": 10
     },
 
+    "custom/launcher": {
+        "format": "󰣇",
+        "tooltip": false,
+        "on-click": "rofi -show drun"
+    },
+
     "custom/conn-toggle": {
         "format": "󰋊",
         "tooltip": false
@@ -225,7 +215,7 @@
     },
 
     "custom/power-profile": {
-        "exec": "powerprofilesctl get | awk '{if ($0 == \"performance\") print \"Perf\"; else if ($0 == \"balanced\") print \"Bal\"; else print \"Eco\"}'",
+        "exec": "powerprofilesctl get | awk '{if ($0 == \"performance\") print \"󰓅\"; else if ($0 == \"balanced\") print \"󰾅\"; else print \"󰌪\"}'",
         "interval": 2,
         "format": "{}",
         "on-click": "bash ~/.config/waybar/scripts/power-profile-menu.sh",
