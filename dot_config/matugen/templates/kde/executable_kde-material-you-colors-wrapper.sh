@@ -2,7 +2,7 @@
 
 XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 
-color=$(tr -d '\n' < "$XDG_STATE_HOME/quickshell/user/generated/color.txt")
+color=$(tr -d '\n' < "$XDG_STATE_HOME/matugen/generated/color.txt")
 
 current_mode=$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null | tr -d "'")
 if [[ "$current_mode" == "prefer-dark" ]]; then

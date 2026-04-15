@@ -3,7 +3,7 @@ version_check = false
 
 [templates.m3colors]
 input_path = '~/.config/matugen/templates/colors.json'
-output_path = '~/.local/state/quickshell/user/generated/colors.json'
+output_path = '~/.local/state/matugen/generated/colors.json'
 
 [templates.hyprland]
 input_path = '~/.config/matugen/templates/hyprland/colors.conf'
@@ -27,11 +27,11 @@ output_path = '~/.config/gtk-4.0/gtk.css'
 
 [templates.kde_colors]
 input_path = '~/.config/matugen/templates/kde/color.txt'
-output_path = '~/.local/state/quickshell/user/generated/color.txt'
+output_path = '~/.local/state/matugen/generated/color.txt'
 
 [templates.wallpaper]
 input_path = '~/.config/matugen/templates/wallpaper.txt'
-output_path = '~/.local/state/quickshell/user/generated/wallpaper/path.txt'
+output_path = '~/.local/state/matugen/generated/wallpaper/path.txt'
 
 [templates.waybar]
 input_path = '~/.config/matugen/templates/waybar/colors.css'
