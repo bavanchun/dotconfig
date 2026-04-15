@@ -1,15 +1,38 @@
 #!/bin/bash
 # Media player widget for Waybar
 # - Animated equalizer bars when playing
-# - Scrolling title · artist
+# - Compact title · artist label
 # - Position / length display in the tooltip
 
-SCROLL_FILE="/tmp/waybar-media-scroll-pos"
 MAX_DISPLAY=14
-SCROLL_SPEED=1
 
 FRAMES=("▁▃▅▇" "▃▅▇▅" "▅▇▅▃" "▇▅▃▁" "▅▃▁▃")
 PAUSE_ICON="⏸ "
+
+clean_field() {
+    printf '%s' "$1" |
+        sed -E \
+            -e 's/[[:space:]]+[-–—][[:space:]]+(YouTube|Google Chrome|Chromium|Mozilla Firefox)$//' \
+            -e 's/[[:space:]]*\([^)]*(Official Video|Official Audio|Lyrics?)[^)]*\)//Ig' \
+            -e 's/[[:space:]]+/ /g' \
+            -e 's/^[[:space:]]+|[[:space:]]+$//g'
+}
+
+truncate_words() {
+    local text="$1"
+    local cut
+
+    if (( ${#text} <= MAX_DISPLAY )); then
+        printf '%s' "$text"
+        return
+    fi
+
+    cut="${text:0:$((MAX_DISPLAY - 1))}"
+    cut="${cut% *}"
+    [[ -z "$cut" ]] && cut="${text:0:$((MAX_DISPLAY - 1))}"
+    cut="$(printf '%s' "$cut" | sed -E 's/[[:space:][:punct:]]+$//')"
+    printf '%s…' "$cut"
+}
 
 # Find best player: Playing > Paused > skip
 PLAYER=""; STATUS=""
@@ -23,13 +46,12 @@ for p in $(playerctl -l 2>/dev/null); do
 done
 
 if [[ -z "$PLAYER" ]]; then
-    rm -f "$SCROLL_FILE"
     echo ""
     exit 0
 fi
 
-TITLE=$(playerctl --player="$PLAYER" metadata title 2>/dev/null | sed 's/"/\\"/g')
-ARTIST=$(playerctl --player="$PLAYER" metadata artist 2>/dev/null | sed 's/"/\\"/g')
+TITLE=$(clean_field "$(playerctl --player="$PLAYER" metadata title 2>/dev/null)")
+ARTIST=$(clean_field "$(playerctl --player="$PLAYER" metadata artist 2>/dev/null)")
 POSITION=$(playerctl --player="$PLAYER" metadata --format "{{duration(position)}}" 2>/dev/null)
 LENGTH=$(playerctl --player="$PLAYER" metadata --format "{{duration(mpris:length)}}" 2>/dev/null)
 
@@ -37,18 +59,7 @@ LENGTH=$(playerctl --player="$PLAYER" metadata --format "{{duration(mpris:length
 
 FULL_TEXT="$TITLE"
 [[ -n "$ARTIST" ]] && FULL_TEXT="$TITLE · $ARTIST"
-TEXT_LEN=${#FULL_TEXT}
-
-if [[ $TEXT_LEN -le $MAX_DISPLAY ]]; then
-    DISPLAY_TEXT="$FULL_TEXT"
-    rm -f "$SCROLL_FILE"
-else
-    POS=$(cat "$SCROLL_FILE" 2>/dev/null || echo 0)
-    PADDED="$FULL_TEXT   $FULL_TEXT   "
-    DISPLAY_TEXT="${PADDED:$POS:$MAX_DISPLAY}"
-    NEXT_POS=$(( (POS + SCROLL_SPEED) % (TEXT_LEN + 3) ))
-    echo "$NEXT_POS" > "$SCROLL_FILE"
-fi
+DISPLAY_TEXT=$(truncate_words "$FULL_TEXT")
 
 if [[ "$STATUS" == "Playing" ]]; then
     FRAME_IDX=$(( $(date +%s) % ${#FRAMES[@]} ))
@@ -63,5 +74,8 @@ TOOLTIP="$TITLE"
 [[ -n "$ARTIST" ]] && TOOLTIP="$TITLE\n$ARTIST"
 [[ -n "$POSITION" && -n "$LENGTH" ]] && TOOLTIP="$TOOLTIP\n$POSITION / $LENGTH"
 
-printf '{"text": "%s %s", "class": "%s", "tooltip": "%s"}\n' \
-    "$ICON" "$DISPLAY_TEXT" "$CSS_CLASS" "$TOOLTIP"
+jq -cn \
+    --arg text "$ICON $DISPLAY_TEXT" \
+    --arg class "$CSS_CLASS" \
+    --arg tooltip "$TOOLTIP" \
+    '{text:$text, class:$class, tooltip:$tooltip}'

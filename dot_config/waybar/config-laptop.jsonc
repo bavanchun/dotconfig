@@ -8,7 +8,7 @@
     "margin-left": 10,
     "margin-right": 10,
 
-    "modules-left": ["custom/launcher", "clock", "group/resources", "hyprland/window", "group/media"],
+    "modules-left": ["custom/launcher", "clock", "group/resources", "custom/active-window", "group/media"],
     "modules-center": ["hyprland/workspaces"],
     "modules-right": ["group/tray-menu", "custom/swaync", "battery", "wireplumber", "backlight", "custom/control", "custom/power"],
 
@@ -85,6 +85,13 @@
         "format-empty": "Desktop",
         "max-length": 18,
         "separate-outputs": true
+    },
+
+    "custom/active-window": {
+        "exec": "~/.config/waybar/scripts/active-window.sh",
+        "return-type": "json",
+        "interval": 1,
+        "tooltip": true
     },
 
     "clock": {
