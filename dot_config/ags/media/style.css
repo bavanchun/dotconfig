@@ -1,108 +1,272 @@
-@define-color panel_bg rgba(25, 24, 27, 0.94);
+@define-color shell_bg rgba(11, 10, 14, 0.78);
+@define-color panel_bg rgba(20, 18, 25, 0.88);
 @define-color panel_border rgba(255, 255, 255, 0.12);
-@define-color panel_shadow rgba(0, 0, 0, 0.45);
-@define-color text #f4eef1;
-@define-color muted rgba(244, 238, 241, 0.66);
-@define-color faint rgba(244, 238, 241, 0.46);
+@define-color panel_shadow rgba(0, 0, 0, 0.52);
+@define-color text #f7f1f4;
+@define-color muted rgba(247, 241, 244, 0.72);
+@define-color faint rgba(247, 241, 244, 0.48);
 @define-color accent #c73e64;
+@define-color accent_soft rgba(199, 62, 100, 0.24);
 @define-color on_accent #ffffff;
-@define-color surface rgba(255, 255, 255, 0.07);
-@define-color surface_hover rgba(255, 255, 255, 0.12);
+@define-color surface rgba(255, 255, 255, 0.08);
+@define-color surface_hover rgba(255, 255, 255, 0.13);
+@define-color surface_strong rgba(255, 255, 255, 0.16);
+@define-color scrim rgba(12, 10, 16, 0.72);
 
 .media-panel {
-    padding: 16px;
+    padding: 10px;
     color: @text;
-    background: @panel_bg;
+    background: @shell_bg;
+    border-radius: 28px;
+}
+
+.surface-card {
     border: 1px solid @panel_border;
-    border-radius: 8px;
-    box-shadow: 0 16px 36px @panel_shadow;
+    border-radius: 24px;
+    box-shadow: 0 18px 44px @panel_shadow;
 }
 
 .media-header {
-    padding-bottom: 2px;
+    padding: 14px 16px;
+    background: linear-gradient(180deg, rgba(28, 25, 34, 0.96), rgba(20, 18, 25, 0.94));
+}
+
+.header-lead image {
+    color: @accent;
 }
 
 .heading {
     color: @text;
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 900;
+}
+
+.heading-caption {
+    color: @faint;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
 }
 
 .player-button,
 .icon-button {
-    min-width: 34px;
-    min-height: 34px;
-    padding: 6px 10px;
+    min-width: 38px;
+    min-height: 38px;
+    padding: 6px 12px;
     color: @text;
     background: @surface;
     border: 1px solid @panel_border;
-    border-radius: 8px;
+    border-radius: 999px;
+    transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
 .player-button:hover,
-.icon-button:hover {
+.icon-button:hover,
+.player-list-item:hover {
     background: @surface_hover;
+    border-color: @surface_strong;
 }
 
-.player-button {
+.player-button-content {
+    margin: 0 2px;
+}
+
+.player-button-label {
     color: @muted;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.player-popover {
+    min-width: 220px;
+}
+
+.player-list-item {
+    min-height: 34px;
+    padding: 6px 10px;
+    color: @text;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 14px;
+}
+
+.player-list-item.active {
+    background: @accent_soft;
+    border-color: alpha(@accent, 0.36);
+}
+
+.player-list-label {
+    color: @text;
     font-size: 12px;
     font-weight: 700;
 }
 
-.media-content {
-    padding-top: 2px;
+.media-card {
+    background: linear-gradient(180deg, rgba(31, 27, 37, 0.97), rgba(17, 15, 23, 0.98));
+    min-height: 520px;
 }
 
-.cover-frame {
-    padding: 0;
-    background: @surface;
-    border: 1px solid @panel_border;
-    border-radius: 8px;
+.media-backdrop {
+    opacity: 0;
+}
+
+.media-card.with-art .media-backdrop {
+    opacity: 0.28;
+}
+
+.media-scrim {
+    background:
+        linear-gradient(180deg, rgba(8, 8, 11, 0.08), @scrim 42%, rgba(10, 9, 13, 0.9) 100%),
+        radial-gradient(circle at top center, rgba(255, 255, 255, 0.08), transparent 46%);
+    border-radius: 24px;
+}
+
+.media-glow {
+    margin: 18px;
+    min-height: 190px;
+    border-radius: 220px;
+    background: radial-gradient(circle at center, alpha(@accent, 0.16), transparent 68%);
+}
+
+.media-card-content {
+    min-height: 484px;
+}
+
+.status-row {
+    margin-top: 2px;
+}
+
+.identity-pill,
+.state-pill {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.identity-pill {
+    color: @text;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.state-pill {
+    color: @on_accent;
+    background: alpha(@accent, 0.88);
+}
+
+.art-shell {
+    margin-top: 8px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 22px 36px rgba(0, 0, 0, 0.28);
+}
+
+.cover-picture,
+.cover-fallback {
+    border-radius: 28px;
+}
+
+.cover-picture {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.cover-fallback {
+    color: rgba(247, 241, 244, 0.58);
+}
+
+.meta-block {
+    margin-top: 2px;
 }
 
 .title {
     color: @text;
-    font-size: 18px;
+    font-size: 26px;
     font-weight: 900;
 }
 
 .subtitle {
     color: @muted;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
 }
 
-.album,
+.album {
+    color: @faint;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.progress-block {
+    margin-top: 2px;
+    padding: 0 4px;
+}
+
+.time-row {
+    margin-top: 2px;
+}
+
 .time {
     color: @faint;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
+}
+
+scale {
+    min-height: 24px;
 }
 
 scale trough {
-    min-height: 6px;
-    border-radius: 8px;
-    background: @surface;
+    min-height: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
 }
 
 scale highlight {
-    min-height: 6px;
-    border-radius: 8px;
-    background: @accent;
+    min-height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, alpha(@accent, 0.78), @accent);
+}
+
+scale slider {
+    min-width: 18px;
+    min-height: 18px;
+    background: @on_accent;
+    border: 3px solid @accent;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px alpha(@accent, 0.34);
 }
 
 .controls {
-    padding-top: 2px;
+    margin-top: 2px;
+}
+
+.secondary-control,
+.play-button {
+    min-width: 52px;
+    min-height: 52px;
+}
+
+.secondary-control {
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .play-button {
-    min-width: 42px;
-    min-height: 42px;
+    min-width: 68px;
+    min-height: 68px;
     color: @on_accent;
-    background: @accent;
+    background: linear-gradient(180deg, alpha(@accent, 0.96), alpha(@accent, 0.82));
+    border-color: alpha(@accent, 0.4);
+    box-shadow: 0 12px 26px alpha(@accent, 0.22);
 }
 
 .play-button:hover {
-    background: alpha(@accent, 0.86);
+    background: linear-gradient(180deg, @accent, alpha(@accent, 0.88));
+}
+
+button:disabled {
+    opacity: 0.42;
+    box-shadow: none;
 }

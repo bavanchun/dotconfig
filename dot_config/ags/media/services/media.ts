@@ -137,6 +137,12 @@ export class MediaService {
         this.emit()
     }
 
+    selectPlayer(player: Player | null) {
+        const players = this.getPlayers()
+        this.selectedPlayer = player && players.includes(player) ? player : null
+        this.emit()
+    }
+
     private rebindPlayers() {
         for (const [player, ids] of this.playerSignalIds) {
             for (const id of ids) player.disconnect(id)
