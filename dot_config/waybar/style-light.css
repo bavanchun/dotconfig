@@ -70,11 +70,14 @@ tooltip label {
 }
 
 #custom-launcher {
-    min-width: 24px;
-    padding-left: 11px;
-    padding-right: 11px;
+    min-width: 38px;
+    min-height: 28px;
+    padding-left: 0;
+    padding-right: 0;
     color: @accent;
-    font-size: 14px;
+    font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font Mono", monospace;
+    font-size: 17px;
+    font-weight: 800;
 }
 
 #custom-launcher:hover,

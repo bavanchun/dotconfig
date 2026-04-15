@@ -1,9 +1,11 @@
 import app from "ags/gtk4/app"
 import GLib from "gi://GLib?version=2.0"
 import { createMediaPanel } from "./widgets/MediaPanel"
+import { createMediaMini } from "./widgets/MediaMini"
 import { mediaService } from "./services/media"
 
 let panel: ReturnType<typeof createMediaPanel> | null = null
+let mini: ReturnType<typeof createMediaMini> | null = null
 
 function togglePanel(force?: boolean) {
     if (!panel) return
@@ -33,6 +35,7 @@ app.start({
     css: `${GLib.getenv("HOME")}/.config/ags/media/style.css`,
     main() {
         panel = createMediaPanel(app)
+        mini = createMediaMini(app, () => togglePanel(true))
     },
     requestHandler(argv, response) {
         const command = argv[0] || "toggle"
