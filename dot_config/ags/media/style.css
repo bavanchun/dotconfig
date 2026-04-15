@@ -14,10 +14,9 @@
 @define-color scrim rgba(12, 10, 16, 0.72);
 
 .media-panel {
-    padding: 10px;
+    padding: 0;
     color: @text;
-    background: @shell_bg;
-    border-radius: 28px;
+    background: transparent;
 }
 
 .surface-card {
@@ -27,23 +26,31 @@
 }
 
 .media-header {
-    padding: 14px 16px;
+    padding: 10px 12px;
     background: linear-gradient(180deg, rgba(28, 25, 34, 0.96), rgba(20, 18, 25, 0.94));
 }
 
-.header-lead image {
+.header-icon-frame {
+    min-width: 30px;
+    min-height: 30px;
+    border-radius: 999px;
+    background: alpha(@accent, 0.12);
+    border: 1px solid alpha(@accent, 0.16);
+}
+
+.header-icon-frame image {
     color: @accent;
 }
 
 .heading {
     color: @text;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 900;
 }
 
 .heading-caption {
     color: @faint;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.04em;
 }
@@ -77,6 +84,12 @@
     font-weight: 800;
 }
 
+.header-button {
+    min-width: 34px;
+    min-height: 34px;
+    padding: 4px 12px;
+}
+
 .player-popover {
     min-width: 220px;
 }
@@ -103,7 +116,7 @@
 
 .media-card {
     background: linear-gradient(180deg, rgba(31, 27, 37, 0.97), rgba(17, 15, 23, 0.98));
-    min-height: 520px;
+    min-height: 500px;
     transition: box-shadow 180ms ease, border-color 180ms ease;
 }
 
@@ -143,8 +156,16 @@
     min-height: 484px;
 }
 
-.status-row {
+.body-cluster {
     margin-top: 2px;
+}
+
+.right-column {
+    min-width: 0;
+}
+
+.status-row {
+    margin-top: 0;
 }
 
 .identity-pill,
@@ -177,8 +198,8 @@
 }
 
 .art-shell {
-    margin-top: 8px;
-    border-radius: 28px;
+    margin-top: 0;
+    border-radius: 24px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 22px 36px rgba(0, 0, 0, 0.28);
@@ -186,7 +207,7 @@
 
 .cover-picture,
 .cover-fallback {
-    border-radius: 28px;
+    border-radius: 24px;
 }
 
 .cover-picture {
@@ -198,7 +219,7 @@
 }
 
 .meta-block {
-    margin-top: 2px;
+    margin-top: 0;
 }
 
 .meta-block label {
@@ -211,13 +232,13 @@
 
 .title {
     color: @text;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 900;
 }
 
 .subtitle {
     color: @muted;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
 }
 
@@ -227,63 +248,29 @@
     font-weight: 700;
 }
 
-.info-row {
-    margin-top: 2px;
+.meta-aux {
+    margin-top: 0;
 }
 
-.info-card {
-    padding: 10px 12px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-}
-
-.info-card-value {
-    color: @text;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.info-card-caption {
+.meta-source,
+.meta-context,
+.other-players {
     color: @faint;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
 }
 
-.players-section {
-    margin-top: 2px;
-}
-
-.players-heading {
+.meta-source {
     color: @muted;
-    font-size: 11px;
-    font-weight: 800;
 }
 
-.players-flow {
-    min-height: 34px;
-}
-
-.player-chip {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 999px;
-}
-
-.player-chip.active {
-    background: alpha(@accent, 0.18);
-    border-color: alpha(@accent, 0.32);
-}
-
-.player-chip-label {
-    color: @text;
-    font-size: 11px;
-    font-weight: 800;
+.other-players {
+    color: @muted;
 }
 
 .progress-block {
-    margin-top: 2px;
-    padding: 0 4px;
+    margin-top: 0;
+    padding: 0;
 }
 
 .time-row {
@@ -323,6 +310,29 @@ scale slider {
 
 .controls {
     margin-top: 2px;
+}
+
+.media-card.compact-layout .media-card-content {
+    min-height: 0;
+}
+
+.media-card.compact-layout .art-shell {
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.22);
+}
+
+.media-card.compact-layout .title {
+    font-size: 20px;
+}
+
+.media-card.compact-layout .subtitle {
+    font-size: 12px;
+}
+
+.media-card.compact-layout .album,
+.media-card.compact-layout .meta-source,
+.media-card.compact-layout .meta-context,
+.media-card.compact-layout .other-players {
+    font-size: 10px;
 }
 
 .secondary-control,

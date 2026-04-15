@@ -36,22 +36,6 @@ function label(text = "", className = "", xalign = 0) {
     return widget
 }
 
-function infoCard(captionText: string) {
-    const box = addClass(new Gtk.Box({
-        orientation: Gtk.Orientation.VERTICAL,
-        spacing: 3,
-    }), "info-card")
-    box.hexpand = true
-
-    const value = label("—", "info-card-value")
-    const caption = label(captionText, "info-card-caption")
-
-    box.append(value)
-    box.append(caption)
-
-    return { box, value, caption }
-}
-
 function iconButton(iconName: string, className = "", pixelSize = 18) {
     const image = new Gtk.Image({ icon_name: iconName, pixel_size: pixelSize })
     const button = new Gtk.Button({ child: image })
@@ -113,6 +97,21 @@ function createMarqueeLabel(className: string, xalign = 0.5, threshold = 28) {
     }
 }
 
+function mediaContext(snapshot: ReturnType<typeof mediaService.snapshot>) {
+    if (snapshot.album) return snapshot.album
+    if (snapshot.artist) return snapshot.artist
+    if (snapshot.sourceApp.match(/chrome|chromium/i)) return "Web media session"
+    return ""
+}
+
+function useCompactLayout(snapshot: ReturnType<typeof mediaService.snapshot>) {
+    if (!snapshot.current) return false
+    if (snapshot.sourceApp.match(/chrome|chromium/i)) return true
+    if (!snapshot.coverArt) return true
+    if (snapshot.title.length > 34) return true
+    return false
+}
+
 export function createMediaPanel(app: Gtk.Application) {
     const display = Gdk.Display.get_default()
     const monitors = display?.get_monitors()
@@ -135,7 +134,7 @@ export function createMediaPanel(app: Gtk.Application) {
         layer: Astal.Layer.OVERLAY,
         keymode: Astal.Keymode.ON_DEMAND,
         anchor: Astal.WindowAnchor.TOP | Astal.WindowAnchor.LEFT,
-        margin_top: 64,
+        margin_top: 52,
         margin_left: 24,
         visible: false,
         ...(laptopMonitor ? { gdkmonitor: laptopMonitor } : {}),
@@ -143,8 +142,8 @@ export function createMediaPanel(app: Gtk.Application) {
 
     const root = addClass(new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
-        spacing: 14,
-        width_request: 448,
+        spacing: 10,
+        width_request: 440,
     }), "media-panel")
 
     const header = addClass(new Gtk.Box({
@@ -158,7 +157,8 @@ export function createMediaPanel(app: Gtk.Application) {
     }), "header-lead")
     headerLead.hexpand = true
 
-    const headerIcon = new Gtk.Image({ icon_name: "multimedia-player-symbolic", pixel_size: 18 })
+    const headerIconFrame = addClass(new Gtk.Box(), "header-icon-frame")
+    const headerIcon = new Gtk.Image({ icon_name: "multimedia-player-symbolic", pixel_size: 16 })
     const headingGroup = addClass(new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
         spacing: 2,
@@ -168,7 +168,8 @@ export function createMediaPanel(app: Gtk.Application) {
 
     headingGroup.append(heading)
     headingGroup.append(headingCaption)
-    headerLead.append(headerIcon)
+    headerIconFrame.append(headerIcon)
+    headerLead.append(headerIconFrame)
     headerLead.append(headingGroup)
 
     const playerPopover = new Gtk.Popover()
@@ -194,10 +195,10 @@ export function createMediaPanel(app: Gtk.Application) {
     const playerButton = addClass(new Gtk.MenuButton({
         child: playerButtonChild,
         tooltip_text: "Choose active player",
-    }), "player-button") as Gtk.MenuButton
+    }), "player-button", "header-button") as Gtk.MenuButton
     playerButton.set_popover(playerPopover)
 
-    const { button: closeButton } = iconButton("window-close-symbolic")
+    const { button: closeButton } = iconButton("window-close-symbolic", "header-button", 16)
     closeButton.connect("clicked", () => {
         win.visible = false
     })
@@ -218,12 +219,17 @@ export function createMediaPanel(app: Gtk.Application) {
 
     const content = addClass(new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
-        spacing: 16,
-        margin_top: 18,
-        margin_bottom: 18,
+        spacing: 14,
+        margin_top: 16,
+        margin_bottom: 16,
         margin_start: 18,
         margin_end: 18,
     }), "media-card-content")
+
+    const bodyCluster = addClass(new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 14,
+    }), "body-cluster")
 
     const statusRow = addClass(new Gtk.Box({
         orientation: Gtk.Orientation.HORIZONTAL,
@@ -236,13 +242,13 @@ export function createMediaPanel(app: Gtk.Application) {
     statusRow.append(statePill)
 
     const artShell = addClass(new Gtk.Overlay(), "art-shell")
-    artShell.set_size_request(272, 272)
+    artShell.set_size_request(244, 244)
     artShell.halign = Gtk.Align.CENTER
 
     const coverPicture = addClass(new Gtk.Picture(), "cover-picture")
     coverPicture.set_can_shrink(true)
     coverPicture.set_content_fit(Gtk.ContentFit.COVER)
-    coverPicture.set_size_request(272, 272)
+    coverPicture.set_size_request(244, 244)
 
     const coverFallback = addClass(new Gtk.Image({
         icon_name: "media-optical-symbolic",
@@ -254,9 +260,15 @@ export function createMediaPanel(app: Gtk.Application) {
     artShell.set_child(coverPicture)
     artShell.add_overlay(coverFallback)
 
+    const rightColumn = addClass(new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 12,
+    }), "right-column")
+    rightColumn.hexpand = true
+
     const meta = addClass(new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
-        spacing: 6,
+        spacing: 4,
     }), "meta-block")
 
     const title = createMarqueeLabel("title", 0.5, 26)
@@ -288,29 +300,20 @@ export function createMediaPanel(app: Gtk.Application) {
     meta.append(artist.widget)
     meta.append(album.widget)
 
-    const infoRow = addClass(new Gtk.Box({
-        orientation: Gtk.Orientation.HORIZONTAL,
-        spacing: 10,
-    }), "info-row")
-    const sourceCard = infoCard("Source app")
-    const contextCard = infoCard("Context")
-    infoRow.append(sourceCard.box)
-    infoRow.append(contextCard.box)
-
-    const playersSection = addClass(new Gtk.Box({
+    const metaAux = addClass(new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
-        spacing: 8,
-    }), "players-section")
-    const playersHeading = label("Active players", "players-heading")
-    const playersFlow = addClass(new Gtk.FlowBox({
-        selection_mode: Gtk.SelectionMode.NONE,
-        row_spacing: 8,
-        column_spacing: 8,
-        max_children_per_line: 4,
-        min_children_per_line: 1,
-    }), "players-flow")
-    playersSection.append(playersHeading)
-    playersSection.append(playersFlow)
+        spacing: 4,
+    }), "meta-aux")
+    const sourceLine = label("", "meta-source", 0.5)
+    const contextLine = label("", "meta-context", 0.5)
+    const otherPlayers = label("", "other-players", 0.5)
+    otherPlayers.wrap = true
+    otherPlayers.wrap_mode = Pango.WrapMode.WORD_CHAR
+    otherPlayers.justify = Gtk.Justification.CENTER
+    otherPlayers.set_lines(2)
+    metaAux.append(sourceLine)
+    metaAux.append(contextLine)
+    metaAux.append(otherPlayers)
 
     const progressBlock = addClass(new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
@@ -356,13 +359,15 @@ export function createMediaPanel(app: Gtk.Application) {
     controls.append(play)
     controls.append(next)
 
-    content.append(statusRow)
-    content.append(artShell)
-    content.append(meta)
-    content.append(infoRow)
-    content.append(playersSection)
-    content.append(progressBlock)
-    content.append(controls)
+    rightColumn.append(statusRow)
+    rightColumn.append(meta)
+    rightColumn.append(metaAux)
+    rightColumn.append(progressBlock)
+    rightColumn.append(controls)
+
+    bodyCluster.append(artShell)
+    bodyCluster.append(rightColumn)
+    content.append(bodyCluster)
 
     card.set_child(backdrop)
     card.add_overlay(scrim)
@@ -383,19 +388,20 @@ export function createMediaPanel(app: Gtk.Application) {
         album.setText(snap.album || "")
         album.widget.visible = snap.album.length > 0
 
-        sourceCard.value.label = hasPlayer ? (snap.sourceApp || snap.identity || "Unknown") : "Waiting"
-        contextCard.value.label = hasPlayer
-            ? (snap.album || snap.artist || "No album / extra context")
-            : "No active session"
-
         identityPill.label = snap.identity || "No player"
         statePill.label = hasPlayer ? (snap.isPlaying ? "Playing" : "Paused") : "Idle"
         setClass(statePill, "playing", snap.isPlaying)
         setClass(statePill, "paused", hasPlayer && !snap.isPlaying)
 
-        headingCaption.label = snap.players.length > 1
-            ? `${snap.players.length} active players`
-            : hasPlayer ? "Focused player" : "Waiting for playback"
+        headingCaption.label = hasPlayer
+            ? `${snap.sourceApp || snap.identity || "Player"} • ${snap.players.length} active player${snap.players.length === 1 ? "" : "s"}`
+            : "Waiting for playback"
+
+        sourceLine.label = hasPlayer ? (snap.sourceApp || snap.identity || "Unknown source") : ""
+        sourceLine.visible = hasPlayer
+        const context = mediaContext(snap)
+        contextLine.label = context
+        contextLine.visible = context.length > 0
 
         position.label = formatTime(snap.position)
         length.label = formatTime(snap.length)
@@ -412,11 +418,11 @@ export function createMediaPanel(app: Gtk.Application) {
         playerLabel.label = canChoosePlayer ? (snap.identity || `Players ${snap.players.length}`) : "Player"
 
         clearBox(playerList)
-        let activePlayersText = ""
+        const otherPlayers: string[] = []
         for (const player of snap.players) {
             const isActive = player === snap.current
             const playerName = player.identity || player.entry || "Player"
-            activePlayersText = activePlayersText ? `${activePlayersText}, ${playerName}` : playerName
+            if (!isActive) otherPlayers.push(playerName)
             const itemLabel = addClass(new Gtk.Label({
                 label: playerName,
                 xalign: 0,
@@ -430,41 +436,27 @@ export function createMediaPanel(app: Gtk.Application) {
             })
             playerList.append(item)
         }
-        playersHeading.label = snap.players.length > 0
-            ? `Active players (${snap.players.length})`
-            : "Active players"
-        playersHeading.tooltip_text = activePlayersText
+        otherPlayers.label = otherPlayers.length > 0 ? `Other players: ${otherPlayers.join(" • ")}` : ""
+        otherPlayers.visible = otherPlayers.length > 0
 
-        let playerChip = playersFlow.get_first_child()
-        while (playerChip) {
-            const next = playerChip.get_next_sibling()
-            playersFlow.remove(playerChip)
-            playerChip = next
-        }
-
-        for (const player of snap.players) {
-            const playerName = player.identity || player.entry || "Player"
-            const isActive = player === snap.current
-            const chipLabel = addClass(new Gtk.Label({
-                label: playerName,
-                xalign: 0.5,
-                ellipsize: Pango.EllipsizeMode.END,
-            }), "player-chip-label")
-            const chipBox = addClass(new Gtk.Box({
-                orientation: Gtk.Orientation.HORIZONTAL,
-                spacing: 0,
-                margin_top: 6,
-                margin_bottom: 6,
-                margin_start: 10,
-                margin_end: 10,
-            }), "player-chip")
-            if (isActive) chipBox.add_css_class("active")
-            chipBox.append(chipLabel)
-            const chipChild = new Gtk.FlowBoxChild()
-            chipChild.set_child(chipBox)
-            playersFlow.insert(chipChild, -1)
-        }
-        playersSection.visible = snap.players.length > 0
+        const compactLayout = useCompactLayout(snap)
+        setClass(card, "compact-layout", compactLayout)
+        bodyCluster.orientation = compactLayout ? Gtk.Orientation.HORIZONTAL : Gtk.Orientation.VERTICAL
+        bodyCluster.spacing = compactLayout ? 16 : 14
+        artShell.set_size_request(compactLayout ? 156 : 244, compactLayout ? 156 : 244)
+        coverPicture.set_size_request(compactLayout ? 156 : 244, compactLayout ? 156 : 244)
+        artShell.halign = compactLayout ? Gtk.Align.START : Gtk.Align.CENTER
+        statusRow.halign = compactLayout ? Gtk.Align.START : Gtk.Align.CENTER
+        meta.halign = compactLayout ? Gtk.Align.START : Gtk.Align.CENTER
+        meta.hexpand = true
+        title.widget.xalign = compactLayout ? 0 : 0.5
+        artist.widget.xalign = compactLayout ? 0 : 0.5
+        album.widget.xalign = compactLayout ? 0 : 0.5
+        sourceLine.xalign = compactLayout ? 0 : 0.5
+        contextLine.xalign = compactLayout ? 0 : 0.5
+        otherPlayers.xalign = compactLayout ? 0 : 0.5
+        otherPlayers.justify = compactLayout ? Gtk.Justification.LEFT : Gtk.Justification.CENTER
+        controls.halign = compactLayout ? Gtk.Align.START : Gtk.Align.CENTER
 
         const hasArt = snap.coverArt.length > 0
         coverPicture.visible = hasArt
