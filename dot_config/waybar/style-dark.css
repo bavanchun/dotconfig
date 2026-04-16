@@ -49,10 +49,10 @@ tooltip label {
 #custom-media,
 #workspaces,
 #tray-menu,
+#battery-capsule,
+#volume-capsule,
+#brightness-capsule,
 #custom-swaync,
-#battery,
-#wireplumber,
-#backlight,
 #custom-control,
 #custom-power-profile,
 #custom-fcitx,
@@ -87,10 +87,10 @@ tooltip label {
 #custom-active-window:hover,
 #custom-media:hover,
 #tray-menu:hover,
+#battery-capsule:hover,
+#volume-capsule:hover,
+#brightness-capsule:hover,
 #custom-swaync:hover,
-#battery:hover,
-#wireplumber:hover,
-#backlight:hover,
 #custom-control:hover,
 #custom-power-profile:hover,
 #custom-fcitx:hover,
@@ -226,14 +226,31 @@ tooltip label {
     box-shadow: none;
 }
 
+#battery-capsule,
+#volume-capsule,
+#brightness-capsule {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#battery-capsule > widget,
+#volume-capsule > widget,
+#brightness-capsule > widget {
+    background: transparent;
+}
+
+#battery-capsule box,
+#volume-capsule box,
+#brightness-capsule box {
+    border: none;
+    background: transparent;
+}
+
 #idle_inhibitor,
-#wireplumber,
 #network,
 #bluetooth,
 #cpu,
 #memory,
-#backlight,
-#battery,
 #tray,
 #custom-tray-toggle,
 #custom-conn-toggle,
@@ -252,9 +269,6 @@ tooltip label {
 }
 
 #custom-swaync,
-#battery,
-#wireplumber,
-#backlight,
 #custom-control {
     background: @capsule-bg;
     border: 1px solid @capsule-line-soft;
@@ -266,13 +280,10 @@ tooltip label {
 }
 
 #idle_inhibitor:hover,
-#wireplumber:hover,
 #network:hover,
 #bluetooth:hover,
 #cpu:hover,
 #memory:hover,
-#backlight:hover,
-#battery:hover,
 #tray:hover,
 #custom-tray-toggle:hover,
 #custom-conn-toggle:hover,
@@ -296,10 +307,8 @@ tooltip label {
     color: @accent;
 }
 
-#wireplumber,
 #network,
 #bluetooth,
-#backlight,
 #temperature,
 #custom-swaync,
 #custom-power-profile,
@@ -307,7 +316,6 @@ tooltip label {
     color: alpha(@text-muted, 0.82);
 }
 
-#wireplumber.muted,
 #bluetooth.disabled {
     color: alpha(@text-muted, 0.56);
 }
@@ -321,15 +329,35 @@ tooltip label {
     min-width: 50px;
 }
 
-#battery {
-    min-width: 62px;
-    color: alpha(@text, 0.90);
-    font-feature-settings: "tnum";
+#custom-battery-icon,
+#custom-volume-icon,
+#custom-brightness-icon,
+#custom-battery-text,
+#custom-volume-text,
+#custom-brightness-text {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    font-weight: 700;
+    transition: color 0.16s ease;
 }
 
-#wireplumber,
-#backlight {
-    min-width: 58px;
+#custom-battery-icon,
+#custom-volume-icon,
+#custom-brightness-icon {
+    min-width: 14px;
+    padding: 0;
+    color: alpha(@text, 0.90);
+}
+
+#custom-battery-text,
+#custom-volume-text,
+#custom-brightness-text {
+    min-width: 0;
+    padding: 0 0 0 8px;
+    color: alpha(@text, 0.90);
+    font-feature-settings: "tnum";
 }
 
 #custom-swaync {
@@ -356,26 +384,36 @@ tooltip label {
 
 #cpu.warning,
 #memory.warning,
-#battery.warning {
+#custom-battery-icon.warning,
+#custom-battery-text.warning {
     color: @warning;
 }
 
 #cpu.critical,
 #memory.critical,
-#battery.critical,
+#custom-battery-icon.critical,
+#custom-battery-text.critical,
 #temperature.critical {
     color: @danger;
 }
 
-#battery.charging {
+#custom-battery-icon.charging,
+#custom-battery-text.charging {
     color: @success;
 }
 
-#battery.plugged {
+#custom-battery-icon.plugged,
+#custom-battery-text.plugged {
     color: alpha(@text, 0.88);
 }
 
-#battery.critical:not(.charging),
+#custom-volume-icon.muted,
+#custom-volume-text.muted {
+    color: alpha(@text-muted, 0.56);
+}
+
+#custom-battery-icon.critical:not(.charging),
+#custom-battery-text.critical:not(.charging),
 #temperature.critical {
     animation: blink-dark 0.9s steps(8) infinite alternate;
 }

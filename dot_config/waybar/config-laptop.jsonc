@@ -10,7 +10,7 @@
 
     "modules-left": ["custom/launcher", "clock", "group/resources", "custom/active-window", "group/media"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["group/tray-menu", "custom/swaync", "battery", "wireplumber", "backlight", "custom/control", "custom/power"],
+    "modules-right": ["group/tray-menu", "custom/swaync", "group/battery-capsule", "group/volume-capsule", "group/brightness-capsule", "custom/control", "custom/power"],
 
     "group/media": {
         "orientation": "horizontal",
@@ -41,6 +41,33 @@
         "drawer": {
             "transition-duration": 220,
             "children-class": "tray-items"
+        }
+    },
+
+    "group/battery-capsule": {
+        "orientation": "horizontal",
+        "modules": ["custom/battery-icon", "custom/battery-text"],
+        "drawer": {
+            "transition-duration": 180,
+            "children-class": "capsule-value"
+        }
+    },
+
+    "group/volume-capsule": {
+        "orientation": "horizontal",
+        "modules": ["custom/volume-icon", "custom/volume-text"],
+        "drawer": {
+            "transition-duration": 180,
+            "children-class": "capsule-value"
+        }
+    },
+
+    "group/brightness-capsule": {
+        "orientation": "horizontal",
+        "modules": ["custom/brightness-icon", "custom/brightness-text"],
+        "drawer": {
+            "transition-duration": 180,
+            "children-class": "capsule-value"
         }
     },
 
@@ -145,22 +172,42 @@
         "tooltip-format-deactivated": "Idle inhibitor: OFF"
     },
 
-    "backlight": {
-        "format": "{icon} {percent}%",
-        "format-icons": ["󰋙", "󰃞", "󰃟", "󰃠"],
+    "custom/brightness-icon": {
+        "exec": "~/.config/waybar/scripts/capsule-brightness.sh icon",
+        "return-type": "json",
+        "interval": 2,
+        "tooltip": false,
         "on-scroll-up": "brightnessctl -e4 -n2 set 5%+",
-        "on-scroll-down": "brightnessctl -e4 -n2 set 5%-",
-        "tooltip": false
+        "on-scroll-down": "brightnessctl -e4 -n2 set 5%-"
     },
 
-    "wireplumber": {
-        "format": "{icon} {volume}%",
-        "format-muted": "󰝟",
-        "format-icons": ["󰕿", "󰖀", "󰕾"],
+    "custom/brightness-text": {
+        "exec": "~/.config/waybar/scripts/capsule-brightness.sh text",
+        "return-type": "json",
+        "interval": 2,
+        "tooltip": false,
+        "on-scroll-up": "brightnessctl -e4 -n2 set 5%+",
+        "on-scroll-down": "brightnessctl -e4 -n2 set 5%-"
+    },
+
+    "custom/volume-icon": {
+        "exec": "~/.config/waybar/scripts/capsule-volume.sh icon",
+        "return-type": "json",
+        "interval": 2,
+        "tooltip": false,
         "on-click": "pavucontrol",
         "on-scroll-up": "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+",
-        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
-        "max-volume": 150
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+    },
+
+    "custom/volume-text": {
+        "exec": "~/.config/waybar/scripts/capsule-volume.sh text",
+        "return-type": "json",
+        "interval": 2,
+        "tooltip": false,
+        "on-click": "pavucontrol",
+        "on-scroll-up": "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
     },
 
     "network": {
@@ -184,16 +231,18 @@
         "on-click": "blueman-manager"
     },
 
-    "battery": {
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰂄 {capacity}%",
-        "format-plugged": "󰚥 {capacity}%",
-        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "tooltip-format": "{timeTo}\n{power:.1f}W\n{capacity}% charged"
+    "custom/battery-icon": {
+        "exec": "~/.config/waybar/scripts/capsule-battery.sh icon",
+        "return-type": "json",
+        "interval": 10,
+        "tooltip": false
+    },
+
+    "custom/battery-text": {
+        "exec": "~/.config/waybar/scripts/capsule-battery.sh text",
+        "return-type": "json",
+        "interval": 10,
+        "tooltip": false
     },
 
     "tray": {
