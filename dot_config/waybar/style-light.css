@@ -332,6 +332,7 @@ tooltip label {
 #custom-battery-icon,
 #custom-volume-icon,
 #custom-brightness-icon,
+#custom-battery-text,
 #custom-volume-text,
 #custom-brightness-text {
     background: transparent;
@@ -350,23 +351,12 @@ tooltip label {
     color: alpha(@text, 0.90);
 }
 
+#custom-battery-text,
 #custom-volume-text,
 #custom-brightness-text {
     min-width: 0;
     padding: 0 0 0 8px;
     color: alpha(@text, 0.90);
-    font-feature-settings: "tnum";
-}
-
-#battery {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    margin: 0;
-    min-width: 0;
-    padding: 0 0 0 8px;
-    color: alpha(@text, 0.90);
-    font-weight: 700;
     font-feature-settings: "tnum";
 }
 
@@ -395,25 +385,25 @@ tooltip label {
 #cpu.warning,
 #memory.warning,
 #custom-battery-icon.warning,
-#battery.warning {
+#custom-battery-text.warning {
     color: @warning;
 }
 
 #cpu.critical,
 #memory.critical,
 #custom-battery-icon.critical,
-#battery.critical,
+#custom-battery-text.critical,
 #temperature.critical {
     color: @danger;
 }
 
 #custom-battery-icon.charging,
-#battery.charging {
+#custom-battery-text.charging {
     color: @success;
 }
 
 #custom-battery-icon.plugged,
-#battery.plugged {
+#custom-battery-text.plugged {
     color: alpha(@text, 0.88);
 }
 
@@ -423,7 +413,7 @@ tooltip label {
 }
 
 #custom-battery-icon.critical:not(.charging),
-#battery.critical:not(.charging),
+#custom-battery-text.critical:not(.charging),
 #temperature.critical {
     animation: blink-light 0.9s steps(8) infinite alternate;
 }
