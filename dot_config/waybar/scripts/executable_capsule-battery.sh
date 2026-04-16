@@ -6,7 +6,11 @@ mode="${1:-icon}"
 battery_dir="$(find /sys/class/power_supply -maxdepth 1 -type d -name 'BAT*' | head -n1)"
 
 if [[ -z "$battery_dir" ]]; then
-    jq -cn --arg text "󰂑" '{text:$text}'
+    if [[ "$mode" == "text" ]]; then
+        jq -cn --arg text "" '{text:$text}'
+    else
+        jq -cn --arg text "󰂑" '{text:$text}'
+    fi
     exit 0
 fi
 
