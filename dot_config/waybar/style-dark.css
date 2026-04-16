@@ -62,7 +62,7 @@ tooltip label {
     border: 1px solid @capsule-line-soft;
     border-radius: 999px;
     padding: 4px 10px;
-    margin: 6px 3px 4px;
+    margin: 1px 3px 1px;
     box-shadow:
         inset 0 1px 0 alpha(@surface-bright, 0.03),
         0 1px 3px @bar-shadow-soft;
@@ -275,7 +275,7 @@ tooltip label {
     box-shadow:
         inset 0 1px 0 alpha(@surface-bright, 0.03),
         0 1px 3px @bar-shadow-soft;
-    margin: 6px 3px 4px;
+    margin: 1px 3px 1px;
     padding: 4px 10px;
 }
 
