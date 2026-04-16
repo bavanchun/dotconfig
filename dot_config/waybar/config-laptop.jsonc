@@ -46,7 +46,7 @@
 
     "group/battery-capsule": {
         "orientation": "horizontal",
-        "modules": ["custom/battery-icon", "custom/battery-text"],
+        "modules": ["custom/battery-icon", "battery"],
         "drawer": {
             "transition-duration": 180,
             "children-class": "capsule-value"
@@ -238,10 +238,14 @@
         "tooltip": false
     },
 
-    "custom/battery-text": {
-        "exec": "~/.config/waybar/scripts/capsule-battery.sh text",
-        "return-type": "json",
-        "interval": 10,
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}%",
+        "format-charging": "{capacity}%",
+        "format-plugged": "{capacity}%",
         "tooltip": false
     },
 
