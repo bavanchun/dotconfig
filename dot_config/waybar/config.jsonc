@@ -9,7 +9,7 @@
     "margin-left": 10,
     "margin-right": 10,
 
-    "modules-left": ["group/launcher", "group/media"],
+    "modules-left": ["group/launcher"],
     "modules-center": ["group/time"],
     "modules-right": ["group/resources", "group/connectivity", "group/indicators", "custom/power"],
 
@@ -24,10 +24,6 @@
     "group/time": {
         "orientation": "horizontal",
         "modules": ["clock"]
-    },
-    "group/media": {
-        "orientation": "horizontal",
-        "modules": ["custom/media"]
     },
     "group/resources": {
         "orientation": "horizontal",
@@ -76,17 +72,6 @@
         "format-alt": "󰃭 {:%A, %d %B %Y  󰥔 %H:%M:%S}",
         "tooltip-format": "<big>{:%A, %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>"
     },
-    "custom/media": {
-        "exec": "~/.config/waybar/scripts/media-scroll.sh",
-        "return-type": "json",
-        "interval": 1,
-        "on-click": "playerctl play-pause",
-        "on-click-right": "playerctl next",
-        "on-click-middle": "playerctl previous",
-        "on-scroll-up": "playerctl volume 0.05+",
-        "on-scroll-down": "playerctl volume 0.05-"
-    },
-
     "cpu": {
         "format": "󰘚 {usage}%",
         "interval": 2,

@@ -8,14 +8,10 @@
     "margin-left": 10,
     "margin-right": 10,
 
-    "modules-left": ["custom/launcher", "clock", "group/resources", "custom/active-window", "group/media"],
+    "modules-left": ["custom/launcher", "clock", "group/resources", "custom/active-window"],
     "modules-center": ["hyprland/workspaces"],
     "modules-right": ["group/tray-menu", "custom/swaync", "group/battery-capsule", "group/volume-capsule", "group/brightness-capsule", "custom/control", "custom/power"],
 
-    "group/media": {
-        "orientation": "horizontal",
-        "modules": ["custom/media"]
-    },
     "group/resources": {
         "orientation": "horizontal",
         "modules": ["custom/res-toggle", "temperature", "cpu", "memory"],
@@ -126,17 +122,6 @@
         "format-alt": "󰃭 {:%d/%m/%Y  󰥔 %H:%M:%S}",
         "tooltip-format": "<big>{:%A, %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>",
         "interval": 1
-    },
-
-    "custom/media": {
-        "exec": "~/.config/waybar/scripts/media-scroll.sh",
-        "return-type": "json",
-        "interval": 1,
-        "on-click": "bash ~/.config/hypr/scripts/ags-media.sh open",
-        "on-click-right": "bash ~/.config/hypr/scripts/ags-media.sh play-pause",
-        "on-click-middle": "bash ~/.config/hypr/scripts/ags-media.sh next-player",
-        "on-scroll-up": "bash ~/.config/hypr/scripts/ags-media.sh previous",
-        "on-scroll-down": "bash ~/.config/hypr/scripts/ags-media.sh next"
     },
 
     "temperature": {
