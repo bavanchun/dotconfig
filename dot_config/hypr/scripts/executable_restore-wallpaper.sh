@@ -8,7 +8,7 @@ WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
 # Wait for awww daemon to be ready (timeout after 4s)
 READY=0
 for i in {1..20}; do
-    if awww query 2>/dev/null | grep -q "Name:"; then
+    if awww query >/dev/null 2>&1; then
         READY=1
         break
     fi
