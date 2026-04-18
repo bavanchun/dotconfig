@@ -34,7 +34,7 @@ source = ~/.config/hypr/hyprland/colors.conf
 # See https://wiki.hypr.land/Configuring/Keywords/
 
 # Set programs that you use
-$terminal = kitty
+$terminal = wezterm
 $fileManager = nautilus
 $menu = rofi -show drun
 
@@ -69,6 +69,7 @@ exec-once = hyprswitch init
 
 env = XCURSOR_SIZE,24
 env = HYPRCURSOR_SIZE,24
+env = TERMINAL,wezterm
 
 # Fcitx5 input method
 env = QT_IM_MODULE,fcitx
