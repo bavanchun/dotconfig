@@ -10,11 +10,14 @@ add() {
     fi
 }
 
-add code    "VS Code    GUI editor (Electron)"
-add cursor  "Cursor     AI-powered fork of VS Code"
-add zed     "Zed        GPU-accelerated Rust editor"
-add nvim    "Neovim     modal TUI editor"
-add hx      "Helix      modal TUI with built-in LSP"
+add code        "VS Code      GUI editor (Electron)"
+add cursor      "Cursor       AI-powered fork of VS Code"
+add zed         "Zed          GPU-accelerated Rust editor"
+add nvim        "Neovim       modal TUI editor"
+add hx          "Helix        modal TUI with built-in LSP"
+add idea        "IntelliJ     JetBrains IDEA"
+add rider       "Rider        JetBrains .NET IDE"
+add antigravity "Antigravity  Google editor"
 
 OPTIONS="${OPTIONS%$'\n'}"
 
@@ -34,9 +37,12 @@ fi
 [ -z "$CHOICE" ] && exit 0
 
 case "$CHOICE" in
-    "VS Code"*) exec code "${ARGS[@]}" ;;
-    Cursor*)    exec cursor "${ARGS[@]}" ;;
-    Zed*)       exec zed "${ARGS[@]}" ;;
-    Neovim*)    exec nvim "${ARGS[@]}" ;;
-    Helix*)     exec hx "${ARGS[@]}" ;;
+    "VS Code"*)    exec code "${ARGS[@]}" ;;
+    Cursor*)       exec cursor "${ARGS[@]}" ;;
+    Zed*)          exec zed "${ARGS[@]}" ;;
+    Neovim*)       exec nvim "${ARGS[@]}" ;;
+    Helix*)        exec hx "${ARGS[@]}" ;;
+    IntelliJ*)     exec idea "${ARGS[@]}" ;;
+    Rider*)        exec rider "${ARGS[@]}" ;;
+    Antigravity*)  exec antigravity "${ARGS[@]}" ;;
 esac
