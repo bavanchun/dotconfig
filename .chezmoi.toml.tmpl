@@ -1,0 +1,9 @@
+[data]
+  machine = {{ .chezmoi.hostname | quote }}
+
+[git]
+  autoCommit = false
+  autoPush = false
+
+[sourceVCS]
+  url = "git@github.com:bavanchun/dotconfig.git"

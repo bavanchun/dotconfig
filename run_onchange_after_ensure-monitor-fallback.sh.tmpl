@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# machine: {{ .machine }}
+set -euo pipefail
+
+conf="$HOME/.config/hypr/monitors-{{ .machine }}.conf"
+if [[ ! -f "$conf" ]]; then
+  mkdir -p "$(dirname "$conf")"
+  printf '# Auto-generated fallback monitor config\n# Replace with your actual monitor setup\nmonitor = , preferred, auto, 1\n' > "$conf"
+  echo "Created fallback monitor config at $conf"
+fi
