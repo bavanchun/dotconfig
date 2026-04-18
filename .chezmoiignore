@@ -29,3 +29,6 @@ dot_config/hypr/hyprland/colors.conf
 dot_config/hypr/hyprlock/colors.conf
 dot_config/fuzzel/fuzzel_theme.ini
 dot_config/waybar/colors.css
+
+# Claude Code workspace settings (absolute paths, machine-specific)
+dot_config/quickshell/exact_noctalia-shell/.claude/
