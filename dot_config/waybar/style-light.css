@@ -45,7 +45,6 @@ tooltip label {
 #clock,
 #resources,
 #window,
-#custom-media,
 #workspaces,
 #tray-menu,
 #battery-capsule,
@@ -83,7 +82,6 @@ tooltip label {
 #clock:hover,
 #resources:hover,
 #window:hover,
-#custom-media:hover,
 #tray-menu:hover,
 #battery-capsule:hover,
 #volume-capsule:hover,
@@ -188,49 +186,6 @@ tooltip label {
     border: 1px solid alpha(@danger, 0.24);
 }
 
-#custom-media {
-    min-width: 0;
-    color: alpha(@text-muted, 0.74);
-    font-family: "JetBrainsMono Nerd Font", monospace;
-    font-weight: 700;
-    padding-left: 14px;
-    padding-right: 14px;
-    margin-left: 6px;
-    border-radius: 999px;
-    background: @capsule-bg;
-    border: 1px solid @capsule-line-soft;
-    box-shadow:
-        inset 0 1px 0 alpha(@surface-bright, 0.08),
-        0 1px 3px @bar-shadow-soft;
-}
-
-#custom-media.playing {
-    color: alpha(@text, 0.92);
-    background: @capsule-bg-strong;
-    border-color: alpha(@accent, 0.24);
-    box-shadow:
-        inset 0 1px 0 alpha(@surface-bright, 0.10),
-        0 1px 3px @bar-shadow-soft,
-        0 0 0 1px alpha(@accent, 0.06);
-}
-
-#custom-media.paused {
-    color: alpha(@text-muted, 0.62);
-    background: @capsule-bg;
-    border-color: @capsule-line-soft;
-}
-
-#custom-media.multi-player {
-    padding-right: 18px;
-}
-
-#custom-media.idle {
-    color: alpha(@text-muted, 0.46);
-    background: transparent;
-    border-color: transparent;
-    box-shadow: none;
-}
-
 #battery-capsule,
 #volume-capsule,
 #brightness-capsule {
@@ -263,8 +218,7 @@ tooltip label {
 #custom-swaync,
 #custom-fcitx,
 #custom-power-profile,
-#temperature,
-#custom-net-speed {
+#temperature {
     background: transparent;
     color: alpha(@text-muted, 0.82);
     padding: 0 8px;
@@ -476,12 +430,6 @@ tooltip label {
     -gtk-icon-effect: highlight;
     background: alpha(@danger, 0.12);
     border-radius: 8px;
-}
-
-#custom-net-speed {
-    color: alpha(@text-muted, 0.58);
-    font-size: 11px;
-    min-width: 108px;
 }
 
 @keyframes blink-light {

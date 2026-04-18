@@ -21,16 +21,6 @@
         }
     },
 
-    // Connectivity: drawer — chỉ hiện icon toggle, hover mới mở
-    "group/connectivity": {
-        "orientation": "horizontal",
-        "modules": ["custom/conn-toggle", "idle_inhibitor", "network", "bluetooth"],
-        "drawer": {
-            "transition-duration": 220,
-            "children-class": "conn-items"
-        }
-    },
-
     "group/tray-menu": {
         "orientation": "horizontal",
         "modules": ["custom/tray-toggle", "tray"],
@@ -70,7 +60,6 @@
     "hyprland/workspaces": {
         "format": "{id}",
         "format-empty": "•",
-        "format-window-separator": " ",
         "window-rewrite-default-icon": "󰣆",
         "window-rewrite": {
             "google-chrome": "󰊭",
@@ -249,23 +238,6 @@
         "format": "󰒓",
         "tooltip": false,
         "on-click": "bash ~/.config/waybar/scripts/control-menu.sh"
-    },
-
-    "custom/power-profile": {
-        "exec": "powerprofilesctl get | awk '{if ($0 == \"performance\") print \"󰓅\"; else if ($0 == \"balanced\") print \"󰾅\"; else print \"󰌪\"}'",
-        "interval": 2,
-        "format": "{}",
-        "on-click": "bash ~/.config/waybar/scripts/power-profile-menu.sh",
-        "tooltip-format": "Power profile",
-        "tooltip": false
-    },
-
-    "custom/fcitx": {
-        "exec": "fcitx5-remote -n | awk '{if ($0 == \"keyboard-us\") print \"EN\"; else print \"VI\"}'",
-        "interval": 1,
-        "format": "{}",
-        "on-click": "fcitx5-remote -t",
-        "tooltip": false
     },
 
     "custom/swaync": {
