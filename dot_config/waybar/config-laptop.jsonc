@@ -51,7 +51,7 @@
 
     "group/volume-capsule": {
         "orientation": "horizontal",
-        "modules": ["custom/volume-icon", "custom/volume-text"],
+        "modules": ["wireplumber#icon", "wireplumber#text"],
         "drawer": {
             "transition-duration": 180,
             "children-class": "capsule-value"
@@ -165,24 +165,23 @@
         "on-scroll-down": "brightnessctl -e4 -n2 set 5%-"
     },
 
-    "custom/volume-icon": {
-        "exec": "~/.config/waybar/scripts/capsule-volume.sh icon",
-        "return-type": "json",
-        "interval": 2,
-        "tooltip": false,
+    "wireplumber#icon": {
+        "format": "{icon}",
+        "format-muted": "󰝟",
+        "format-icons": ["󰕿", "󰖀", "󰕾"],
         "on-click": "pavucontrol",
         "on-scroll-up": "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+",
-        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+        "tooltip": false
     },
 
-    "custom/volume-text": {
-        "exec": "~/.config/waybar/scripts/capsule-volume.sh text",
-        "return-type": "json",
-        "interval": 2,
-        "tooltip": false,
+    "wireplumber#text": {
+        "format": "{volume}%",
+        "format-muted": "",
         "on-click": "pavucontrol",
         "on-scroll-up": "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+",
-        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+        "tooltip": false
     },
 
     "network": {

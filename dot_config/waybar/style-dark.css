@@ -417,6 +417,35 @@ tooltip label {
     color: alpha(@text-muted, 0.56);
 }
 
+#wireplumber.icon {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    min-width: 14px;
+    padding: 0;
+    color: alpha(@text, 0.90);
+    font-weight: 700;
+    transition: color 0.16s ease;
+}
+
+#wireplumber.text {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    min-width: 0;
+    padding: 0 0 0 8px;
+    color: alpha(@text, 0.90);
+    font-feature-settings: "tnum";
+    font-weight: 700;
+    transition: color 0.16s ease;
+}
+
+#wireplumber.muted {
+    color: alpha(@text-muted, 0.56);
+}
+
 #custom-battery-icon.critical:not(.charging),
 #custom-battery-text.critical:not(.charging),
 #temperature.critical {
