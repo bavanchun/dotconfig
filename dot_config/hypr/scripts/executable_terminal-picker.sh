@@ -1,13 +1,15 @@
 #!/bin/bash
 
-WEZTERM="  WezTerm"
-ALACRITTY="  Alacritty"
-KITTY="  Kitty"
-
-CHOICE=$(printf "$WEZTERM\n$ALACRITTY\n$KITTY" \
+CHOICE=$(printf '%s\n' \
+    "WezTerm    default terminal" \
+    "Kitty      fast and feature-rich" \
+    "Alacritty  minimal and lightweight" \
     | timeout 5 fuzzel --dmenu \
-        --prompt "Terminal [5s → wezterm]: " \
-        --width 32 --lines 3)
+        --config ~/.config/fuzzel/terminal-picker.ini \
+        --prompt "terminal  " \
+        --placeholder "Select a terminal [5s default: WezTerm]" \
+        --mesg "Pick the terminal to launch with SUPER+T" \
+        --select "WezTerm")
 EXIT=$?
 
 if [ "$EXIT" -eq 124 ]; then
@@ -17,7 +19,7 @@ fi
 [ -z "$CHOICE" ] && exit 0
 
 case "$CHOICE" in
-    *"WezTerm"*)   exec wezterm ;;
-    *"Alacritty"*) exec alacritty ;;
-    *"Kitty"*)     exec kitty ;;
+    WezTerm*)   exec wezterm ;;
+    Alacritty*) exec alacritty ;;
+    Kitty*)     exec kitty ;;
 esac
