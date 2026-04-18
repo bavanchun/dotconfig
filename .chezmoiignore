@@ -23,3 +23,9 @@ dot_config/waybar/*.phase4-pre
 # Hyprland - monitors.conf là auto-generated bởi nwg-displays
 dot_config/hypr/monitors.conf
 dot_config/hypr/monitors.conf.old
+
+# Matugen generated outputs (regenerated at runtime, NOT portable)
+dot_config/hypr/hyprland/colors.conf
+dot_config/hypr/hyprlock/colors.conf
+dot_config/fuzzel/fuzzel_theme.ini
+dot_config/waybar/colors.css
