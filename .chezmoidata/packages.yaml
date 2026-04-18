@@ -1,0 +1,76 @@
+packages:
+  pacman:
+    # Hyprland core
+    - hyprland
+    - hyprpaper
+    - hypridle
+    - hyprlock
+    - hyprpolkitagent
+    - hyprsunset
+    - xdg-desktop-portal-hyprland
+    # Bar / menu / notification
+    - waybar
+    - rofi
+    - fuzzel
+    - swaync
+    # Terminal & shell
+    - wezterm
+    - kitty
+    - alacritty
+    - zsh
+    - starship
+    - tmux
+    # Utilities
+    - wl-clipboard
+    - cliphist
+    - grim
+    - slurp
+    - flameshot
+    - swappy
+    - brightnessctl
+    - playerctl
+    - wireplumber
+    - pavucontrol
+    - socat
+    - jq
+    - python
+    - fzf
+    - eza
+    - bat
+    - unzip
+    - git
+    - base-devel
+    # System
+    - networkmanager
+    - network-manager-applet
+    - bluez
+    - bluez-utils
+    - blueman
+    - power-profiles-daemon
+    # Apps
+    - nautilus
+    # Input method
+    - fcitx5
+    - fcitx5-configtool
+    - fcitx5-bamboo
+    - fcitx5-gtk
+    - fcitx5-qt
+    # Fonts
+    - ttf-jetbrains-mono-nerd
+    - noto-fonts
+    - noto-fonts-cjk
+    - noto-fonts-emoji
+    # Theming
+    - papirus-icon-theme
+    # Matugen (official repo)
+    - matugen
+  aur:
+    - awww
+    - hyprshot
+    - hyprswitch
+    - wlogout
+    - wezterm-cursor-trail
+    - kde-material-you-colors
+    - adw-gtk3
+    - ttf-google-sans-flex
+    - ttf-material-symbols-variable-git
