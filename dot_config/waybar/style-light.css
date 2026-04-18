@@ -45,7 +45,6 @@ tooltip label {
 #clock,
 #resources,
 #window,
-#custom-active-window,
 #custom-media,
 #workspaces,
 #tray-menu,
@@ -84,7 +83,6 @@ tooltip label {
 #clock:hover,
 #resources:hover,
 #window:hover,
-#custom-active-window:hover,
 #custom-media:hover,
 #tray-menu:hover,
 #battery-capsule:hover,
@@ -121,8 +119,7 @@ tooltip label {
     padding-left: 10px;
 }
 
-#window,
-#custom-active-window {
+#window {
     color: alpha(@text-muted, 0.78);
     font-weight: 600;
     min-width: 64px;
@@ -130,8 +127,7 @@ tooltip label {
     padding-right: 11px;
 }
 
-#window.empty,
-#custom-active-window.empty {
+#window.empty {
     color: @state-faint;
 }
 
