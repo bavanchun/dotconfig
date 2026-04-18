@@ -35,7 +35,7 @@
     },
     "group/indicators": {
         "orientation": "horizontal",
-        "modules": ["group/tray-menu", "custom/power-profile", "custom/fcitx", "custom/swaync", "battery"]
+        "modules": ["group/tray-menu", "custom/power-profile", "hyprland/language", "custom/swaync", "battery"]
     },
     "group/tray-menu": {
         "orientation": "horizontal",
@@ -160,11 +160,8 @@
         "tooltip": false
     },
 
-    "custom/fcitx": {
-        "exec": "fcitx5-remote -n | awk '{if ($0 == \"keyboard-us\") print \"EN\"; else print \"VI\"}'",
-        "interval": 1,
-        "format": "{}",
-        "on-click": "fcitx5-remote -t",
+    "hyprland/language": {
+        "format": "{short}",
         "tooltip": false
     },
 

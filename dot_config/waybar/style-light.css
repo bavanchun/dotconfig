@@ -53,7 +53,7 @@ tooltip label {
 #custom-swaync,
 #custom-control,
 #custom-power-profile,
-#custom-fcitx,
+#language,
 #custom-power {
     background: @capsule-bg;
     color: alpha(@text, 0.90);
@@ -89,7 +89,7 @@ tooltip label {
 #custom-swaync:hover,
 #custom-control:hover,
 #custom-power-profile:hover,
-#custom-fcitx:hover,
+#language:hover,
 #custom-power:hover {
     background: @capsule-bg-strong;
     border-color: alpha(@outline, 0.26);
@@ -216,7 +216,7 @@ tooltip label {
 #custom-conn-toggle,
 #custom-res-toggle,
 #custom-swaync,
-#custom-fcitx,
+#language,
 #custom-power-profile,
 #temperature {
     background: transparent;
@@ -248,7 +248,7 @@ tooltip label {
 #custom-conn-toggle:hover,
 #custom-res-toggle:hover,
 #custom-swaync:hover,
-#custom-fcitx:hover,
+#language:hover,
 #custom-power-profile:hover,
 #temperature:hover {
     background: @segment-hover;
@@ -271,7 +271,7 @@ tooltip label {
 #temperature,
 #custom-swaync,
 #custom-power-profile,
-#custom-fcitx {
+#language {
     color: alpha(@text-muted, 0.80);
 }
 
@@ -333,7 +333,7 @@ tooltip label {
     color: @accent;
 }
 
-#custom-fcitx,
+#language,
 #custom-power-profile {
     min-width: 24px;
     color: alpha(@text, 0.88);

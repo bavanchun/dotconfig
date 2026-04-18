@@ -10,7 +10,7 @@
 
     "modules-left": ["custom/launcher", "clock", "group/resources", "hyprland/window"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["group/tray-menu", "custom/swaync", "group/battery-capsule", "group/volume-capsule", "group/brightness-capsule", "custom/control", "custom/power"],
+    "modules-right": ["group/tray-menu", "custom/swaync", "group/battery-capsule", "group/volume-capsule", "group/brightness-capsule", "hyprland/language", "custom/control", "custom/power"],
 
     "group/resources": {
         "orientation": "horizontal",
@@ -238,6 +238,11 @@
         "format": "󰒓",
         "tooltip": false,
         "on-click": "bash ~/.config/waybar/scripts/control-menu.sh"
+    },
+
+    "hyprland/language": {
+        "format": "{short}",
+        "tooltip": false
     },
 
     "custom/swaync": {
