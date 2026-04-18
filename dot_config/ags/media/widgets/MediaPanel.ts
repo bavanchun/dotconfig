@@ -125,7 +125,7 @@ export function createMediaPanel(app: Gtk.Application) {
     if (monitors) {
         for (let i = 0; i < monitors.get_n_items(); i++) {
             const monitor = monitors.get_item(i) as Gdk.Monitor | null
-            if (monitor?.get_connector() === "eDP-1") {
+            if (monitor?.get_connector()?.startsWith("eDP-")) {
                 laptopMonitor = monitor
                 break
             }

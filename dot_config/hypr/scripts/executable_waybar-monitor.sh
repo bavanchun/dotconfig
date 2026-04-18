@@ -3,7 +3,7 @@
 SCRIPT_PID_FILE="/tmp/waybar-monitor-script.pid"
 WAYBAR_PID_FILE="/tmp/waybar-monitor.pid"
 LOG_FILE="/tmp/waybar-monitor.log"
-WAYBAR_CONFIG="$HOME/.config/waybar/config-laptop.jsonc"
+WAYBAR_CONFIG="$HOME/.config/waybar/config.jsonc"
 WAYBAR_STYLE="$HOME/.config/waybar/style.css"
 FORCE_RESTART="${1:-}"
 
