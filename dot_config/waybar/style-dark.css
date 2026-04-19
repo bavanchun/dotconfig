@@ -44,12 +44,10 @@ tooltip label {
 #custom-launcher,
 #clock,
 #resources,
+#connectivity,
 #workspaces,
 #tray-menu,
-#custom-swaync,
-#custom-power-profile,
-#language,
-#battery,
+#indicators,
 #custom-media,
 #custom-power {
     background: @capsule-bg;
@@ -79,12 +77,10 @@ tooltip label {
 #custom-launcher:hover,
 #clock:hover,
 #resources:hover,
+#connectivity:hover,
 #workspaces:hover,
 #tray-menu:hover,
-#custom-swaync:hover,
-#custom-power-profile:hover,
-#language:hover,
-#battery:hover,
+#indicators:hover,
 #custom-media:hover,
 #custom-power:hover {
     background: @capsule-bg-strong;
@@ -100,14 +96,20 @@ tooltip label {
 
 #resources,
 #connectivity,
-#tray-menu {
+#indicators {
     padding-left: 6px;
     padding-right: 6px;
 }
 
+#tray-menu {
+    padding: 3px 14px;
+    min-width: 46px;
+}
+
 #resources > widget:not(:first-child) > *,
 #connectivity > widget:not(:first-child) > *,
-#tray-menu > widget:not(:first-child) > * {
+#tray-menu > widget:not(:first-child) > *,
+#indicators > widget:not(:first-child) > * {
     border-left: 1px solid alpha(@outline-variant, 0.16);
     margin-left: 1px;
     padding-left: 7px;
@@ -201,6 +203,7 @@ tooltip label {
 #custom-swaync,
 #language,
 #custom-power-profile,
+#battery,
 #temperature {
     background: transparent;
     color: alpha(@text-muted, 0.84);
@@ -223,6 +226,7 @@ tooltip label {
 #custom-swaync:hover,
 #language:hover,
 #custom-power-profile:hover,
+#battery:hover,
 #temperature:hover {
     background: @segment-hover;
     color: alpha(@text, 0.92);
@@ -316,6 +320,7 @@ tooltip label {
 
 #battery {
     font-weight: 700;
+    color: alpha(@text, 0.90);
 }
 
 #cpu.warning,
@@ -384,7 +389,7 @@ tooltip label {
 }
 
 #custom-power {
-    min-width: 22px;
+    padding: 3px 20px;
     color: alpha(@text-muted, 0.70);
     font-weight: 800;
 }

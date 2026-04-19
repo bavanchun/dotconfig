@@ -10,7 +10,7 @@
 
     "modules-left": ["group/launcher", "group/media"],
     "modules-center": ["group/time"],
-    "modules-right": ["group/resources", "wireplumber", "network", "bluetooth", "group/tray-menu", "custom/power-profile", "hyprland/language", "custom/swaync", "battery", "custom/power"],
+    "modules-right": ["group/resources", "group/connectivity", "group/tray-menu", "group/indicators", "custom/power"],
 
     "group/launcher": {
         "orientation": "horizontal",
@@ -38,7 +38,7 @@
     },
     "group/indicators": {
         "orientation": "horizontal",
-        "modules": ["group/tray-menu", "custom/power-profile", "hyprland/language", "custom/swaync", "battery"]
+        "modules": ["custom/power-profile", "hyprland/language", "custom/swaync", "battery"]
     },
     "group/tray-menu": {
         "orientation": "horizontal",
