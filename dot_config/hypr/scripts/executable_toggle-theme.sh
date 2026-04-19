@@ -1,6 +1,6 @@
 #!/bin/bash
 STATE_FILE="$HOME/.config/theme-mode"
-SEED_COLOR="#c73e64"
+SEED_COLOR="#38A159"
 
 # Read current mode (default: dark)
 CURRENT=$(cat "$STATE_FILE" 2>/dev/null || echo "dark")
@@ -12,15 +12,7 @@ CURRENT=$(cat "$STATE_FILE" 2>/dev/null || echo "dark")
 echo "$NEW" > "$STATE_FILE"
 
 # 1. Matugen → regenerate all color templates (hyprland, hyprlock, fuzzel, gtk3, gtk4)
-WALLPAPER=$(cat "$HOME/.config/wallpaper-current" 2>/dev/null)
-if [[ -f "$WALLPAPER" ]]; then
-    matugen image "$WALLPAPER" -m "$NEW" \
-        --prefer saturation \
-        --type scheme-vibrant \
-        --contrast 0.3
-else
-    matugen color hex "$SEED_COLOR" -m "$NEW"
-fi
+matugen color hex "$SEED_COLOR" -m "$NEW"
 
 # 2. GTK theme + color-scheme
 if [[ "$NEW" == "light" ]]; then

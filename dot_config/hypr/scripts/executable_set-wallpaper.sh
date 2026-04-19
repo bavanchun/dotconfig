@@ -31,12 +31,9 @@ awww img "$WALLPAPER" \
 # 2. Persist state
 echo "$WALLPAPER" > "$HOME/.config/wallpaper-current"
 
-# 3. Regenerate màu từ wallpaper (matugen image mode)
+# 3. Regenerate màu từ seed cố định (giữ identity xanh mộc #38A159)
 MODE=$(cat "$HOME/.config/theme-mode" 2>/dev/null || echo "dark")
-matugen image "$WALLPAPER" -m "$MODE" \
-    --prefer saturation \
-    --type scheme-vibrant \
-    --contrast 0.3
+matugen color hex "#38A159" -m "$MODE"
 
 # 4. Reload UI
 pkill -SIGUSR2 waybar
