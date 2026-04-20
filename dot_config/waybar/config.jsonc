@@ -193,14 +193,14 @@
     },
 
     "custom/media": {
-        "format": "{icon}  {}",
+        "format": "{icon}  {text}",
         "format-icons": {
             "Playing": "󰎈",
             "Paused": "󰏤",
             "Stopped": ""
         },
         "return-type": "json",
-        "exec": "playerctl -F metadata --format '{\"text\": \"{{artist}} · {{title}}\", \"alt\": \"{{status}}\", \"tooltip\": \"{{playerName}}: {{artist}} – {{title}}\"}' 2>/dev/null",
+        "exec": "bash ~/.config/waybar/scripts/media.sh",
         "on-click": "playerctl play-pause",
         "on-scroll-up": "playerctl next",
         "on-scroll-down": "playerctl previous",
