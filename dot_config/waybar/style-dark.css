@@ -43,6 +43,7 @@ tooltip label {
 
 #custom-launcher,
 #clock,
+#window,
 #resources,
 #connectivity,
 #workspaces,
@@ -76,6 +77,7 @@ tooltip label {
 
 #custom-launcher:hover,
 #clock:hover,
+#window:hover,
 #resources:hover,
 #connectivity:hover,
 #workspaces:hover,
