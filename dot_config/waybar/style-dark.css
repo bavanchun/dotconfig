@@ -324,10 +324,10 @@ tooltip label {
 }
 
 #custom-power-profile {
-    min-width: 24px;
+    min-width: 20px;
     color: alpha(@text-muted, 0.84);
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 700;
 }
 
 #battery {

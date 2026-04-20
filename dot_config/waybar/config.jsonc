@@ -152,11 +152,12 @@
     },
 
     "custom/power-profile": {
-        "exec": "powerprofilesctl get | awk '{if ($0 == \"performance\") print \"Perf\"; else if ($0 == \"balanced\") print \"Bal\"; else print \"Eco\"}'",
+        "exec": "powerprofilesctl get | awk '{if ($0 == \"performance\") print \"󰓅\"; else if ($0 == \"balanced\") print \"󰾅\"; else print \"󰾄\"}'",
         "interval": 2,
         "format": "{}",
         "on-click": "bash ~/.config/waybar/scripts/power-profile-menu.sh",
-        "tooltip": false
+        "tooltip-format": "Power profile: $(powerprofilesctl get)",
+        "tooltip": true
     },
 
     "hyprland/language": {
