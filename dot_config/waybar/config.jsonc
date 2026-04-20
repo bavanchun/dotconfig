@@ -8,7 +8,7 @@
     "margin-left": 10,
     "margin-right": 10,
 
-    "modules-left": ["group/time", "group/media"],
+    "modules-left": ["group/time", "group/title", "group/media"],
     "modules-center": ["group/launcher"],
     "modules-right": ["group/resources", "group/connectivity", "group/tray-menu", "group/indicators", "custom/power"],
 
