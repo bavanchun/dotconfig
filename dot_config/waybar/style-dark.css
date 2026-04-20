@@ -125,7 +125,13 @@ tooltip label {
 }
 
 #window.empty {
-    color: @state-faint;
+    min-width: 0;
+
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
 }
 
 #workspaces {
@@ -203,6 +209,7 @@ tooltip label {
     color: alpha(@text-muted, 0.84);
     padding: 0 6px;
     border-radius: 999px;
+    font-family: "JetBrainsMono Nerd Font", monospace;
     font-weight: 700;
     transition: background 0.16s ease, color 0.16s ease;
 }
@@ -291,7 +298,8 @@ tooltip label {
 }
 
 #custom-swaync {
-    min-width: 34px;
+    min-width: 38px;
+    letter-spacing: 1px;
 }
 
 #custom-control {
@@ -304,7 +312,15 @@ tooltip label {
     color: @accent;
 }
 
-#language,
+#language {
+    min-width: 0;
+
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
 #custom-power-profile {
     min-width: 24px;
     color: alpha(@text-muted, 0.84);

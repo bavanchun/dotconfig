@@ -71,13 +71,13 @@
     "cpu": {
         "format": "󰘚 {usage}%",
         "interval": 2,
-        "tooltip": false
+        "tooltip-format": "CPU: {usage}% | {load}"
     },
 
     "memory": {
         "format": "󰍛 {used:.1f}G",
         "interval": 2,
-        "tooltip-format": "Used: {used:.1f}G / {total:.1f}G"
+        "tooltip-format": "RAM: {used:.1f}G / {total:.1f}G ({percentage}%)"
     },
 
     "idle_inhibitor": {
