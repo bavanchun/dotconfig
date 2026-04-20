@@ -206,7 +206,7 @@
         "on-scroll-down": "playerctl previous",
         "max-length": 36,
         "escape": true,
-        "exec-if": "pgrep -x playerctld"
+        "exec-if": "playerctld daemon 2>/dev/null; true"
     }
 }
 ]
