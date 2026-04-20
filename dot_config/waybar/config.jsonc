@@ -38,7 +38,7 @@
     },
     "group/indicators": {
         "orientation": "horizontal",
-        "modules": ["custom/power-profile", "backlight", "custom/swaync", "battery"]
+        "modules": ["custom/power-profile", "idle_inhibitor", "backlight", "custom/swaync", "battery"]
     },
     "group/tray-menu": {
         "orientation": "horizontal",
@@ -83,11 +83,11 @@
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "󰅶",
-            "deactivated": "󰾪"
+            "activated": "󰛊",
+            "deactivated": "󰛉"
         },
-        "tooltip-format-activated": "Idle inhibitor: ON",
-        "tooltip-format-deactivated": "Idle inhibitor: OFF"
+        "tooltip-format-activated": "Caffeine: ON — màn hình sẽ không tự tắt",
+        "tooltip-format-deactivated": "Caffeine: OFF — máy hoạt động bình thường"
     },
 
     "backlight": {
