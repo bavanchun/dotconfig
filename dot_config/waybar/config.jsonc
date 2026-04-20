@@ -167,7 +167,7 @@
 
     "custom/swaync": {
         "tooltip": false,
-        "format": "{icon} {text}",
+        "format": "{icon}  {text}",
         "format-icons": {
             "notification": "󰂚",
             "none": "󰂜",

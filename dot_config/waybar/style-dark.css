@@ -332,7 +332,8 @@ tooltip label {
 
 #battery {
     font-weight: 700;
-    color: alpha(@text, 0.90);
+    color: alpha(@text, 0.92);
+    min-width: 44px;
 }
 
 #battery.charging {
