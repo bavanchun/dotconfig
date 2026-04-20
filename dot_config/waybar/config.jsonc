@@ -38,7 +38,7 @@
     },
     "group/indicators": {
         "orientation": "horizontal",
-        "modules": ["custom/power-profile", "hyprland/language", "backlight", "custom/swaync", "battery"]
+        "modules": ["custom/power-profile", "backlight", "custom/swaync", "battery"]
     },
     "group/tray-menu": {
         "orientation": "horizontal",
