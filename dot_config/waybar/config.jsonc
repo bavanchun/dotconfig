@@ -38,7 +38,7 @@
     },
     "group/indicators": {
         "orientation": "horizontal",
-        "modules": ["custom/power-profile", "hyprland/language", "custom/swaync", "battery"]
+        "modules": ["custom/power-profile", "hyprland/language", "backlight", "custom/swaync", "battery"]
     },
     "group/tray-menu": {
         "orientation": "horizontal",
@@ -91,7 +91,7 @@
     },
 
     "backlight": {
-        "format": "{icon}",
+        "format": "{icon} {percent}%",
         "format-icons": ["󰋙", "󰃞", "󰃟", "󰃠"],
         "on-scroll-up": "brightnessctl -e4 -n2 set 5%+",
         "on-scroll-down": "brightnessctl -e4 -n2 set 5%-",

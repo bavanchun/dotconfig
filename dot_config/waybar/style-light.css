@@ -202,6 +202,7 @@ tooltip label {
 #custom-swaync,
 #language,
 #custom-power-profile,
+#backlight,
 #battery,
 #temperature {
     background: transparent;
@@ -226,6 +227,7 @@ tooltip label {
 #custom-swaync:hover,
 #language:hover,
 #custom-power-profile:hover,
+#backlight:hover,
 #battery:hover,
 #temperature:hover {
     background: @segment-hover;
@@ -330,6 +332,27 @@ tooltip label {
 #battery {
     font-weight: 700;
     color: alpha(@text, 0.90);
+}
+
+#battery.charging {
+    color: @success;
+}
+
+#battery.plugged {
+    color: alpha(@text, 0.80);
+}
+
+#battery.warning:not(.charging) {
+    color: @warning;
+}
+
+#battery.critical:not(.charging) {
+    color: @danger;
+    animation: blink-light 0.9s steps(8) infinite alternate;
+}
+
+#backlight {
+    color: alpha(@text-muted, 0.80);
 }
 
 #cpu.warning,
