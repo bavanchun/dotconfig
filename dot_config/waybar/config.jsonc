@@ -8,8 +8,8 @@
     "margin-left": 10,
     "margin-right": 10,
 
-    "modules-left": ["group/launcher", "group/media"],
-    "modules-center": ["group/time"],
+    "modules-left": ["group/time", "group/media"],
+    "modules-center": ["group/launcher"],
     "modules-right": ["group/resources", "group/connectivity", "group/tray-menu", "group/indicators", "custom/power"],
 
     "group/launcher": {
@@ -50,13 +50,8 @@
     },
 
     "hyprland/workspaces": {
-        "format": "{icon}",
-        "format-icons": {
-            "active": "",
-            "default": ""
-        },
+        "format": "{name}",
         "sort-by-number": true,
-        "persistent-workspaces": { "*": 5 },
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1"
     },

@@ -101,8 +101,7 @@ tooltip label {
 }
 
 #tray-menu {
-    padding: 3px 14px;
-    min-width: 46px;
+    padding: 3px 10px;
 }
 
 #resources > widget:not(:first-child) > *,
@@ -160,13 +159,6 @@ tooltip label {
     opacity: 0;
 }
 
-#workspaces button.persistent {
-    background: transparent;
-    color: alpha(@text-muted, 0.20);
-    min-width: 20px;
-    padding: 4px 6px;
-}
-
 #workspaces button:hover {
     background: @segment-hover;
     color: alpha(@text, 0.84);
@@ -176,8 +168,8 @@ tooltip label {
     background: alpha(@accent-container, 0.64);
     color: @on-accent-container;
     border: 1px solid alpha(@accent, 0.48);
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: 12px;
+    padding-right: 12px;
     box-shadow:
         inset 0 1px 0 alpha(@surface-bright, 0.10),
         0 0 0 1px alpha(@accent, 0.08);
