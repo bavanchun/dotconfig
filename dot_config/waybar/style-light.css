@@ -45,6 +45,7 @@ tooltip label {
 #clock,
 #window,
 #resources,
+#updates,
 #connectivity,
 #workspaces,
 #tray-menu,
@@ -78,6 +79,7 @@ tooltip label {
 #clock:hover,
 #window:hover,
 #resources:hover,
+#updates:hover,
 #connectivity:hover,
 #workspaces:hover,
 #tray-menu:hover,
@@ -419,6 +421,31 @@ tooltip label {
 #custom-battery-text.critical:not(.charging),
 #temperature.critical {
     animation: blink-light 0.9s steps(8) infinite alternate;
+}
+
+#updates {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+#custom-updates {
+    background: transparent;
+    color: alpha(@text-muted, 0.82);
+    padding: 0 6px;
+    border-radius: 999px;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-weight: 700;
+    transition: background 0.16s ease, color 0.16s ease;
+}
+
+#custom-updates:hover {
+    background: @segment-hover;
+    color: alpha(@text, 0.92);
+}
+
+#custom-updates.updates-available {
+    color: @accent;
+    font-weight: 700;
 }
 
 #custom-power {

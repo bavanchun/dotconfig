@@ -10,7 +10,7 @@
 
     "modules-left": ["group/time", "group/title", "group/media"],
     "modules-center": ["group/launcher"],
-    "modules-right": ["group/resources", "group/connectivity", "group/tray-menu", "group/indicators", "custom/power"],
+    "modules-right": ["group/updates", "group/resources", "group/connectivity", "group/tray-menu", "group/indicators", "custom/power"],
 
     "group/launcher": {
         "orientation": "horizontal",
@@ -27,6 +27,10 @@
     "group/time": {
         "orientation": "horizontal",
         "modules": ["clock"]
+    },
+    "group/updates": {
+        "orientation": "horizontal",
+        "modules": ["custom/updates"]
     },
     "group/resources": {
         "orientation": "horizontal",
@@ -149,6 +153,15 @@
     "custom/tray-toggle": {
         "format": "󰍜",
         "tooltip": false
+    },
+
+    "custom/updates": {
+        "exec": "bash ~/.config/waybar/scripts/updates.sh",
+        "return-type": "json",
+        "interval": 1800,
+        "format": "󰏗 {}",
+        "tooltip": true,
+        "escape": false
     },
 
     "custom/power-profile": {
