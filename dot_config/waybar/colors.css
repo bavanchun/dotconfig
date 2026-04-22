@@ -1,4 +1,24 @@
-/* Bootstrap fallback — overwritten by matugen on first wallpaper change */
-@define-color accent      #c73e64;
-@define-color on-accent   #ffffff;
-@define-color accent-soft rgba(199, 62, 100, 0.30);
+/* Bootstrap fallback — overwritten by matugen on each wallpaper change.
+   DO NOT REMOVE — ensures bar renders correctly before matugen first run. */
+
+@define-color accent              #c73e64;
+@define-color on-accent           #ffffff;
+@define-color accent-soft         rgba(199, 62, 100, 0.30);
+@define-color accent-container    #4a1f2d;
+@define-color on-accent-container #ffd9e1;
+
+@define-color text                #e8e6e0;
+@define-color text-muted          #b8b5ad;
+
+@define-color surface-container   #1c1b1a;
+@define-color surface-bright      #2a2826;
+@define-color surface-high        #322f2c;
+@define-color surface-highest     #3b3835;
+
+@define-color outline             #6a6660;
+@define-color outline-variant     #4a4742;
+
+@define-color danger              #e57373;
+@define-color on-danger           #2a0e0e;
+@define-color warning             #f0b96a;
+@define-color success             #80cf99;
