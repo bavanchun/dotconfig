@@ -4,13 +4,13 @@
 
 @define-color bar-shadow        rgba(0, 0, 0, 0.28);
 @define-color bar-shadow-soft   rgba(0, 0, 0, 0.08);
-@define-color capsule-bg        alpha(@surface-bright, 0.90);
-@define-color capsule-bg-strong alpha(@surface-highest, 0.96);
+@define-color capsule-bg        alpha(@surface-bright, 0.96);
+@define-color capsule-bg-strong alpha(@surface-highest, 0.98);
 @define-color capsule-line      alpha(@outline, 0.48);
 @define-color capsule-line-soft alpha(@outline-variant, 0.34);
 @define-color segment-hover     alpha(@surface-highest, 0.60);
-@define-color state-muted       alpha(@text-muted, 0.82);
-@define-color state-faint       alpha(@text-muted, 0.48);
+@define-color state-muted       alpha(@text-muted, 0.92);
+@define-color state-faint       alpha(@text-muted, 0.72);
 
 * {
     font-family: "SF Pro Display", "Inter", "JetBrainsMono Nerd Font", sans-serif;
@@ -24,7 +24,7 @@
 
 window#waybar {
     background: transparent;
-    color: alpha(@text, 0.92);
+    color: @text;
 }
 
 tooltip {
@@ -53,7 +53,7 @@ tooltip label {
 #custom-media,
 #custom-power {
     background: @capsule-bg;
-    color: alpha(@text, 0.90);
+    color: @text;
     border: 1px solid @capsule-line-soft;
     border-radius: 999px;
     padding: 3px 10px;
