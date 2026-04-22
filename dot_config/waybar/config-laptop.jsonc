@@ -213,7 +213,8 @@
 
     "custom/launcher": {
         "format": "",
-        "tooltip": false,
+        "tooltip": true,
+        "tooltip-format": "App launcher",
         "on-click": "rofi -show drun"
     },
 
@@ -224,28 +225,32 @@
 
     "custom/tray-toggle": {
         "format": "󰍜",
-        "tooltip": false
+        "tooltip": true,
+        "tooltip-format": "Show system tray"
     },
 
     "custom/res-toggle": {
         "format": "󰻠",
-        "tooltip": false,
+        "tooltip": true,
+        "tooltip-format": "System resources",
         "on-click": "sh -c 'resources || missioncenter || gnome-system-monitor || plasma-systemmonitor || true'"
     },
 
     "custom/control": {
         "format": "󰒓",
-        "tooltip": false,
+        "tooltip": true,
+        "tooltip-format": "Quick settings",
         "on-click": "bash ~/.config/waybar/scripts/control-menu.sh"
     },
 
     "hyprland/language": {
         "format": "{short}",
-        "tooltip": false
+        "tooltip": true,
+        "tooltip-format": "Keyboard layout: {long}"
     },
 
     "custom/swaync": {
-        "tooltip": false,
+        "tooltip": true,
         "format": "{icon} {text}",
         "format-icons": {
             "notification": "󰂚",
@@ -267,7 +272,8 @@
 
     "custom/power": {
         "format": "󰐥",
-        "tooltip": false,
+        "tooltip": true,
+        "tooltip-format": "Power menu",
         "on-click": "bash ~/.config/waybar/scripts/power-menu.sh"
     }
 }
