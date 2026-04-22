@@ -22,6 +22,10 @@
     margin: 0;
 }
 
+button {
+    min-height: 28px;
+}
+
 window#waybar {
     background: transparent;
     color: @text;
@@ -66,8 +70,8 @@ tooltip label {
 }
 
 #custom-launcher {
-    min-width: 38px;
-    min-height: 28px;
+    min-width: 42px;
+    min-height: 32px;
     padding-left: 0;
     padding-right: 0;
     color: @accent;
@@ -145,8 +149,8 @@ tooltip label {
 }
 
 #workspaces button {
-    min-width: 24px;
-    padding: 4px 8px;
+    min-width: 28px;
+    padding: 5px 10px;
     margin: 0 2px;
     border-radius: 999px;
     background: transparent;
@@ -209,7 +213,7 @@ tooltip label {
 #temperature {
     background: transparent;
     color: alpha(@text-muted, 0.84);
-    padding: 0 6px;
+    padding: 4px 8px;
     border-radius: 999px;
     font-family: "JetBrainsMono Nerd Font", monospace;
     font-weight: 700;
