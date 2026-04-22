@@ -61,7 +61,7 @@ tooltip label {
     border: 1px solid @capsule-line-soft;
     border-radius: 999px;
     padding: 3px 10px;
-    margin: 1px 3px 1px;
+    margin: 1px 5px 1px;
     box-shadow:
         inset 0 1px 0 alpha(@surface-bright, 0.08),
         0 1px 3px @bar-shadow-soft;
@@ -116,9 +116,9 @@ tooltip label {
 #connectivity > widget:not(:first-child) > *,
 #tray-menu > widget:not(:first-child) > *,
 #indicators > widget:not(:first-child) > * {
-    border-left: 1px solid alpha(@outline-variant, 0.14);
-    margin-left: 1px;
-    padding-left: 7px;
+    border-left: 1px solid alpha(@outline-variant, 0.30);
+    margin-left: 2px;
+    padding-left: 8px;
 }
 
 #window {
@@ -179,14 +179,12 @@ tooltip label {
 }
 
 #workspaces button.active {
-    background: alpha(@accent-container, 0.64);
+    background: @accent-container;
     color: @on-accent-container;
-    border: 1px solid alpha(@accent, 0.48);
-    padding-left: 12px;
-    padding-right: 12px;
-    box-shadow:
-        inset 0 1px 0 alpha(@surface-bright, 0.10),
-        0 0 0 1px alpha(@accent, 0.08);
+    border: none;
+    padding-left: 14px;
+    padding-right: 14px;
+    box-shadow: inset 0 1px 0 alpha(@surface-bright, 0.08);
 }
 
 #workspaces button.urgent {
@@ -348,7 +346,7 @@ tooltip label {
 
 #battery.critical:not(.charging) {
     color: @danger;
-    animation: blink-light 0.9s steps(8) infinite alternate;
+    animation: blink-light 0.9s steps(8) 5 alternate;
 }
 
 #backlight {
@@ -412,7 +410,7 @@ tooltip label {
 #custom-battery-icon.critical:not(.charging),
 #custom-battery-text.critical:not(.charging),
 #temperature.critical {
-    animation: blink-light 0.9s steps(8) infinite alternate;
+    animation: blink-light 0.9s steps(8) 5 alternate;
 }
 
 #updates {
