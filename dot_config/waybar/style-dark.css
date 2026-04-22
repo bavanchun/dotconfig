@@ -200,7 +200,6 @@ tooltip label {
 #memory,
 #tray,
 #custom-tray-toggle,
-#custom-conn-toggle,
 #custom-res-toggle,
 #custom-swaync,
 #language,
@@ -225,7 +224,6 @@ tooltip label {
 #memory:hover,
 #tray:hover,
 #custom-tray-toggle:hover,
-#custom-conn-toggle:hover,
 #custom-res-toggle:hover,
 #custom-swaync:hover,
 #language:hover,
@@ -238,7 +236,6 @@ tooltip label {
 }
 
 #custom-res-toggle,
-#custom-conn-toggle,
 #custom-tray-toggle,
 #idle_inhibitor {
     color: alpha(@text-muted, 0.54);
@@ -271,10 +268,8 @@ tooltip label {
 }
 
 #custom-battery-icon,
-#custom-volume-icon,
 #custom-brightness-icon,
 #custom-battery-text,
-#custom-volume-text,
 #custom-brightness-text {
     background: transparent;
     border: none;
@@ -285,7 +280,6 @@ tooltip label {
 }
 
 #custom-battery-icon,
-#custom-volume-icon,
 #custom-brightness-icon {
     min-width: 14px;
     padding: 0;
@@ -293,7 +287,6 @@ tooltip label {
 }
 
 #custom-battery-text,
-#custom-volume-text,
 #custom-brightness-text {
     min-width: 0;
     padding: 0 0 0 8px;
@@ -382,11 +375,6 @@ tooltip label {
 #custom-battery-icon.plugged,
 #custom-battery-text.plugged {
     color: alpha(@text, 0.88);
-}
-
-#custom-volume-icon.muted,
-#custom-volume-text.muted {
-    color: alpha(@text-muted, 0.56);
 }
 
 #wireplumber.icon {
