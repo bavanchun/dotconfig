@@ -68,7 +68,7 @@
     },
 
     "clock": {
-        "format": "󰥔 {:%H:%M} · 󰃭 {:%d/%m}",
+        "format": "󰥔 {:%H:%M · 󰃭 %d/%m}",
         "format-alt": "󰃭 {:%A, %d %B %Y  󰥔 %H:%M:%S}",
         "tooltip-format": "<big>{:%A, %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>"
     },
