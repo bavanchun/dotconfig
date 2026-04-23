@@ -10,7 +10,7 @@ aur_count=0
 total=$((repo_count + aur_count))
 
 if [ "$total" -eq 0 ]; then
-    printf '{"text": "", "tooltip": "Hệ thống đã up-to-date ✓", "class": "updated"}\n'
+    printf '{"text": "", "tooltip": "System is up to date ✓", "class": "updated"}\n'
     exit 0
 fi
 
