@@ -6,7 +6,7 @@
 
 | Keybind | Action |
 |---|---|
-| `Super + T` | Open terminal (kitty) |
+| `Super + T` | Open terminal (WezTerm) |
 | `Super + E` | File manager |
 | `Super + Space` | App launcher (rofi) |
 | `Super + N` | Notification center (swaync) |
