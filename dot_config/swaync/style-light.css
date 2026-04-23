@@ -21,7 +21,7 @@
 @define-color panel-shadow    rgba(24, 28, 38, 0.10);
 
 * {
-    font-family: "JetBrainsMono Nerd Font", sans-serif;
+    font-family: "SF Pro Display", "Inter", "JetBrainsMono Nerd Font", sans-serif;
     font-size: 13px;
 }
 
@@ -119,33 +119,33 @@
 /* ── Notification center ────────────────────────────────────── */
 .control-center {
     background: @cc-bg;
-    border: 1px solid rgba(124, 127, 147, 0.25);
-    border-radius: 16px;
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14);
-    padding: 12px 0 10px;
+    border: 1px solid alpha(@outline-variant, 0.28);
+    border-radius: 18px;
+    box-shadow: 0 14px 30px @panel-shadow;
+    padding: 10px 0 12px;
 }
 
 .widget-title {
     color: @text;
-    font-size: 15px;
-    font-weight: bold;
-    margin: 2px 16px 10px;
+    font-size: 14px;
+    font-weight: 800;
+    margin: 2px 14px 10px;
 }
 
 .widget-title > button {
-    background: rgba(230, 233, 239, 0.92);
-    border: 1px solid rgba(124, 127, 147, 0.2);
-    border-radius: 9px;
-    color: @subtext1;
+    background: alpha(@surface-high, 0.74);
+    border: 1px solid alpha(@outline-variant, 0.24);
+    border-radius: 999px;
+    color: @text-muted;
     font-size: 11px;
-    font-weight: 600;
-    padding: 6px 12px;
+    font-weight: 700;
+    padding: 5px 11px;
 }
 
 .widget-title > button:hover {
-    background: @surface1;
+    background: alpha(@surface-highest, 0.82);
     color: @text;
-    border-color: @overlay1;
+    border-color: alpha(@outline, 0.28);
 }
 
 /* ── DND toggle ─────────────────────────────────────────────── */
