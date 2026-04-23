@@ -28,7 +28,7 @@
 /* ── Notification row ───────────────────────────────────────── */
 .notification-row {
     outline: none;
-    margin: 4px 0;
+    margin: 2px 0;
 }
 
 .notification-row:focus,
@@ -37,17 +37,17 @@
 }
 
 .notification {
-    border-radius: 10px;
-    margin: 6px 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    margin: 5px 10px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.26);
     padding: 0;
 }
 
 .notification-content {
     background: @noti-bg;
     border: 1px solid @noti-border;
-    border-radius: 10px;
-    padding: 12px;
+    border-radius: 12px;
+    padding: 12px 13px;
     color: @text;
 }
 
@@ -101,19 +101,20 @@
 /* ── Typography ─────────────────────────────────────────────── */
 .summary {
     font-size: 13px;
-    font-weight: bold;
+    font-weight: 750;
     color: @text;
 }
 
 .time {
-    font-size: 11px;
-    color: @overlay0;
+    font-size: 10px;
+    font-weight: 650;
+    color: alpha(@text-muted, 0.76);
 }
 
 .body {
     font-size: 12px;
-    color: @subtext0;
-    margin-top: 2px;
+    color: alpha(@text-muted, 0.90);
+    margin-top: 3px;
 }
 
 /* ── Notification center ────────────────────────────────────── */
@@ -218,15 +219,15 @@ blankwindow,
 }
 
 .notification-row .notification-background {
-    padding: 6px 12px;
+    padding: 5px 10px;
     background: transparent;
 }
 
 .notification-row .notification-background .notification {
     background: @noti-bg;
-    border: 1px solid rgba(127, 132, 156, 0.22);
+    border: 1px solid @noti-border;
     border-radius: 12px;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.42);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
     padding: 0;
 }
 
@@ -247,7 +248,7 @@ blankwindow,
     background: transparent;
     border: none;
     border-radius: 12px;
-    padding: 14px;
+    padding: 12px 13px;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box label {
@@ -256,17 +257,17 @@ blankwindow,
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .summary {
     color: @text;
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 750;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .time {
-    color: @overlay0;
+    color: alpha(@text-muted, 0.76);
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 650;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .body {
-    color: @subtext0;
-    margin-top: 4px;
+    color: alpha(@text-muted, 0.90);
+    margin-top: 3px;
 }
