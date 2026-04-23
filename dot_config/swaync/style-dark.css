@@ -130,10 +130,15 @@
 }
 
 .widget-title {
+    background: alpha(@surface-container, 0.88);
+    border: 1px solid alpha(@outline-variant, 0.22);
+    border-radius: 14px;
     color: @text;
     font-size: 14px;
     font-weight: 800;
-    margin: 2px 14px 10px;
+    margin: 0 14px 8px;
+    padding: 7px 10px;
+    box-shadow: 0 8px 16px alpha(@surface-container, 0.34);
 }
 
 .widget-title > button {
@@ -154,9 +159,9 @@
 
 /* ── DND toggle ─────────────────────────────────────────────── */
 .widget-dnd {
-    margin: 0 14px 10px;
+    margin: 0 14px 12px;
     padding: 9px 11px;
-    background: alpha(@surface-high, 0.52);
+    background: alpha(@surface-high, 0.82);
     border: 1px solid alpha(@outline-variant, 0.24);
     border-radius: 14px;
     font-size: 13px;
@@ -215,6 +220,8 @@ blankwindow,
 
 .control-center .control-center-list {
     background: transparent;
+    border-top: 1px solid alpha(@outline-variant, 0.18);
+    padding-top: 4px;
 }
 
 .control-center .control-center-list-placeholder {
