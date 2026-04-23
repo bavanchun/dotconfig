@@ -1,26 +1,24 @@
-/* ── Catppuccin Latte ───────────────────────────────────────── */
-@define-color base            #eff1f5;
-@define-color mantle          #e6e9ef;
-@define-color surface0        #ccd0da;
-@define-color surface1        #bcc0cc;
-@define-color surface2        #acb0be;
-@define-color overlay0        #8c8fa1;
-@define-color overlay1        #7c7f93;
-@define-color text            #4c4f69;
-@define-color subtext0        #6c6f85;
-@define-color subtext1        #5c5f77;
-@define-color blue            #1e66f5;
-@define-color mauve           #8839ef;
-@define-color red             #d20f39;
-@define-color green           #40a02b;
-@define-color yellow          #df8e1d;
-@define-color peach           #fe640b;
-@define-color teal            #179299;
+/* Shared matugen tokens from Waybar */
+@import url("../waybar/colors.css");
 
-@define-color noti-bg         rgba(239, 241, 245, 0.96);
-@define-color noti-bg-hover   rgba(230, 233, 239, 0.98);
-@define-color noti-border     rgba(124, 127, 147, 0.25);
-@define-color cc-bg           rgba(239, 241, 245, 0.97);
+@define-color base            @surface-container;
+@define-color mantle          @surface-container;
+@define-color surface0        @surface-high;
+@define-color surface1        @surface-highest;
+@define-color surface2        @outline-variant;
+@define-color overlay0        @text-muted;
+@define-color overlay1        @outline;
+@define-color subtext0        @text-muted;
+@define-color subtext1        alpha(@text, 0.86);
+@define-color red             @danger;
+@define-color green           @success;
+@define-color peach           @warning;
+
+@define-color noti-bg         alpha(@surface-bright, 0.96);
+@define-color noti-bg-hover   alpha(@surface-high, 0.96);
+@define-color noti-border     alpha(@outline-variant, 0.26);
+@define-color cc-bg           alpha(@surface-container, 0.96);
+@define-color panel-shadow    rgba(24, 28, 38, 0.10);
 
 * {
     font-family: "JetBrainsMono Nerd Font", sans-serif;
