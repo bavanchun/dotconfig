@@ -115,7 +115,6 @@ tooltip label {
 
 #resources > widget:not(:first-child) > *,
 #connectivity > widget:not(:first-child) > *,
-#tray-menu > widget:not(:first-child) > *,
 #indicators > widget:not(:first-child) > * {
     border-left: 1px solid alpha(@outline-variant, 0.32);
     margin-left: 2px;
@@ -246,7 +245,7 @@ tooltip label {
 #custom-tray-toggle {
     min-width: 32px;
     min-height: 28px;
-    padding: 0;
+    padding: 0 0 0 1px;
     background: alpha(@surface-highest, 0.36);
     border: 1px solid alpha(@outline-variant, 0.24);
     color: alpha(@text, 0.72);
@@ -471,7 +470,8 @@ tooltip label {
 }
 
 #tray {
-    padding-right: 2px;
+    padding: 0;
+    margin: 0;
 }
 
 #tray > .passive {
