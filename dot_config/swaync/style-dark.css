@@ -150,28 +150,32 @@
 
 /* ── DND toggle ─────────────────────────────────────────────── */
 .widget-dnd {
-    margin: 0 16px 12px;
-    padding: 10px 12px;
-    background: rgba(28, 28, 28, 0.88);
-    border: 1px solid rgba(127, 132, 156, 0.14);
-    border-radius: 12px;
+    margin: 0 14px 10px;
+    padding: 9px 11px;
+    background: alpha(@surface-high, 0.52);
+    border: 1px solid alpha(@outline-variant, 0.24);
+    border-radius: 14px;
     font-size: 13px;
+    font-weight: 700;
     color: @text;
 }
 
 .widget-dnd > switch {
-    border-radius: 20px;
-    background: @surface1;
-    border: 1px solid @surface2;
+    min-width: 44px;
+    min-height: 24px;
+    border-radius: 999px;
+    background: alpha(@surface-highest, 0.70);
+    border: 1px solid alpha(@outline-variant, 0.32);
 }
 
 .widget-dnd > switch:checked {
-    background: @overlay1;
+    background: alpha(@accent, 0.86);
+    border-color: alpha(@accent, 0.54);
 }
 
 .widget-dnd > switch slider {
     border-radius: 50%;
-    background: @base;
+    background: alpha(@text, 0.92);
     min-width: 20px;
     min-height: 20px;
     margin: 2px;
