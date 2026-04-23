@@ -1,6 +1,8 @@
-# dotconfig
+# dotconfig-arch
 
-> Hyprland-based Arch Linux dotfiles — managed by [chezmoi](https://www.chezmoi.io/), themed with Material You from wallpaper, zero-touch bootstrap.
+> Arch Linux desktop dotfiles (Hyprland ecosystem) — managed by [chezmoi](https://www.chezmoi.io/), themed with Material You from wallpaper, zero-touch bootstrap.
+>
+> **Terminal/CLI configs** live in a separate repo: [bavanchun/dotconfig-term](https://github.com/bavanchun/dotconfig-term)
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -63,11 +65,14 @@ hostnamectl set-hostname <tên-máy>
 # 2. Cài chezmoi + git (chỉ 2 packages này cần cài thủ công)
 sudo pacman -S --needed chezmoi git
 
-# 3. Init và apply — tự động cài mọi thứ
-chezmoi init --apply git@github.com:bavanchun/dotconfig.git
+# 3. Init terminal repo trước (shell, nvim, tmux, alacritty, kitty, wezterm)
+chezmoi init --apply git@github.com:bavanchun/dotconfig-term.git
+
+# 4. Init arch repo vào source directory riêng
+chezmoi init --source ~/.local/share/chezmoi-arch --apply git@github.com:bavanchun/dotconfig-arch.git
 ```
 
-Bước 3 sẽ tự động:
+Bước 4 sẽ tự động:
 
 | Bước | Thực hiện |
 |------|-----------|
@@ -76,8 +81,9 @@ Bước 3 sẽ tự động:
 | 3 | Cài **~50 pacman + ~10 AUR packages** từ `.chezmoidata/packages.yaml` |
 | 4 | Apply tất cả configs vào `~/.config/` |
 | 5 | Enable systemd: `NetworkManager`, `bluetooth`, `power-profiles-daemon` |
-| 6 | Đổi default shell sang `zsh` |
-| 7 | Tạo fallback monitor config nếu chưa có `monitors-<hostname>.conf` |
+| 6 | Tạo fallback monitor config nếu chưa có `monitors-<hostname>.conf` |
+
+> `zsh` default shell được xử lý bởi `dotconfig-term` repo (step 3).
 
 ### Hậu install
 
@@ -113,8 +119,8 @@ chezmoi init --apply
         │       └─► Create symlinks (theme dark/light)
         │
         ├─► run_onchange_after_enable-services.sh
-        │       ├─► systemctl enable NetworkManager bluetooth power-profiles-daemon
-        │       └─► chsh -s /usr/bin/zsh
+        │       └─► systemctl enable NetworkManager bluetooth power-profiles-daemon
+        │           (chsh handled by dotconfig-term repo)
         │
         └─► run_onchange_after_ensure-monitor-fallback.sh.tmpl
                 └─► create monitors-<hostname>.conf nếu chưa có
@@ -246,7 +252,7 @@ Tất cả trong `~/.config/hypr/scripts/`:
 - **Symlinks** (quản lý bởi chezmoi templates + `run_after_apply-theme.sh`):
   - `waybar/style.css` → `style-{dark,light}.css`
   - `swaync/style.css` → `style-{dark,light}.css` (Catppuccin Mocha / Latte)
-  - `alacritty/theme.toml` → `theme-{dark,light}.toml`
+- **Alacritty theme symlink** được xử lý bởi `dotconfig-term` repo.
 - **Matugen configs**: `dot_config/matugen/templates/` generate ra Hyprland, Waybar, Fuzzel, GTK, KDE colors
 
 ### Đổi wallpaper
@@ -291,7 +297,7 @@ Mỗi máy có file monitor riêng, **không** track bởi chezmoi (mỗi hardwa
 ```bash
 # Trên máy mới có hostname "workstation"
 hostnamectl set-hostname workstation
-chezmoi init --apply git@github.com:bavanchun/dotconfig.git
+chezmoi init --source ~/.local/share/chezmoi-arch --apply git@github.com:bavanchun/dotconfig-arch.git
 
 # Fallback monitor config được tạo. Sửa theo hardware:
 nwg-displays   # hoặc vim ~/.config/hypr/monitors-workstation.conf

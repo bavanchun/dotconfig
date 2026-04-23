@@ -14,10 +14,5 @@ for svc in "${system_services[@]}"; do
   fi
 done
 
-# Switch default shell to zsh if not already
-if [[ "$(getent passwd "$USER" | cut -d: -f7)" != */zsh ]]; then
-  echo "Switching default shell to zsh..."
-  chsh -s /usr/bin/zsh "$USER" || echo "Warning: chsh failed (may need sudo)"
-fi
 
-echo "Services enabled."
+echo "Services enabled. (zsh default shell is handled by dotconfig-term repo)"
