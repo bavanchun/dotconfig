@@ -53,6 +53,7 @@
 
 .notification-content:hover {
     background: @noti-bg-hover;
+    border-color: alpha(@outline, 0.32);
 }
 
 .notification-default-action {
@@ -66,36 +67,38 @@
 
 /* ── Close button ───────────────────────────────────────────── */
 .close-button {
-    background: @surface0;
-    color: @subtext0;
+    background: alpha(@surface-high, 0.64);
+    color: alpha(@text-muted, 0.84);
     border-radius: 50%;
-    margin: 4px;
-    padding: 2px;
-    border: none;
-    min-width: 20px;
-    min-height: 20px;
+    margin: 6px;
+    padding: 0;
+    border: 1px solid alpha(@outline-variant, 0.24);
+    min-width: 22px;
+    min-height: 22px;
 }
 
 .close-button:hover {
-    background: @red;
-    color: @base;
+    background: alpha(@danger, 0.18);
+    border-color: alpha(@danger, 0.42);
+    color: @danger;
 }
 
 /* ── Action buttons ─────────────────────────────────────────── */
 .notification-action {
-    border: 1px solid @surface1;
-    border-radius: 6px;
-    margin: 6px 4px 2px;
-    color: @subtext1;
-    background: @surface0;
+    border: 1px solid alpha(@outline-variant, 0.28);
+    border-radius: 999px;
+    margin: 6px 4px 1px;
+    color: alpha(@text, 0.86);
+    background: alpha(@surface-high, 0.54);
     font-size: 12px;
-    padding: 6px 12px;
+    font-weight: 700;
+    padding: 5px 12px;
 }
 
 .notification-action:hover {
-    background: @surface1;
+    background: alpha(@surface-highest, 0.70);
     color: @text;
-    border-color: @overlay1;
+    border-color: alpha(@outline, 0.34);
 }
 
 /* ── Typography ─────────────────────────────────────────────── */
@@ -184,22 +187,22 @@
 
 /* ── Urgency borders ────────────────────────────────────────── */
 .low {
-    border-left: 3px solid @green;
+    border-left: 2px solid alpha(@success, 0.44);
 }
 
 .normal {
-    border-left: 3px solid @overlay1;
+    border-left: 2px solid alpha(@outline-variant, 0.42);
 }
 
 .critical {
-    border-left: 3px solid @red;
-    animation: pulse 1.5s ease-in-out infinite;
+    border-left: 2px solid @danger;
+    animation: pulse 1.4s ease-in-out 4;
 }
 
 @keyframes pulse {
-    0%   { border-color: @red; }
-    50%  { border-color: @peach; }
-    100% { border-color: @red; }
+    0%   { border-color: @danger; }
+    50%  { border-color: @warning; }
+    100% { border-color: @danger; }
 }
 
 /* ── Window/background plumbing required when system CSS is skipped ─────── */
@@ -242,6 +245,7 @@ blankwindow,
 
 .notification-row .notification-background .notification .notification-default-action:hover {
     background: @noti-bg-hover;
+    border-radius: 12px;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content {
