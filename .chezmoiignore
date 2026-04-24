@@ -25,10 +25,10 @@ dot_config/hypr/monitors.conf
 dot_config/hypr/monitors.conf.old
 
 # Matugen generated outputs (regenerated at runtime, NOT portable)
-dot_config/hypr/hyprland/colors.conf
-dot_config/hypr/hyprlock/colors.conf
-dot_config/fuzzel/fuzzel_theme.ini
-dot_config/waybar/colors.css
+.config/hypr/hyprland/colors.conf
+.config/hypr/hyprlock/colors.conf
+.config/fuzzel/fuzzel_theme.ini
+.config/waybar/colors.css
 
 # Claude Code workspace settings (absolute paths, machine-specific)
 dot_config/quickshell/exact_noctalia-shell/.claude/
